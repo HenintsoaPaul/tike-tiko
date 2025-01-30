@@ -1,0 +1,82 @@
+<project name="deploy-tike_tiko" default="clean-post" basedir=".">
+    <property environment="env"/>
+
+    <property name="deploy.dir" value="C:\wildfly-10.0.0.Final/standalone/deployments"/>
+
+    <property name="tike_tiko-warname" value="tike_tiko.war"/>
+    <property name="src-dir" value="${basedir}/src/java"/>
+    <property name="webcontent.dir" value="${basedir}/web"/>
+
+    <property name="build-tike_tiko-war" value="${basedir}/build-file/tike_tiko_war"/>
+    <property name="build-tike_tiko-lib" value="${basedir}/build-file/lib"/>
+
+    <path id="classpath">
+        <fileset dir="${build-tike_tiko-lib}">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+
+    <target name="clean">
+        <echo>---- Compilation tike_tiko ----</echo>
+        <echo>JDK ${ant.java.version} ${ant.version}</echo>
+        <echo>clean</echo>
+
+        <delete file="${build-tike_tiko-war}"/>
+
+        <echo>clean done</echo>
+    </target>
+
+    <target name="init" depends="clean">
+        <echo>initialisation</echo>
+
+        <mkdir dir="${build-tike_tiko-war}"/>
+        <mkdir dir="${build-tike_tiko-war}/WEB-INF"/>
+        <mkdir dir="${build-tike_tiko-war}/WEB-INF/lib"/>
+        <mkdir dir="${build-tike_tiko-war}/WEB-INF/classes"/>
+        <mkdir dir="${build-tike_tiko-war}/WEB-INF/classes/META-INF"/>
+
+        <copy todir="${build-tike_tiko-war}/">
+            <fileset dir="${webcontent.dir}" excludes="META-INF/**"/>
+        </copy>
+        <copy todir="${build-tike_tiko-war}/WEB-INF/lib/">
+            <fileset dir="${build-tike_tiko-lib}"/>
+        </copy>
+        <copy todir="${build-tike_tiko-war}/WEB-INF">
+            <fileset dir="${webcontent.dir}/WEB-INF" includes="**/*.xml"/>
+        </copy>
+
+        <echo>initialisation done</echo>
+    </target>
+
+    <target name="compileWar" depends="init">
+        <echo>compilation</echo>
+
+        <javac srcdir="${src-dir}" destdir="${build-tike_tiko-war}/WEB-INF/classes/" nowarn="true"
+               debug="on" deprecation="off" classpathref="classpath" includeantruntime="false" encoding="iso-8859-1">
+        </javac>
+
+        <echo>compilation done</echo>
+    </target>
+
+
+    <target name="deploy" depends="compileWar">
+        <echo>${env.JBOSS_HOME}</echo>
+
+        <copy todir="${deploy.dir}/tike_tiko.war">
+            <fileset dir="${build-tike_tiko-war}">
+                <include name="**/*"/>
+            </fileset>
+        </copy>
+
+        <touch file="${deploy.dir}/tike_tiko.war.dodeploy"/>
+
+        <echo>Compilation tike_tiko [DONE]</echo>
+    </target>
+
+    <target name="clean-post" depends="deploy">
+        <delete file="${build-tike_tiko-war}"/>
+
+        <echo>clean post done</echo>
+    </target>
+</project>
