@@ -1,31 +1,21 @@
 package entity;
 
-import src.summer.annotations.form.validation.Min;
 import src.summer.annotations.form.validation.Required;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Reservation {
     @Required
     int id;
 
     @Required
-    int utilisateur_id;
+    int id_etat_reservation;
 
     @Required
-    @Min(1)
-    int vol_id;
+    int id_place_vol;
 
     @Required
-    @Min(1)
-    int type_siege;
-
-    @Required
-    LocalDate date_reservation;
-
-    @Required
-    @Min(1)
-    String statut;
+    LocalDateTime heure_reservation;
 
     // Constr
     public Reservation() {
@@ -40,43 +30,27 @@ public class Reservation {
         this.id = id;
     }
 
-    public int getUtilisateur_id() {
-        return utilisateur_id;
+    public int getId_etat_reservation() {
+        return id_etat_reservation;
     }
 
-    public void setUtilisateur_id(int utilisateur_id) {
-        this.utilisateur_id = Reservation.this.utilisateur_id;
+    public void setId_etat_reservation(int id_etat_reservation) {
+        this.id_etat_reservation = id_etat_reservation;
     }
 
-    public int getVol_id() {
-        return vol_id;
+    public int getId_place_vol() {
+        return id_place_vol;
     }
 
-    public void setVol_id(int vol_id) {
-        this.vol_id = vol_id;
+    public void setId_place_vol(int id_place_vol) {
+        this.id_place_vol = id_place_vol;
     }
 
-    public int getType_siege() {
-        return type_siege;
+    public LocalDateTime getHeure_reservation() {
+        return heure_reservation;
     }
 
-    public void setType_siege(int type_siege) {
-        this.type_siege = type_siege;
-    }
-
-    public LocalDate getDate_reservation() {
-        return date_reservation;
-    }
-
-    public void setDate_reservation(LocalDate date_reservation) {
-        this.date_reservation = date_reservation;
-    }
-
-    public String getStatut() {
-        return statut;
-    }
-
-    public void setStatut(String statut) {
-        this.statut = statut;
+    public void setHeure_reservation(LocalDateTime heure_reservation) {
+        this.heure_reservation = heure_reservation;
     }
 }

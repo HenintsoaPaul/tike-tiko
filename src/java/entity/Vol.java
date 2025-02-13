@@ -3,28 +3,42 @@ package entity;
 import src.summer.annotations.form.validation.Min;
 import src.summer.annotations.form.validation.Required;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Vol {
     @Required
     int id;
 
     @Required
-    int avion_id;
+    int id_avion;
 
     @Required
     @Min(1)
-    int ville_depart_id;
+    int id_ville_depart;
 
     @Required
     @Min(1)
-    int ville_arrivee_id;
+    int id_ville_destination;
 
     @Required
-    LocalDate date_depart;
+    LocalDateTime heure_depart;
 
     @Required
-    LocalDate date_arrivee;
+    LocalDateTime heure_arrivee;
+
+    @Required
+    double prix_place_business;
+
+    @Required
+    double prix_place_eco;
+
+    @Min(0)
+    @Required
+    double nb_place_promo_business;
+
+    @Min(0)
+    @Required
+    double nb_place_promo_eco;
 
     // Constr
     public Vol() {
@@ -39,43 +53,75 @@ public class Vol {
         this.id = id;
     }
 
-    public int getAvion_id() {
-        return avion_id;
+    public int getId_avion() {
+        return id_avion;
     }
 
-    public void setAvion_id(int avion_id) {
-        this.avion_id = Vol.this.avion_id;
+    public void setId_avion(int id_avion) {
+        this.id_avion = id_avion;
     }
 
-    public int getVille_depart_id() {
-        return ville_depart_id;
+    public int getId_ville_depart() {
+        return id_ville_depart;
     }
 
-    public void setVille_depart_id(int ville_depart_id) {
-        this.ville_depart_id = ville_depart_id;
+    public void setId_ville_depart(int id_ville_depart) {
+        this.id_ville_depart = id_ville_depart;
     }
 
-    public int getVille_arrivee_id() {
-        return ville_arrivee_id;
+    public int getId_ville_destination() {
+        return id_ville_destination;
     }
 
-    public void setVille_arrivee_id(int ville_arrivee_id) {
-        this.ville_arrivee_id = ville_arrivee_id;
+    public void setId_ville_destination(int id_ville_destination) {
+        this.id_ville_destination = id_ville_destination;
     }
 
-    public LocalDate getDate_depart() {
-        return date_depart;
+    public LocalDateTime getHeure_depart() {
+        return heure_depart;
     }
 
-    public void setDate_depart(LocalDate date_depart) {
-        this.date_depart = date_depart;
+    public void setHeure_depart(LocalDateTime heure_depart) {
+        this.heure_depart = heure_depart;
     }
 
-    public LocalDate getDate_arrivee() {
-        return date_arrivee;
+    public LocalDateTime getHeure_arrivee() {
+        return heure_arrivee;
     }
 
-    public void setDate_arrivee(LocalDate date_arrivee) {
-        this.date_arrivee = date_arrivee;
+    public void setHeure_arrivee(LocalDateTime heure_arrivee) {
+        this.heure_arrivee = heure_arrivee;
+    }
+
+    public double getPrix_place_business() {
+        return prix_place_business;
+    }
+
+    public void setPrix_place_business(double prix_place_business) {
+        this.prix_place_business = prix_place_business;
+    }
+
+    public double getPrix_place_eco() {
+        return prix_place_eco;
+    }
+
+    public void setPrix_place_eco(double prix_place_eco) {
+        this.prix_place_eco = prix_place_eco;
+    }
+
+    public double getNb_place_promo_business() {
+        return nb_place_promo_business;
+    }
+
+    public void setNb_place_promo_business(double nb_place_promo_business) {
+        this.nb_place_promo_business = nb_place_promo_business;
+    }
+
+    public double getNb_place_promo_eco() {
+        return nb_place_promo_eco;
+    }
+
+    public void setNb_place_promo_eco(double nb_place_promo_eco) {
+        this.nb_place_promo_eco = nb_place_promo_eco;
     }
 }

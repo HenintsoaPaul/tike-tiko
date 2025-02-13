@@ -10,14 +10,14 @@ public class Utilisateur {
     String nom;
 
     @Required
-    String email;
+    String password;
 
     public Utilisateur() {
     }
 
-    public Utilisateur(String nom, String email) {
+    public Utilisateur(String nom, String password) {
         this.nom = nom;
-        this.email = email;
+        this.password = password;
     }
 
     // Getters n Setters
@@ -29,11 +29,11 @@ public class Utilisateur {
         this.nom = nom;
     }
 
-    public String getEmail() {
-        return email;
+    public String getPassword() {
+        return password;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

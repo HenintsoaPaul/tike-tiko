@@ -2,7 +2,7 @@ package entity;
 
 import src.summer.annotations.form.validation.Required;
 
-public class Ville {
+public class EtatReservation {
     @Required
     int id;
 
@@ -10,7 +10,7 @@ public class Ville {
     String nom;
 
     // Constr
-    public Ville() {
+    public EtatReservation() {
     }
 
     // Getters n Setters
