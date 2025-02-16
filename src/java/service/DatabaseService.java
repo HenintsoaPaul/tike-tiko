@@ -1,5 +1,6 @@
 package service;
 
+import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,5 +28,49 @@ public class DatabaseService {
             e.printStackTrace();
         }
         return results;
+    }
+
+    public <T> int insert(Connection conn, String tableName, T object) {
+        Class<?> clazz = object.getClass();
+        List<String> columns = new ArrayList<>();
+        List<Object> values = new ArrayList<>();
+
+        // Extract field names and values using reflection
+        for (Field field : clazz.getDeclaredFields()) {
+            field.setAccessible(true); // Allow access to private fields
+            try {
+                String fieldName = field.getName();
+                Object value = field.get(object);
+
+                // Skip the "id" field (assuming it's auto-increment)
+                if (!fieldName.equalsIgnoreCase("id")) {
+                    columns.add(fieldName);
+                    values.add(value);
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (columns.isEmpty()) {
+            throw new IllegalArgumentException("No fields to insert!");
+        }
+
+        // Construct SQL query dynamically
+        String columnNames = String.join(", ", columns);
+        String placeholders = String.join(", ", columns.stream().map(c -> "?").toArray(String[]::new));
+        String query = "INSERT INTO " + tableName + " (" + columnNames + ") VALUES (" + placeholders + ")";
+
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            // Set parameters dynamically
+            for (int i = 0; i < values.size(); i++) {
+                stmt.setObject(i + 1, values.get(i));
+            }
+
+            return stmt.executeUpdate(); // Return affected
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1; // Indicate failure
+        }
     }
 }
