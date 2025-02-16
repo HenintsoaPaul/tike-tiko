@@ -22,6 +22,12 @@ public class MinNbHeureReservation {
     public MinNbHeureReservation() {
     }
 
+    public MinNbHeureReservation(int id, double val, LocalDateTime date_modification) {
+        this.id = id;
+        this.val = val;
+        this.date_modification = date_modification;
+    }
+
     // Getters n Setters
     public int getId() {
         return id;

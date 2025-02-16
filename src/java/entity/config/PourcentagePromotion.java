@@ -12,8 +12,8 @@ public class PourcentagePromotion {
     @Required
     int id_type_siege;
 
-    @Required
     // annotation min/max/range
+    @Required
     @Min(0)
     double val;
 
@@ -23,6 +23,13 @@ public class PourcentagePromotion {
 
     // Constr
     public PourcentagePromotion() {
+    }
+
+    public PourcentagePromotion(int id, int id_type_siege, double val, LocalDateTime date_modification) {
+        this.id = id;
+        this.id_type_siege = id_type_siege;
+        this.val = val;
+        this.date_modification = date_modification;
     }
 
     // Getters n Setters
