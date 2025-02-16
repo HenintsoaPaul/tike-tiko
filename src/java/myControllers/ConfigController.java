@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 @Controller
 public class ConfigController {
 
+    private final VPourcentagePromotionService vpPromotionService = new VPourcentagePromotionService();
     private final PourcentagePromotionService pourcentagePromotionService = new PourcentagePromotionService();
     private final MinNbHeureReservationService minNbHeureReservationService = new MinNbHeureReservationService();
     private final MinNbHeureAnnulationService minNbHeureAnnulationService = new MinNbHeureAnnulationService();
@@ -30,7 +31,8 @@ public class ConfigController {
     private void fetchData(Connection conn, ModelView mv) {
         mv.addObject("typeSieges", typeSiegeService.select(conn, "select * from type_siege"));
 
-        mv.addObject("pourcentagePromotions", pourcentagePromotionService.selectPourcentagePromotion(conn, "select * from pourcentage_promotion order by id desc"));
+        mv.addObject("vPourcentagePromotions", vpPromotionService.select(conn, "select * from v_pourcentage_promotion order by id desc"));
+
         mv.addObject("minNbHeureReservations", minNbHeureReservationService.selectMinNbHeureReservation(conn, "select * from min_nb_heure_reservation order by id desc"));
         mv.addObject("minNbHeureAnnulations", minNbHeureAnnulationService.selectMinNbHeureAnnulation(conn, "select * from min_nb_heure_annulation order by id desc"));
     }

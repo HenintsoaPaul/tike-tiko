@@ -115,3 +115,7 @@ Si on a un vol qui part pour 9h15,
     -> A 4h15, no afaka afaka mandefa annulation farany ho an'io vol io
 */
 
+create or replace view v_pourcentage_promotion as
+select pp.*, ts.nom as nom_type_siege
+from pourcentage_promotion pp
+         join type_siege ts on pp.id_type_siege = ts.id;

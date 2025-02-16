@@ -3,8 +3,11 @@
 <%@ page import="entity.config.MinNbHeureAnnulation" %>
 <%@ page import="java.util.List" %>
 <%@ page import="entity.TypeSiege" %>
+<%@ page import="views.VPourcentagePromotion" %>
 <%
     List<TypeSiege> typeSieges = (List<TypeSiege>) request.getAttribute("typeSieges");
+
+    List<VPourcentagePromotion> vPourcentagePromotions = (List<VPourcentagePromotion>) request.getAttribute("vPourcentagePromotions");
 
     List<PourcentagePromotion> pourcentagePromotions = (List<PourcentagePromotion>) request.getAttribute("pourcentagePromotions");
     List<MinNbHeureReservation> minNbHeureReservations = (List<MinNbHeureReservation>) request.getAttribute("minNbHeureReservations");
@@ -51,7 +54,7 @@
         </tr>
         </thead>
         <tbody>
-        <% for (PourcentagePromotion pp : pourcentagePromotions) { %>
+        <% for (VPourcentagePromotion pp : vPourcentagePromotions) { %>
         <tr>
             <td>
                 <%= pp.getId() %>
@@ -60,7 +63,7 @@
                 <%= pp.getVal() %>
             </td>
             <td>
-                <%= pp.getId_type_siege() %>
+                <%= pp.getNom_type_siege() %>
             </td>
             <td>
                 <%= pp.getDate_modification() %>
