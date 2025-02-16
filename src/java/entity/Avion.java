@@ -26,6 +26,14 @@ public class Avion {
     // Constr
     public Avion() {}
 
+    public Avion(int id, String modele, int siegeBusiness, int siegeEco, LocalDate dateFabrication) {
+        this.id = id;
+        this.modele = modele;
+        this.siege_business = siegeBusiness;
+        this.siege_eco = siegeEco;
+        this.date_fabrication = dateFabrication;
+    }
+
     // Getters n Setters
     public int getId() {
         return id;

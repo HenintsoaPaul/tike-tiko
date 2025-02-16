@@ -13,6 +13,11 @@ public class Ville {
     public Ville() {
     }
 
+    public Ville(int id, String nom) {
+        this.id = id;
+        this.nom = nom;
+    }
+
     // Getters n Setters
     public int getId() {
         return id;
