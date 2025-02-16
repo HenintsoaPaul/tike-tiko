@@ -64,9 +64,9 @@ public class UtilisateurController {
             summerSession.addAttribute("userRoleLevel", getUserRoleLevel(authenticated));
 
             // Redirection vers une route protegee
-            mv.addObject("pourcentagePromotions", configService.selectPourcentagePromotion(conn, "select * from pourcentage_promotion"));
-            mv.addObject("minNbHeureReservations", configService.selectMinNbHeureReservation(conn, "select * from min_nb_heure_reservation"));
-            mv.addObject("minNbHeureAnnulations", configService.selectMinNbHeureAnnulation(conn, "select * from min_nb_heure_annulation"));
+            mv.addObject("pourcentagePromotions", configService.selectPourcentagePromotion(conn, "select * from pourcentage_promotion order by id desc"));
+            mv.addObject("minNbHeureReservations", configService.selectMinNbHeureReservation(conn, "select * from min_nb_heure_reservation order by id desc"));
+            mv.addObject("minNbHeureAnnulations", configService.selectMinNbHeureAnnulation(conn, "select * from min_nb_heure_annulation order by id desc"));
             return mv;
         }
     }

@@ -13,6 +13,11 @@ public class TypeSiege {
     public TypeSiege() {
     }
 
+    public TypeSiege(int id, String nom) {
+        this.id = id;
+        this.nom = nom;
+    }
+
     // Getters n Setters
     public int getId() {
         return id;

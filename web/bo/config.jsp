@@ -2,7 +2,10 @@
 <%@ page import="entity.config.MinNbHeureReservation" %>
 <%@ page import="entity.config.MinNbHeureAnnulation" %>
 <%@ page import="java.util.List" %>
+<%@ page import="entity.TypeSiege" %>
 <%
+    List<TypeSiege> typeSieges = (List<TypeSiege>) request.getAttribute("typeSieges");
+
     List<PourcentagePromotion> pourcentagePromotions = (List<PourcentagePromotion>) request.getAttribute("pourcentagePromotions");
     List<MinNbHeureReservation> minNbHeureReservations = (List<MinNbHeureReservation>) request.getAttribute("minNbHeureReservations");
     List<MinNbHeureAnnulation> minNbHeureAnnulations = (List<MinNbHeureAnnulation>) request.getAttribute("minNbHeureAnnulations");
@@ -12,11 +15,38 @@
 <h1>Nos configurations</h1>
 
 <section id="pourcentagePromotions">
+    <div>
+        <form method="post" action="config_pourcentage">
+            <div>
+                <label>Type Siege</label>
+                <select name="pourcentagePromotion.id_type_siege"
+                        required>
+                    <% for (TypeSiege ts : typeSieges) { %>
+                    <option value="<%= ts.getId() %>">
+                        <%= ts.getNom() %>
+                    </option>
+                    <% } %>
+                </select>
+            </div>
+            <div>
+                <label>Poucentage de Promotion</label>
+                <input type="number"
+                       name="pourcentagePromotion.val"
+                       required>
+            </div>
+
+            <div>
+                <input type="submit">
+            </div>
+        </form>
+    </div>
+
     <table>
         <thead>
         <tr>
             <th>#</th>
             <th>Pourcentage</th>
+            <th>TypeSiege</th>
             <th>Derniere modification le</th>
         </tr>
         </thead>
@@ -30,6 +60,9 @@
                 <%= pp.getVal() %>
             </td>
             <td>
+                <%= pp.getId_type_siege() %>
+            </td>
+            <td>
                 <%= pp.getDate_modification() %>
             </td>
         </tr>
@@ -38,7 +71,24 @@
     </table>
 </section>
 
+<hr>
+
 <section id="minNbHeureReservations">
+    <div>
+        <form method="post" action="config_reservation">
+            <div>
+                <label>Heure limite reservation</label>
+                <input type="number"
+                       name="minNbHeureReservation.val"
+                       required>
+            </div>
+
+            <div>
+                <input type="submit">
+            </div>
+        </form>
+    </div>
+
     <table>
         <thead>
         <tr>
@@ -65,7 +115,24 @@
     </table>
 </section>
 
+<hr>
+
 <section id="minNbHeureAnnulations">
+    <div>
+        <form method="post" action="config_annulation">
+            <div>
+                <label>Heure limite annulation</label>
+                <input type="number"
+                       name="minNbHeureAnnulation.val"
+                       required>
+            </div>
+
+            <div>
+                <input type="submit">
+            </div>
+        </form>
+    </div>
+
     <table>
         <thead>
         <tr>
