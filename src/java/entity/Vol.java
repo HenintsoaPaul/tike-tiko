@@ -34,14 +34,27 @@ public class Vol {
 
     @Min(0)
     @Required
-    double nb_place_promo_business;
+    int nb_place_promo_business;
 
     @Min(0)
     @Required
-    double nb_place_promo_eco;
+    int nb_place_promo_eco;
 
     // Constr
     public Vol() {
+    }
+
+    public Vol(int id, int idAvion, int idVilleDepart, int idVilleDestination, LocalDateTime heureDepart, LocalDateTime heureArrivee, double prixPlaceBusiness, double prixPlaceEco, int nbPlacePromoBusiness, int nbPlacePromoEco) {
+        this.id = id;
+        this.id_avion = idAvion;
+        this.id_ville_depart = idVilleDepart;
+        this.id_ville_destination = idVilleDestination;
+        this.heure_depart = heureDepart;
+        this.heure_arrivee = heureArrivee;
+        this.prix_place_business = prixPlaceBusiness;
+        this.prix_place_eco = prixPlaceEco;
+        this.nb_place_promo_business = nbPlacePromoBusiness;
+        this.nb_place_promo_eco = nbPlacePromoEco;
     }
 
     // Getters n Setters
@@ -109,19 +122,19 @@ public class Vol {
         this.prix_place_eco = prix_place_eco;
     }
 
-    public double getNb_place_promo_business() {
+    public int getNb_place_promo_business() {
         return nb_place_promo_business;
     }
 
-    public void setNb_place_promo_business(double nb_place_promo_business) {
+    public void setNb_place_promo_business(int nb_place_promo_business) {
         this.nb_place_promo_business = nb_place_promo_business;
     }
 
-    public double getNb_place_promo_eco() {
+    public int getNb_place_promo_eco() {
         return nb_place_promo_eco;
     }
 
-    public void setNb_place_promo_eco(double nb_place_promo_eco) {
+    public void setNb_place_promo_eco(int nb_place_promo_eco) {
         this.nb_place_promo_eco = nb_place_promo_eco;
     }
 }

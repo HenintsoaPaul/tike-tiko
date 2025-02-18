@@ -10,7 +10,7 @@ public class PourcentagePromotionService {
 
     private final DatabaseService databaseService = new DatabaseService();
 
-    public List<PourcentagePromotion> selectPourcentagePromotion(Connection conn, String query) {
+    public List<PourcentagePromotion> select(Connection conn, String query) {
         return this.databaseService.select(conn, query, rs -> {
             try {
                 return new PourcentagePromotion(
@@ -23,6 +23,11 @@ public class PourcentagePromotionService {
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    public PourcentagePromotion selectPourcentagePromotionByIdTypeSiege(Connection conn, int idTypeSiege) {
+        String query = "select * from pourcentage_promotion where id_type_siege = " + idTypeSiege + " order by id desc limit 1";
+        return this.select(conn, query).get(0);
     }
 
     public int insert(Connection conn, PourcentagePromotion pourcentagePromotion) {

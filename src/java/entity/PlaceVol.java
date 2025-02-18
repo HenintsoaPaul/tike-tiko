@@ -1,5 +1,6 @@
 package entity;
 
+import entity.config.PourcentagePromotion;
 import src.summer.annotations.form.validation.Required;
 
 public class PlaceVol {
@@ -25,6 +26,22 @@ public class PlaceVol {
 
     // Constr
     public PlaceVol() {
+    }
+
+    public PlaceVol(int id, int idVol, int idTypeSiege, int idPourcentagePromotion, double prixSansPromo, double prixAvecPromo, boolean isPromotion) {
+        this.id = id;
+        this.id_vol = idVol;
+        this.id_type_siege = idTypeSiege;
+        this.id_pourcentage_promotion = idPourcentagePromotion;
+        this.prix_sans_promo = prixSansPromo;
+        this.prix_avec_promo = prixAvecPromo;
+        this.is_promotion = isPromotion;
+    }
+
+    public PlaceVol(Vol vol, int idTypeSiege, PourcentagePromotion pourcentagePromotion) {
+        this.id_vol = vol.getId();
+        this.id_type_siege = idTypeSiege;
+        this.id_pourcentage_promotion = pourcentagePromotion.getId();
     }
 
     // Getters n Setters
