@@ -9,7 +9,7 @@ import java.util.function.Function;
 public class DatabaseService {
 
     public Connection getConnection() throws SQLException {
-        String url = "jdbc:postgresql://localhost:5432/tike_tiko";
+        String url = "jdbc:postgresql://localhost:5435/tike_tiko";
         String user = "postgres";
         String password = "itu16";
         return DriverManager.getConnection(url, user, password);
@@ -61,13 +61,21 @@ public class DatabaseService {
         String placeholders = String.join(", ", columns.stream().map(c -> "?").toArray(String[]::new));
         String query = "INSERT INTO " + tableName + " (" + columnNames + ") VALUES (" + placeholders + ")";
 
-        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             // Set parameters dynamically
             for (int i = 0; i < values.size(); i++) {
                 stmt.setObject(i + 1, values.get(i));
             }
 
-            return stmt.executeUpdate(); // Return affected
+            int affectedRows = stmt.executeUpdate();
+
+            // Retrieve generated key (if applicable)
+            try (ResultSet rs = stmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return rs.getInt(1); // Return the auto-generated ID
+                }
+            }
+            return -1; // No key generated
         } catch (SQLException e) {
             e.printStackTrace();
             return -1; // Indicate failure
