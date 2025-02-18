@@ -34,39 +34,56 @@ public class PlaceVolService {
         return this.databaseService.insert(conn, "place_vol", vol);
     }
 
-    public int insertPlacesEco(Connection conn, Vol vol, PourcentagePromotion pourcentagePromotionEco, int nbPlaces) {
+    public int insertPlaces(
+            Connection conn,
+            Vol vol,
+            double prix,
+            PourcentagePromotion pourcentagePromotion,
+            int nbPlaces,
+            int nbPlacesPromo,
+            int idTypeSiege
+    ) {
         int rows = 0;
 
+        double ratePromo = pourcentagePromotion.getVal() / 100,
+                prixPromo = prix * (1 - ratePromo);
+
         for (int i = 0; i < nbPlaces; i++) {
-            PlaceVol placeVol = new PlaceVol(vol, 2, pourcentagePromotionEco);
-            placeVol.setPrix_sans_promo(vol.getPrix_place_eco());
-            placeVol.setPrix_avec_promo(vol.getPrix_place_eco() * (pourcentagePromotionEco.getVal() / 100));
+            PlaceVol placeVol = new PlaceVol(vol, idTypeSiege, pourcentagePromotion);
 
-            if (i < vol.getNb_place_promo_eco()) {
-                placeVol.setIs_promotion(true);
-            }
+            placeVol.setPrix_sans_promo(prix);
+            placeVol.setPrix_avec_promo(prixPromo);
 
-            rows += this.insert(conn, placeVol);
+            placeVol.setIs_promotion(i < nbPlacesPromo);
+
+            int id = this.insert(conn, placeVol);
+            rows += id == -1 ? 0 : 1;
         }
 
         return rows;
     }
 
     public int insertPlacesBusiness(Connection conn, Vol vol, PourcentagePromotion pourcentagePromotionBusiness, int nbPlaces) {
-        int rows = 0;
+        return this.insertPlaces(
+                conn,
+                vol,
+                vol.getPrix_place_business(),
+                pourcentagePromotionBusiness,
+                nbPlaces,
+                vol.getNb_place_promo_business(),
+                1
+        );
+    }
 
-        for (int i = 0; i < nbPlaces; i++) {
-            PlaceVol placeVol = new PlaceVol(vol, 1, pourcentagePromotionBusiness);
-            placeVol.setPrix_sans_promo(vol.getPrix_place_business());
-            placeVol.setPrix_avec_promo(vol.getPrix_place_business() * (pourcentagePromotionBusiness.getVal() / 100));
-
-            if (i < vol.getNb_place_promo_business()) {
-                placeVol.setIs_promotion(true);
-            }
-
-            rows += this.insert(conn, placeVol);
-        }
-
-        return rows;
+    public int insertPlacesEco(Connection conn, Vol vol, PourcentagePromotion pourcentagePromotionEco, int nbPlaces) {
+        return this.insertPlaces(
+                conn,
+                vol,
+                vol.getPrix_place_eco(),
+                pourcentagePromotionEco,
+                nbPlaces,
+                vol.getNb_place_promo_eco(),
+                2
+        );
     }
 }

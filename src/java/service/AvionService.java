@@ -1,7 +1,6 @@
 package service;
 
 import entity.Avion;
-import entity.Vol;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -28,7 +27,7 @@ public class AvionService {
     }
 
     public Avion getAvion(Connection conn, int idAvion) {
-        String query = "select * from avion where id_avion = " + idAvion;
+        String query = "select * from avion where id = " + idAvion;
         return this.select(conn, query).get(0);
     }
 }

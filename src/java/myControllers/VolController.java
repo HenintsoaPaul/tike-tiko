@@ -63,10 +63,16 @@ public class VolController {
     @UrlMapping(url = "vol_save")
     public ModelView save(
             @Validate @Param(name = "vol") Vol vol
-    ) {
-        try (Connection conn = databaseService.getConnection()) {
+    ) throws SQLException {
+        Connection conn = null;
+        try {
+            conn = databaseService.getConnection();
+            conn.setAutoCommit(false);
+
             // 1/ insert vol
-            this.volService.insert(conn, vol);
+            int idVol = this.volService.insert(conn, vol);
+            vol.setId(idVol);
+            System.out.println("Insert vol of id: " + idVol);
 
             // 2/ insert de toutes les place_vol pour le vol que l'on vient d'inserer
             Avion avion = avionService.getAvion(conn, vol.getId_avion());
@@ -83,10 +89,14 @@ public class VolController {
             System.out.println("placesEco = " + placesEco);
             // todo ...
 
+            conn.commit();
+
             ModelView mv = new ModelView("bo/vol/vol_add.jsp", null);
             fetchData(conn, mv);
             return mv;
         } catch (SQLException e) {
+            assert conn != null;
+            conn.rollback();
             throw new RuntimeException(e);
         }
     }

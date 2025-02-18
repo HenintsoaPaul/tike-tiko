@@ -25,7 +25,7 @@
     <section id="ville">
         <div>
             <label>Avion: </label>
-            <select name="vol.id_ville_depart" required>
+            <select name="vol.id_avion" required>
                 <%for (Avion avion : avions) { %>
                 <option value="<%= avion.getId()%>">
                     <%= avion.getId() %>
