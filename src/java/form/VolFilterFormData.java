@@ -19,18 +19,18 @@ public class VolFilterFormData {
 
         // heure_depart
         if (heure_depart_min != null) {
-            query += " and heure_depart_min <= " + heure_depart_min;
+            query += " and heure_depart >= '" + heure_depart_min + "'";
         }
         if (heure_depart_max != null) {
-            query += " and heure_depart_max >= " + heure_depart_max;
+            query += " and heure_depart <= '" + heure_depart_max + "'";
         }
 
         // heure_arrivee
         if (heure_arrivee_min != null) {
-            query += " and heure_arrivee_min <= " + heure_arrivee_min;
+            query += " and heure_arrivee >= '" + heure_arrivee_min + "'";
         }
         if (heure_arrivee_max != null) {
-            query += " and heure_arrivee_max >= " + heure_arrivee_max;
+            query += " and heure_arrivee <= '" + heure_arrivee_max + "'";
         }
 
         // avion

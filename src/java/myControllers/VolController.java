@@ -3,6 +3,7 @@ package myControllers;
 import entity.Avion;
 import entity.Vol;
 import entity.config.PourcentagePromotion;
+import form.VolFilterFormData;
 import service.*;
 import src.summer.annotations.Param;
 import src.summer.annotations.Validate;
@@ -40,6 +41,25 @@ public class VolController {
             fetchData(conn, mv);
 
             mv.addObject("vols", volService.select(conn, "select * from vol"));
+
+            return mv;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Post
+    @UrlMapping(url = "vol_filter")
+    public ModelView filter(
+            @Validate @Param(name = "volFiltre") VolFilterFormData volFilterFormData
+    ) {
+        try (Connection conn = databaseService.getConnection()) {
+            ModelView mv = new ModelView("bo/vol/vol_list.jsp", null);
+
+            // filter data
+            mv.addObject("vols", this.volService.selectWithFilter(conn, volFilterFormData));
+
+            fetchData(conn, mv);
 
             return mv;
         } catch (SQLException e) {

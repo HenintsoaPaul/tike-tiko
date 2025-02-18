@@ -1,6 +1,7 @@
 package service;
 
 import entity.Vol;
+import form.VolFilterFormData;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -31,7 +32,14 @@ public class VolService {
         });
     }
 
+    public List<Vol> selectWithFilter(Connection conn, VolFilterFormData volFilterFormData) {
+        String query = volFilterFormData.getQuery();
+        System.out.println("Filter query: " + query);
+        return this.select(conn, query);
+    }
+
     public int insert(Connection conn, Vol vol) {
         return this.databaseService.insert(conn, "vol", vol);
     }
+
 }
