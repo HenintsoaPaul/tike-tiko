@@ -25,6 +25,7 @@ public class VolController {
     private final AvionService avionService = new AvionService();
     private final VilleService villeService = new VilleService();
     private final VolService volService = new VolService();
+    private final VVolService vVolService = new VVolService();
 
     private final DatabaseService databaseService = new DatabaseService();
 
@@ -40,7 +41,8 @@ public class VolController {
             ModelView mv = new ModelView("bo/vol/vol_list.jsp", null);
             fetchData(conn, mv);
 
-            mv.addObject("vols", volService.select(conn, "select * from vol"));
+//            mv.addObject("vols", this.volService.selectWithFilter(conn, volFilterFormData));
+            mv.addObject("vvols", this.vVolService.select(conn, "select * from v_vol"));
 
             return mv;
         } catch (SQLException e) {
@@ -57,7 +59,8 @@ public class VolController {
             ModelView mv = new ModelView("bo/vol/vol_list.jsp", null);
 
             // filter data
-            mv.addObject("vols", this.volService.selectWithFilter(conn, volFilterFormData));
+//            mv.addObject("vols", this.volService.selectWithFilter(conn, volFilterFormData));
+            mv.addObject("vvols", this.vVolService.selectWithFilter(conn, volFilterFormData));
 
             fetchData(conn, mv);
 

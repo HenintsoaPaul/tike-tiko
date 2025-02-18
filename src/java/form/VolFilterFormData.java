@@ -14,8 +14,12 @@ public class VolFilterFormData {
     int id_ville_destination;
 
     // db
-    public String getQuery() {
-        String query = "select * from vol where 1=1";
+    public String getFullFilterQuery() {
+        return "select * from vol where 1=1" + this.getEndFilterQuery();
+    }
+
+    public String getEndFilterQuery() {
+        String query = "";
 
         // heure_depart
         if (heure_depart_min != null) {

@@ -89,6 +89,14 @@ CREATE TABLE reservation
 
 -- views
 
+create or replace view v_vol as
+select v.*,
+       vld.nom    as nom_ville_depart,
+       vldest.nom as nom_ville_destination
+from vol v
+         left join ville vld on v.id_ville_depart = vld.id
+         left join ville vldest on v.id_ville_destination = vldest.id;
+
 create or replace view v_pourcentage_promotion as
 select pp.*, ts.nom as nom_type_siege
 from pourcentage_promotion pp
