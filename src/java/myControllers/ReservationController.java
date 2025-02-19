@@ -106,7 +106,7 @@ public class ReservationController {
         try (Connection conn = databaseService.getConnection()) {
             ModelView mv = new ModelView("fo/reservation/reservation_add.jsp", null);
 
-            mv.addObject("typeSieges", typeSiegeService.select(conn, "select * from type_siege"));
+            mv.addObject("typeSieges", typeSiegeService.selectAll(conn));
             mv.addObject("idVol", idVol);
 
             return mv;

@@ -23,4 +23,7 @@ public class VilleService {
         });
     }
 
+    public List<Ville> selectAll(Connection conn) {
+        return select(conn, "select * from Ville");
+    }
 }

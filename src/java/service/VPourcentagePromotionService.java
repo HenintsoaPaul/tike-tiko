@@ -25,4 +25,8 @@ public class VPourcentagePromotionService {
             }
         });
     }
+
+    public List<VPourcentagePromotion> selectAll(Connection conn) {
+        return select(conn, "select * from v_pourcentage_promotion order by id desc");
+    }
 }

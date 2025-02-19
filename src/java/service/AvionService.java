@@ -26,7 +26,7 @@ public class AvionService {
         });
     }
 
-    public Avion getAvion(Connection conn, int idAvion) {
+    public Avion selectById(Connection conn, int idAvion) {
         String query = "select * from avion where id = " + idAvion;
         return this.select(conn, query).get(0);
     }

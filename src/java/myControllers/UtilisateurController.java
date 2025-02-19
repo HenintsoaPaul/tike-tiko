@@ -63,10 +63,8 @@ public class UtilisateurController {
             mv.setErrorUrl("login");
 
             Utilisateur authenticated = this.utilisateurService.authenticate(conn, u);
-            System.out.println("Utilisateur confirme");
 
             // Save authentication in session
-            System.out.println("Set session...");
             summerSession.addAttribute("isAuthenticated", true);
             summerSession.addAttribute("userRoleLevel", getUserRoleLevel(authenticated));
 
@@ -77,10 +75,10 @@ public class UtilisateurController {
     }
 
     private void fetchData(Connection conn, ModelView mv) {
-        mv.addObject("typeSieges", typeSiegeService.select(conn, "select * from type_siege"));
+        mv.addObject("typeSieges", typeSiegeService.selectAll(conn));
 
-        mv.addObject("vPourcentagePromotions", vpPromotionService.select(conn, "select * from v_pourcentage_promotion order by id desc"));
-        mv.addObject("minNbHeureReservations", minNbHeureReservationService.select(conn, "select * from min_nb_heure_reservation order by id desc"));
-        mv.addObject("minNbHeureAnnulations", minNbHeureAnnulationService.select(conn, "select * from min_nb_heure_annulation order by id desc"));
+        mv.addObject("vPourcentagePromotions", vpPromotionService.selectAll(conn));
+        mv.addObject("minNbHeureReservations", minNbHeureReservationService.selectAll(conn));
+        mv.addObject("minNbHeureAnnulations", minNbHeureAnnulationService.selectAll(conn));
     }
 }

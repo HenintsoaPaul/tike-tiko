@@ -129,7 +129,7 @@ public class VolController {
             System.out.println("Insert vol of id: " + idVol);
 
             // 2/ insert de toutes les place_vol pour le vol que l'on vient d'inserer
-            Avion avion = avionService.getAvion(conn, vol.getId_avion());
+            Avion avion = avionService.selectById(conn, vol.getId_avion());
             int nbPlaceBusiness = avion.getSiege_business(),
                     nbPlaceEco = avion.getSiege_eco();
 

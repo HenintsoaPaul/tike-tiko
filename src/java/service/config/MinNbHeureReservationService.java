@@ -25,6 +25,10 @@ public class MinNbHeureReservationService {
         });
     }
 
+    public List<MinNbHeureReservation> selectAll(Connection conn) {
+        return select(conn, "select * from min_nb_heure_reservation order by id desc");
+    }
+
     public MinNbHeureReservation selectCurrent(Connection conn) {
         String query = "select * from min_nb_heure_reservation order by id desc limit 1";
         return this.select(conn, query).get(0);

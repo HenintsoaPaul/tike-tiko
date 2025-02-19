@@ -23,4 +23,7 @@ public class TypeSiegeService {
         });
     }
 
+    public List<TypeSiege> selectAll(Connection conn) {
+        return select(conn, "select * from type_siege");
+    }
 }

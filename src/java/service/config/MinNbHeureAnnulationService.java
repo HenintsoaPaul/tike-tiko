@@ -25,6 +25,10 @@ public class MinNbHeureAnnulationService {
         });
     }
 
+    public List<MinNbHeureAnnulation> selectAll(Connection conn) {
+        return select(conn, "select * from min_nb_heure_annulation order by id desc");
+    }
+
     public MinNbHeureAnnulation selectCurrent(Connection conn) {
         String query = "select * from min_nb_heure_annulation order by id desc limit 1";
         return this.select(conn, query).get(0);
