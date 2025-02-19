@@ -18,20 +18,20 @@ public class Reservation {
     LocalDateTime heure_reservation;
 
     String nom_client;
-    String img_passport;
+    String img_passeport;
 
     // Constr
     public Reservation() {
     }
 
     public Reservation(int id, int id_etat_reservation, int id_place_vol, LocalDateTime heure_reservation,
-                       String nom_client, String img_passport) {
+                       String nom_client, String img_passeport) {
         this.id = id;
         this.id_etat_reservation = id_etat_reservation;
         this.id_place_vol = id_place_vol;
         this.heure_reservation = heure_reservation;
         this.nom_client = nom_client;
-        this.img_passport = img_passport;
+        this.img_passeport = img_passeport;
     }
 
     // Getters n Setters
@@ -75,11 +75,11 @@ public class Reservation {
         this.nom_client = nom_client;
     }
 
-    public String getImg_passport() {
-        return img_passport;
+    public String getImg_passeport() {
+        return img_passeport;
     }
 
-    public void setImg_passport(String img_passport) {
-        this.img_passport = img_passport;
+    public void setImg_passeport(String img_passeport) {
+        this.img_passeport = img_passeport;
     }
 }

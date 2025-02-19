@@ -62,10 +62,6 @@
     </form>
     <hr>
     <form method="get" action="passeport_add">
-        <input type="datetime-local"
-               name="dateAnnulation"
-               required>
-
         <input type="hidden"
                name="idReservation"
                value="<%= vReservation.getId() %>">
