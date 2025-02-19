@@ -18,7 +18,8 @@ public class ReservationService {
                         rs.getInt("id_etat_reservation"),
                         rs.getInt("id_place_vol"),
                         rs.getTimestamp("heure_reservation").toLocalDateTime(),
-                        rs.getString("nom_client")
+                        rs.getString("nom_client"),
+                        rs.getString("img_passeport")
                 );
             } catch (SQLException e) {
                 throw new RuntimeException(e);

@@ -86,6 +86,7 @@ CREATE TABLE reservation
     id_etat_reservation INT REFERENCES etat_reservation (id),
     id_place_vol        INT REFERENCES place_vol (id),
     nom_client          VARCHAR(100),
+    img_passeport       VARCHAR(100),
     heure_reservation   TIMESTAMP NOT NULL
 );
 
@@ -167,8 +168,9 @@ VALUES (1, 1, 1, 1500, 1200, TRUE),
 
 INSERT INTO etat_reservation (nom)
 VALUES ('Confirmée'),
-       ('Annulée'),
-       ('En attente');
+       ('Annulée (client)'),
+       ('En attente'),
+       ('Annulée (admin)');
 
 INSERT INTO reservation (id_etat_reservation, id_place_vol, heure_reservation)
 VALUES (1, 1, '2025-03-10 12:00:00'),
