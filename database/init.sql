@@ -114,7 +114,9 @@ select r.id,
        pv.prix_avec_promo,
        pv.prix_sans_promo,
        pv.is_promotion,
-       pp.val as val_promo
+       pp.val as val_promo,
+       r.nom_client,
+       r.img_passeport
 from reservation r
          join etat_reservation er on r.id_etat_reservation = er.id
          join place_vol pv on r.id_place_vol = pv.id
