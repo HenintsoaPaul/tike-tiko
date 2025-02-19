@@ -42,7 +42,21 @@ public class VolController {
             ModelView mv = new ModelView("bo/vol/vol_list.jsp", null);
             fetchData(conn, mv);
 
-//            mv.addObject("vols", this.volService.selectWithFilter(conn, volFilterFormData));
+            mv.addObject("vvols", this.vVolService.select(conn, "select * from v_vol"));
+
+            return mv;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Get
+    @UrlMapping(url = "fo_vol_list")
+    public ModelView fo_list() {
+        try (Connection conn = databaseService.getConnection()) {
+            ModelView mv = new ModelView("fo/vol/vol_list.jsp", null);
+            fetchData(conn, mv);
+
             mv.addObject("vvols", this.vVolService.select(conn, "select * from v_vol"));
 
             return mv;
@@ -59,8 +73,24 @@ public class VolController {
         try (Connection conn = databaseService.getConnection()) {
             ModelView mv = new ModelView("bo/vol/vol_list.jsp", null);
 
-            // filter data
-//            mv.addObject("vols", this.volService.selectWithFilter(conn, volFilterFormData));
+            mv.addObject("vvols", this.vVolService.selectWithFilter(conn, volFilterFormData));
+
+            fetchData(conn, mv);
+
+            return mv;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Post
+    @UrlMapping(url = "fo_vol_filter")
+    public ModelView fo_filter(
+            @Validate @Param(name = "volFiltre") VolFilterFormData volFilterFormData
+    ) {
+        try (Connection conn = databaseService.getConnection()) {
+            ModelView mv = new ModelView("fo/vol/vol_list.jsp", null);
+
             mv.addObject("vvols", this.vVolService.selectWithFilter(conn, volFilterFormData));
 
             fetchData(conn, mv);
