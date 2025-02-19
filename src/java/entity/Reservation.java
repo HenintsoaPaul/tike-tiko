@@ -21,6 +21,13 @@ public class Reservation {
     public Reservation() {
     }
 
+    public Reservation(int id, int id_etat_reservation, int id_place_vol, LocalDateTime heure_reservation) {
+        this.id = id;
+        this.id_etat_reservation = id_etat_reservation;
+        this.id_place_vol = id_place_vol;
+        this.heure_reservation = heure_reservation;
+    }
+
     // Getters n Setters
     public int getId() {
         return id;
