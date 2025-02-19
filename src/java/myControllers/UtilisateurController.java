@@ -1,9 +1,10 @@
 package myControllers;
 
 import entity.Utilisateur;
-import service.ConfigService;
-import service.DatabaseService;
-import service.UtilisateurService;
+import service.*;
+import service.config.MinNbHeureAnnulationService;
+import service.config.MinNbHeureReservationService;
+import service.config.PourcentagePromotionService;
 import src.summer.annotations.Param;
 import src.summer.annotations.Validate;
 import src.summer.annotations.controller.Controller;
@@ -20,6 +21,12 @@ public class UtilisateurController {
 
     SummerSession summerSession;
 
+    private final VPourcentagePromotionService vpPromotionService = new VPourcentagePromotionService();
+    private final PourcentagePromotionService pourcentagePromotionService = new PourcentagePromotionService();
+    private final MinNbHeureReservationService minNbHeureReservationService = new MinNbHeureReservationService();
+    private final MinNbHeureAnnulationService minNbHeureAnnulationService = new MinNbHeureAnnulationService();
+
+    private final TypeSiegeService typeSiegeService = new TypeSiegeService();
     private final UtilisateurService utilisateurService = new UtilisateurService();
     private final ConfigService configService = new ConfigService();
     private final DatabaseService databaseService = new DatabaseService();
@@ -64,10 +71,16 @@ public class UtilisateurController {
             summerSession.addAttribute("userRoleLevel", getUserRoleLevel(authenticated));
 
             // Redirection vers une route protegee
-            mv.addObject("pourcentagePromotions", configService.selectPourcentagePromotion(conn, "select * from pourcentage_promotion order by id desc"));
-            mv.addObject("minNbHeureReservations", configService.selectMinNbHeureReservation(conn, "select * from min_nb_heure_reservation order by id desc"));
-            mv.addObject("minNbHeureAnnulations", configService.selectMinNbHeureAnnulation(conn, "select * from min_nb_heure_annulation order by id desc"));
+            fetchData(conn, mv);
             return mv;
         }
+    }
+
+    private void fetchData(Connection conn, ModelView mv) {
+        mv.addObject("typeSieges", typeSiegeService.select(conn, "select * from type_siege"));
+
+        mv.addObject("vPourcentagePromotions", vpPromotionService.select(conn, "select * from v_pourcentage_promotion order by id desc"));
+        mv.addObject("minNbHeureReservations", minNbHeureReservationService.select(conn, "select * from min_nb_heure_reservation order by id desc"));
+        mv.addObject("minNbHeureAnnulations", minNbHeureAnnulationService.select(conn, "select * from min_nb_heure_annulation order by id desc"));
     }
 }

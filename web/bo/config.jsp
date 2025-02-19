@@ -9,7 +9,6 @@
 
     List<VPourcentagePromotion> vPourcentagePromotions = (List<VPourcentagePromotion>) request.getAttribute("vPourcentagePromotions");
 
-    List<PourcentagePromotion> pourcentagePromotions = (List<PourcentagePromotion>) request.getAttribute("pourcentagePromotions");
     List<MinNbHeureReservation> minNbHeureReservations = (List<MinNbHeureReservation>) request.getAttribute("minNbHeureReservations");
     List<MinNbHeureAnnulation> minNbHeureAnnulations = (List<MinNbHeureAnnulation>) request.getAttribute("minNbHeureAnnulations");
 %>
