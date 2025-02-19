@@ -81,4 +81,52 @@ public class DatabaseService {
             return -1; // Indicate failure
         }
     }
+
+    public <T> int update(Connection conn, String tableName, T object) {
+        Class<?> clazz = object.getClass();
+        List<String> columns = new ArrayList<>();
+        List<Object> values = new ArrayList<>();
+        Object idValue = null;
+
+        // Extract field names and values using reflection
+        for (Field field : clazz.getDeclaredFields()) {
+            field.setAccessible(true); // Allow access to private fields
+            try {
+                String fieldName = field.getName();
+                Object value = field.get(object);
+
+                if (value != null) { // Ignore null fields
+                    if (fieldName.equalsIgnoreCase("id")) {
+                        idValue = value; // Assume "id" is the primary key
+                    } else {
+                        columns.add(fieldName + " = ?");
+                        values.add(value);
+                    }
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (columns.isEmpty() || idValue == null) {
+            throw new IllegalArgumentException("No fields to update or ID is missing!");
+        }
+
+        // Construct SQL query dynamically
+        String setClause = String.join(", ", columns);
+        String query = "UPDATE " + tableName + " SET " + setClause + " WHERE id = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            // Set parameters dynamically
+            for (int i = 0; i < values.size(); i++) {
+                stmt.setObject(i + 1, values.get(i));
+            }
+            stmt.setObject(values.size() + 1, idValue); // Set ID as last parameter
+
+            return stmt.executeUpdate(); // Return affected rows
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1; // Indicate failure
+        }
+    }
 }

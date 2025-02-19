@@ -1,6 +1,7 @@
-package service;
+package service.config;
 
 import entity.config.PourcentagePromotion;
+import service.DatabaseService;
 
 import java.sql.Connection;
 import java.sql.SQLException;

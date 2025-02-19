@@ -5,6 +5,7 @@ import entity.Vol;
 import entity.config.PourcentagePromotion;
 import form.VolFilterFormData;
 import service.*;
+import service.config.PourcentagePromotionService;
 import src.summer.annotations.Param;
 import src.summer.annotations.Validate;
 import src.summer.annotations.controller.Controller;

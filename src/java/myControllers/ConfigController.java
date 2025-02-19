@@ -4,6 +4,9 @@ import entity.config.MinNbHeureAnnulation;
 import entity.config.MinNbHeureReservation;
 import entity.config.PourcentagePromotion;
 import service.*;
+import service.config.MinNbHeureAnnulationService;
+import service.config.MinNbHeureReservationService;
+import service.config.PourcentagePromotionService;
 import src.summer.annotations.Param;
 import src.summer.annotations.Validate;
 import src.summer.annotations.controller.Controller;
@@ -33,8 +36,8 @@ public class ConfigController {
 
         mv.addObject("vPourcentagePromotions", vpPromotionService.select(conn, "select * from v_pourcentage_promotion order by id desc"));
 
-        mv.addObject("minNbHeureReservations", minNbHeureReservationService.selectMinNbHeureReservation(conn, "select * from min_nb_heure_reservation order by id desc"));
-        mv.addObject("minNbHeureAnnulations", minNbHeureAnnulationService.selectMinNbHeureAnnulation(conn, "select * from min_nb_heure_annulation order by id desc"));
+        mv.addObject("minNbHeureReservations", minNbHeureReservationService.select(conn, "select * from min_nb_heure_reservation order by id desc"));
+        mv.addObject("minNbHeureAnnulations", minNbHeureAnnulationService.select(conn, "select * from min_nb_heure_annulation order by id desc"));
     }
 
     @Get
