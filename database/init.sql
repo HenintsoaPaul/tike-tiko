@@ -70,6 +70,7 @@ CREATE TABLE place_vol
     id_pourcentage_promotion INT REFERENCES pourcentage_promotion (id),
     prix_sans_promo          numeric NOT NULL,
     prix_avec_promo          numeric,
+    nom_client               VARCHAR(100),
     is_promotion             BOOLEAN NOT NULL
 );
 
@@ -84,6 +85,7 @@ CREATE TABLE reservation
     id                  SERIAL PRIMARY KEY,
     id_etat_reservation INT REFERENCES etat_reservation (id),
     id_place_vol        INT REFERENCES place_vol (id),
+    nom_client          VARCHAR(100),
     heure_reservation   TIMESTAMP NOT NULL
 );
 
