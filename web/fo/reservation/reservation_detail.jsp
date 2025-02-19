@@ -19,6 +19,7 @@
             <th>Prix sans promo</th>
             <th>Prix avec promo</th>
             <th>Etat Reservation</th>
+            <th>Passeport</th>
         </tr>
         </thead>
         <tbody>
@@ -36,6 +37,9 @@
             <td><%= vReservation.getPrix_avec_promo() %>
             </td>
             <td><%= vReservation.getNom_etat_reservation() %>
+            </td>
+            <td>
+                <%= vReservation.getImg_passeport() %>
             </td>
         </tr>
         </tbody>
@@ -55,6 +59,18 @@
                value="<%= vReservation.getId_vol() %>">
 
         <input type="submit" value="Annuler la reservation">
+    </form>
+    <hr>
+    <form method="get" action="passeport_add">
+        <input type="datetime-local"
+               name="dateAnnulation"
+               required>
+
+        <input type="hidden"
+               name="idReservation"
+               value="<%= vReservation.getId() %>">
+
+        <input type="submit" value="Envoyer passport">
     </form>
     <% } %>
 </section>
