@@ -15,10 +15,12 @@ public class VReservation {
     double val_promo;
     boolean is_promotion;
     String nom_client;
+    String img_passeport;
 
     // Constr
     public VReservation(int id, int idVol, LocalDateTime heureReservation, String nomTypeSiege, String nomEtatReservation,
-                        double prixAvecPromotion, double prixSansPromotion, double valPromo, boolean isPromotion, String nomClient) {
+                        double prixAvecPromotion, double prixSansPromotion, double valPromo, boolean isPromotion,
+                        String nomClient, String imgPasseport) {
         this.id = id;
         this.id_vol = idVol;
         this.heure_reservation = heureReservation;
@@ -29,6 +31,7 @@ public class VReservation {
         this.val_promo = valPromo;
         this.is_promotion = isPromotion;
         this.nom_client = nomClient;
+        this.img_passeport = imgPasseport;
     }
 
     // Getters n Setters
@@ -110,5 +113,13 @@ public class VReservation {
 
     public void setNom_client(String nom_client) {
         this.nom_client = nom_client;
+    }
+
+    public String getImg_passeport() {
+        return img_passeport;
+    }
+
+    public void setImg_passeport(String img_passeport) {
+        this.img_passeport = img_passeport;
     }
 }
