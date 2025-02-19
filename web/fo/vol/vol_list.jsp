@@ -10,7 +10,7 @@
 %>
 
 <section id="filtre">
-    <form method="post" action="vol_filter">
+    <form method="post" action="fo_vol_filter">
         <section id="heure_depart">
             <div>
                 <label>Heure Depart Min: </label>
@@ -103,6 +103,7 @@
             <th>Prix place eco</th>
             <th>Nb promo business</th>
             <th>Nb promo eco</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -125,6 +126,11 @@
             <td><%= v_vol.getNb_place_promo_business() %>
             </td>
             <td><%= v_vol.getNb_place_promo_eco() %>
+            </td>
+            <td>
+                <a href="reservation_add?idVol=<%= v_vol.getId() %>">
+                    Reserver
+                </a>
             </td>
         </tr>
         <% } %>
