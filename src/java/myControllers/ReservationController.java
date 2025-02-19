@@ -1,16 +1,20 @@
 package myControllers;
 
+import entity.Avion;
 import entity.PlaceVol;
 import entity.Reservation;
 import entity.Vol;
 import entity.config.MinNbHeureAnnulation;
 import entity.config.MinNbHeureReservation;
+import form.ReservationFormData;
 import service.*;
 import service.config.MinNbHeureAnnulationService;
 import service.config.MinNbHeureReservationService;
+import src.summer.annotations.Validate;
 import src.summer.annotations.controller.Controller;
 import src.summer.annotations.controller.UrlMapping;
 import src.summer.annotations.controller.verb.Get;
+import src.summer.annotations.controller.verb.Post;
 import src.summer.beans.ModelView;
 import src.summer.annotations.Param;
 import views.VReservation;
@@ -29,6 +33,7 @@ public class ReservationController {
     private final TypeSiegeService typeSiegeService = new TypeSiegeService();
 
     private final VolService volService = new VolService();
+    private final AvionService avionService = new AvionService();
     private final PlaceVolService placeVolService = new PlaceVolService();
 
     private final ReservationService reservationService = new ReservationService();
@@ -108,6 +113,14 @@ public class ReservationController {
 
             mv.addObject("typeSieges", typeSiegeService.selectAll(conn));
             mv.addObject("idVol", idVol);
+
+            Vol vol = this.volService.selectById(conn, idVol);
+            Avion avion = this.avionService.selectById(conn, vol.getId_avion());
+
+            int nbPlacesPrisBusiness = reservationService.getNbPlacesPris(conn, 1),
+                    nbPlacesPrisEco = reservationService.getNbPlacesPris(conn, 2);
+            mv.addObject("resteBusiness", avion.getSiege_business() - nbPlacesPrisBusiness);
+            mv.addObject("resteEco", avion.getSiege_eco() - nbPlacesPrisEco);
 
             return mv;
         } catch (SQLException e) {

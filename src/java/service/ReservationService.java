@@ -32,6 +32,21 @@ public class ReservationService {
         return this.select(conn, query).get(0);
     }
 
+    public int getNbPlacesPris(Connection conn, int idTypeSiege) {
+        String query = "select count(r.id) " +
+                "from reservation r " +
+                "         join place_vol pv on pv.id = r.id_place_vol " +
+                "where r.nom_client is not null " +
+                "  and id_type_siege =" + idTypeSiege;
+        return this.databaseService.select(conn, query, rs -> {
+            try {
+                return rs.getInt(1);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }).get(0);
+    }
+
     public int insert(Connection conn, Reservation reservation) {
         return this.databaseService.insert(conn, "reservation", reservation);
     }
