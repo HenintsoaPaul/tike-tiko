@@ -7,6 +7,7 @@ import service.*;
 import service.config.MinNbHeureAnnulationService;
 import service.config.MinNbHeureReservationService;
 import service.config.PourcentagePromotionService;
+import src.summer.annotations.Authorized;
 import src.summer.annotations.Param;
 import src.summer.annotations.Validate;
 import src.summer.annotations.controller.Controller;
@@ -35,11 +36,11 @@ public class ConfigController {
         mv.addObject("typeSieges", typeSiegeService.select(conn, "select * from type_siege"));
 
         mv.addObject("vPourcentagePromotions", vpPromotionService.select(conn, "select * from v_pourcentage_promotion order by id desc"));
-
         mv.addObject("minNbHeureReservations", minNbHeureReservationService.select(conn, "select * from min_nb_heure_reservation order by id desc"));
         mv.addObject("minNbHeureAnnulations", minNbHeureAnnulationService.select(conn, "select * from min_nb_heure_annulation order by id desc"));
     }
 
+    @Authorized
     @Get
     @UrlMapping(url = "config")
     public ModelView list() {
@@ -52,6 +53,7 @@ public class ConfigController {
         }
     }
 
+    @Authorized
     @Post
     @UrlMapping(url = "config_pourcentage")
     public ModelView pourcentagePromotion(
@@ -73,6 +75,7 @@ public class ConfigController {
         }
     }
 
+    @Authorized
     @Post
     @UrlMapping(url = "config_reservation")
     public ModelView minNbHeureReservation(
@@ -94,6 +97,7 @@ public class ConfigController {
         }
     }
 
+    @Authorized
     @Post
     @UrlMapping(url = "config_annulation")
     public ModelView minNbHeureAnnulation(
