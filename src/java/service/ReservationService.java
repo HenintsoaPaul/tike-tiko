@@ -27,6 +27,11 @@ public class ReservationService {
         });
     }
 
+    public Reservation selectById(Connection conn, String id) {
+        String query = "select * from reservation where id = " + id;
+        return this.select(conn, query).get(0);
+    }
+
     public int insert(Connection conn, Reservation reservation) {
         return this.databaseService.insert(conn, "reservation", reservation);
     }

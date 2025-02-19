@@ -40,5 +40,5 @@
         </select>
     </div>
 
-    <input type="submit" value="Envoyer"/>
+    <input type="submit" value="Valider ma reservation"/>
 </form>
