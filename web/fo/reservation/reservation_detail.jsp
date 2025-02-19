@@ -13,6 +13,7 @@
         <thead>
         <tr>
             <th>Id vol</th>
+            <th>Client</th>
             <th>Type Siege</th>
             <th>Date Reservation</th>
             <th>Prix sans promo</th>
@@ -23,6 +24,8 @@
         <tbody>
         <tr>
             <td><%= vReservation.getId_vol() %>
+            </td>
+            <td><%= vReservation.getNom_client() %>
             </td>
             <td><%= vReservation.getNom_type_siege() %>
             </td>

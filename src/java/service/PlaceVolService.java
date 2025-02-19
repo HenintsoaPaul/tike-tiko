@@ -22,12 +22,20 @@ public class PlaceVolService {
                         rs.getInt("id_pourcentage_promotion"),
                         rs.getDouble("prix_sans_promo"),
                         rs.getDouble("prix_avec_promo"),
+                        rs.getString("nom_client"),
                         rs.getBoolean("is_promotion")
                 );
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    public PlaceVol selectNextPlaceLibre(Connection conn, String id_vol, String id_type_siege) {
+        String query = "select * from place_vol where nom_client is null and id_vol = " + id_vol
+                + " and id_type_siege = " + id_type_siege +
+                " order by id desc limit 1";
+        return this.select(conn, query).get(0);
     }
 
     public int insert(Connection conn, PlaceVol vol) {
@@ -85,5 +93,9 @@ public class PlaceVolService {
                 vol.getNb_place_promo_eco(),
                 2
         );
+    }
+
+    public int update(Connection conn, PlaceVol placeVol) {
+        return this.databaseService.update(conn, "place_vol", placeVol);
     }
 }

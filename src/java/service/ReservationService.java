@@ -17,12 +17,17 @@ public class ReservationService {
                         rs.getInt("id"),
                         rs.getInt("id_etat_reservation"),
                         rs.getInt("id_place_vol"),
-                        rs.getTimestamp("heure_reservation").toLocalDateTime()
+                        rs.getTimestamp("heure_reservation").toLocalDateTime(),
+                        rs.getString("nom_client")
                 );
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    public int insert(Connection conn, Reservation reservation) {
+        return this.databaseService.insert(conn, "reservation", reservation);
     }
 
     public int update(Connection conn, Reservation reservation) {

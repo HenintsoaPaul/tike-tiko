@@ -14,9 +14,11 @@ public class VReservation {
     double prix_sans_promo;
     double val_promo;
     boolean is_promotion;
+    String nom_client;
 
     // Constr
-    public VReservation(int id, int idVol, LocalDateTime heureReservation, String nomTypeSiege, String nomEtatReservation, double prixAvecPromotion, double prixSansPromotion, double valPromo, boolean isPromotion) {
+    public VReservation(int id, int idVol, LocalDateTime heureReservation, String nomTypeSiege, String nomEtatReservation,
+                        double prixAvecPromotion, double prixSansPromotion, double valPromo, boolean isPromotion, String nomClient) {
         this.id = id;
         this.id_vol = idVol;
         this.heure_reservation = heureReservation;
@@ -26,6 +28,7 @@ public class VReservation {
         this.prix_sans_promo = prixSansPromotion;
         this.val_promo = valPromo;
         this.is_promotion = isPromotion;
+        this.nom_client = nomClient;
     }
 
     // Getters n Setters
@@ -99,5 +102,13 @@ public class VReservation {
 
     public void setVal_promo(double val_promo) {
         this.val_promo = val_promo;
+    }
+
+    public String getNom_client() {
+        return nom_client;
+    }
+
+    public void setNom_client(String nom_client) {
+        this.nom_client = nom_client;
     }
 }

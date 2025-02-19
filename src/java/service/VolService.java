@@ -32,6 +32,10 @@ public class VolService {
         });
     }
 
+    public Vol selectById(Connection conn, String id) {
+        return this.select(conn, "select * from vol where id = " + id ).get(0);
+    }
+
     public List<Vol> selectWithFilter(Connection conn, VolFilterFormData volFilterFormData) {
         String query = volFilterFormData.getFullFilterQuery();
         System.out.println("Filter query: " + query);
