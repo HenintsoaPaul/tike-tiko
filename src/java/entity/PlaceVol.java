@@ -21,6 +21,8 @@ public class PlaceVol {
 
     double prix_avec_promo;
 
+    String nom_client;
+
     @Required
     boolean is_promotion;
 
@@ -28,13 +30,14 @@ public class PlaceVol {
     public PlaceVol() {
     }
 
-    public PlaceVol(int id, int idVol, int idTypeSiege, int idPourcentagePromotion, double prixSansPromo, double prixAvecPromo, boolean isPromotion) {
+    public PlaceVol(int id, int idVol, int idTypeSiege, int idPourcentagePromotion, double prixSansPromo, double prixAvecPromo, String nom_client, boolean isPromotion) {
         this.id = id;
         this.id_vol = idVol;
         this.id_type_siege = idTypeSiege;
         this.id_pourcentage_promotion = idPourcentagePromotion;
         this.prix_sans_promo = prixSansPromo;
         this.prix_avec_promo = prixAvecPromo;
+        this.nom_client = nom_client;
         this.is_promotion = isPromotion;
     }
 
@@ -99,5 +102,17 @@ public class PlaceVol {
 
     public void setIs_promotion(boolean is_promotion) {
         this.is_promotion = is_promotion;
+    }
+
+    public String getNom_client() {
+        return nom_client;
+    }
+
+    public void setNom_client(String nom_client) {
+        this.nom_client = nom_client;
+    }
+
+    public boolean isIs_promotion() {
+        return is_promotion;
     }
 }

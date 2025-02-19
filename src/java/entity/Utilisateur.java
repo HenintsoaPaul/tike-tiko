@@ -3,7 +3,7 @@ package entity;
 import src.summer.annotations.form.validation.Required;
 
 public class Utilisateur {
-    @Required
+
     int id;
 
     @Required
