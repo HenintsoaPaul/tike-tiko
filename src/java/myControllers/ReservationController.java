@@ -138,32 +138,37 @@ public class ReservationController {
         try (Connection conn = databaseService.getConnection()) {
             ModelView mv = new ModelView("fo/reservation/reservation_detail.jsp", null);
 
-            // isLate
-            MinNbHeureReservation minNbHeureReservation = minNbHeureReservationService.selectCurrent(conn);
-            Vol vol = this.volService.selectById(conn, idVol);
-            LocalDateTime heureReservationLimite = vol.getHeure_depart().minusHours((long) minNbHeureReservation.getVal());
-            boolean isLate = heureReservationLimite.isBefore(dateReservation);
-
-            if (!isLate) {
-                PlaceVol placeVol = placeVolService.selectNextPlaceLibre(conn, idVol, idTypeSiege);
-
-                // save reservation
-                Reservation reservation = new Reservation();
-                reservation.setId_etat_reservation(3);
-                reservation.setId_place_vol(placeVol.getId());
-                reservation.setNom_client(nomClient);
-                reservation.setHeure_reservation(dateReservation);
-
-                int idRes = reservationService.insert(conn, reservation);
-
-                // set nom client for place_vol
-                placeVol.setNom_client(nomClient);
-                placeVolService.update(conn, placeVol);
-
-                fetchData(conn, mv, String.valueOf(idRes));
-            } else {
-                throw new IllegalArgumentException("Reservation Impossible car l'heure limite est depassee.");
-            }
+//            // isLate
+//            System.out.println("id_vol: " + reservationFormData.getId_vol());
+//            System.out.println("tpsiege: " + reservationFormData.getId_type_siege());
+//            System.out.println("date: " + reservationFormData.getDate_reservation());
+//
+//            MinNbHeureReservation minNbHeureReservation = minNbHeureReservationService.selectCurrent(conn);
+//
+//            Vol vol = this.volService.selectById(conn, String.valueOf(reservationFormData.getId_vol()));
+//            LocalDateTime heureReservationLimite = vol.getHeure_depart().minusHours((long) minNbHeureReservation.getVal());
+//            boolean isLate = heureReservationLimite.isBefore(reservationFormData.getDate_reservation());
+//
+//            if (!isLate) {
+//                PlaceVol placeVol = placeVolService.selectNextPlaceLibre(conn, String.valueOf(reservationFormData.getId_vol()), String.valueOf(reservationFormData.getId_type_siege()));
+//
+//                // save reservation
+//                Reservation reservation = new Reservation();
+//                reservation.setId_etat_reservation(3);
+//                reservation.setId_place_vol(placeVol.getId());
+//                reservation.setNom_client(reservationFormData.getNom_client());
+//                reservation.setHeure_reservation(reservation.getHeure_reservation());
+//
+//                int idRes = reservationService.insert(conn, reservation);
+//
+//                // set nom client for place_vol
+//                placeVol.setNom_client(reservationFormData.getNom_client());
+//                placeVolService.update(conn, placeVol);
+//
+//                fetchData(conn, mv, String.valueOf(idRes));
+//            } else {
+//                throw new IllegalArgumentException("Reservation Impossible car l'heure limite est depassee.");
+//            }
 
             return mv;
         } catch (SQLException e) {

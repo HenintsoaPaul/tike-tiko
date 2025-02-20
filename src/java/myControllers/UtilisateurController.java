@@ -56,11 +56,11 @@ public class UtilisateurController {
     @Post
     @UrlMapping(url = "login_auth")
     public ModelView handleForm(
-            @Validate @Param(name = "utilisateur") Utilisateur u
+            @Validate(errorPage = "login")
+            @Param(name = "utilisateur") Utilisateur u
     ) throws Exception {
         try (Connection conn = databaseService.getConnection()) {
             ModelView mv = new ModelView("bo/config.jsp", null);
-            mv.setErrorUrl("login");
 
             Utilisateur authenticated = this.utilisateurService.authenticate(conn, u);
 

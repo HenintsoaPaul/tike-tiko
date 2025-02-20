@@ -68,7 +68,8 @@ public class VolController {
     @Post
     @UrlMapping(url = "vol_filter")
     public ModelView filter(
-            @Validate @Param(name = "volFiltre") VolFilterFormData volFilterFormData
+//            @Validate(errorPage = "vol_list")
+            @Param(name = "volFiltre") VolFilterFormData volFilterFormData
     ) {
         try (Connection conn = databaseService.getConnection()) {
             ModelView mv = new ModelView("bo/vol/vol_list.jsp", null);
@@ -86,7 +87,8 @@ public class VolController {
     @Post
     @UrlMapping(url = "fo_vol_filter")
     public ModelView fo_filter(
-            @Validate @Param(name = "volFiltre") VolFilterFormData volFilterFormData
+//            @Validate(errorPage = "vol_list")
+            @Param(name = "volFiltre") VolFilterFormData volFilterFormData
     ) {
         try (Connection conn = databaseService.getConnection()) {
             ModelView mv = new ModelView("fo/vol/vol_list.jsp", null);
@@ -116,7 +118,8 @@ public class VolController {
     @Post
     @UrlMapping(url = "vol_save")
     public ModelView save(
-            @Validate @Param(name = "vol") Vol vol
+            @Validate(errorPage = "vol_add")
+            @Param(name = "vol") Vol vol
     ) throws SQLException {
         Connection conn = null;
         try {

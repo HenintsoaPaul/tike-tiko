@@ -56,7 +56,8 @@ public class ConfigController {
     @Post
     @UrlMapping(url = "config_pourcentage")
     public ModelView pourcentagePromotion(
-            @Validate @Param(name = "pourcentagePromotion") PourcentagePromotion pourcentagePromotion
+            @Validate(errorPage = "config")
+            @Param(name = "pourcentagePromotion") PourcentagePromotion pourcentagePromotion
     ) {
         try (Connection conn = databaseService.getConnection()) {
             // traitement...
@@ -77,7 +78,8 @@ public class ConfigController {
     @Post
     @UrlMapping(url = "config_reservation")
     public ModelView minNbHeureReservation(
-            @Validate @Param(name = "minNbHeureReservation") MinNbHeureReservation minNbHeureReservation
+            @Validate(errorPage = "config")
+            @Param(name = "minNbHeureReservation") MinNbHeureReservation minNbHeureReservation
     ) {
         try (Connection conn = databaseService.getConnection()) {
             // traitement...
@@ -98,7 +100,8 @@ public class ConfigController {
     @Post
     @UrlMapping(url = "config_annulation")
     public ModelView minNbHeureAnnulation(
-            @Validate @Param(name = "minNbHeureAnnulation") MinNbHeureAnnulation minNbHeureAnnulation
+            @Validate(errorPage = "config")
+            @Param(name = "minNbHeureAnnulation") MinNbHeureAnnulation minNbHeureAnnulation
     ) {
         try (Connection conn = databaseService.getConnection()) {
             // traitement...
