@@ -128,13 +128,12 @@ public class ReservationController {
         }
     }
 
-    @Get
+    @Post
     @UrlMapping(url = "reservation_save")
     public ModelView save(
-            @Param(name = "idVol") String idVol,
-            @Param(name = "idTypeSiege") String idTypeSiege,
-            @Param(name = "nomClient") String nomClient,
-            @Param(name = "dateReservation") LocalDateTime dateReservation
+            @Validate(errorPage = "reservation_add?idVol=2")
+            // todo maka nlay params nle url de redirection dynamiquement...
+            @Param(name = "formData") ReservationFormData reservationFormData
     ) {
         try (Connection conn = databaseService.getConnection()) {
             ModelView mv = new ModelView("fo/reservation/reservation_detail.jsp", null);
