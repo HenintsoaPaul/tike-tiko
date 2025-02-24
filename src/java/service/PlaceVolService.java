@@ -35,7 +35,8 @@ public class PlaceVolService {
         String query = "select * from place_vol where nom_client is null and id_vol = " + id_vol
                 + " and id_type_siege = " + id_type_siege +
                 " order by id desc limit 1";
-        return this.select(conn, query).get(0);
+        List<PlaceVol> ll = this.select(conn, query);
+        return !ll.isEmpty() ? ll.get(0) : null;
     }
 
     public int insert(Connection conn, PlaceVol vol) {
