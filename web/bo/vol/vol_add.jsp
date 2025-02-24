@@ -2,11 +2,22 @@
 <%@ page import="java.util.List" %>
 <%@ page import="entity.Avion" %>
 <%@ page import="views.VVol" %>
+<%@ page import="src.summer.beans.validation.ValidationLog" %>
+<%@ page import="entity.Vol" %>
+<%@ page import="src.summer.beans.validation.ValidationError" %>
+<%@ page import="java.util.Optional" %>
 <%
     List<VVol> vvols = (List<VVol>) request.getAttribute("vvols");
 
     List<Ville> villes = (List<Ville>) request.getAttribute("villes");
     List<Avion> avions = (List<Avion>) request.getAttribute("avions");
+
+    // form validation
+    Vol lastInput = null;
+    ValidationLog vLog = (ValidationLog) request.getAttribute("validationLog");
+    if (vLog != null && vLog.hasErrors()) {
+        lastInput = (Vol) vLog.getLastInput();
+    }
 
     pageContext.setAttribute("activePage", "volAdd");
 %>
@@ -68,6 +79,14 @@
                                     >
                                         <!-- avion -->
                                         <div class="mb-3">
+                                            <%
+                                                if (lastInput != null) {
+                                                    Optional<ValidationError> vErr = vLog.getErrorByInput("vol.id_avion");
+                                                    if (vErr.isPresent()) {
+                                                        out.print(vErr.get().toHtml());
+                                                    }
+                                                }
+                                            %>
                                             <label>Avion: </label>
                                             <select name="vol.id_avion" required>
                                                 <%for (Avion avion : avions) { %>
@@ -82,12 +101,28 @@
                                         <div class="mb-3">
                                             <div class="row">
                                                 <div class="col-6">
+                                                    <%
+                                                        if (lastInput != null) {
+                                                            Optional<ValidationError> vErr = vLog.getErrorByInput("vol.heure_depart");
+                                                            if (vErr.isPresent()) {
+                                                                out.print(vErr.get().toHtml());
+                                                            }
+                                                        }
+                                                    %>
                                                     <label>Heure Depart: </label>
                                                     <input type="datetime-local"
                                                            name="vol.heure_depart"
                                                            required/>
                                                 </div>
                                                 <div class="col-6">
+                                                    <%
+                                                        if (lastInput != null) {
+                                                            Optional<ValidationError> vErr = vLog.getErrorByInput("vol.heure_arrivee");
+                                                            if (vErr.isPresent()) {
+                                                                out.print(vErr.get().toHtml());
+                                                            }
+                                                        }
+                                                    %>
                                                     <label>Heure Arrivee: </label>
                                                     <input type="datetime-local"
                                                            name="vol.heure_arrivee"
@@ -100,6 +135,14 @@
                                         <div class="mb-3">
                                             <div class="row">
                                                 <div class="col-6">
+                                                    <%
+                                                        if (lastInput != null) {
+                                                            Optional<ValidationError> vErr = vLog.getErrorByInput("vol.id_ville_depart");
+                                                            if (vErr.isPresent()) {
+                                                                out.print(vErr.get().toHtml());
+                                                            }
+                                                        }
+                                                    %>
                                                     <label>Ville Depart: </label>
                                                     <select name="vol.id_ville_depart" required>
                                                         <%for (Ville ville : villes) { %>
@@ -110,6 +153,14 @@
                                                     </select>
                                                 </div>
                                                 <div class="col-6">
+                                                    <%
+                                                        if (lastInput != null) {
+                                                            Optional<ValidationError> vErr = vLog.getErrorByInput("vol.id_ville_destination");
+                                                            if (vErr.isPresent()) {
+                                                                out.print(vErr.get().toHtml());
+                                                            }
+                                                        }
+                                                    %>
                                                     <label>Ville Destination: </label>
                                                     <select name="vol.id_ville_destination" required>
                                                         <%for (Ville ville : villes) { %>
@@ -126,12 +177,28 @@
                                         <div class="mb-3">
                                             <div class="row">
                                                 <div class="col-6">
+                                                    <%
+                                                        if (lastInput != null) {
+                                                            Optional<ValidationError> vErr = vLog.getErrorByInput("vol.prix_place_business");
+                                                            if (vErr.isPresent()) {
+                                                                out.print(vErr.get().toHtml());
+                                                            }
+                                                        }
+                                                    %>
                                                     <label>Prix place business: </label>
                                                     <input type="number"
                                                            name="vol.prix_place_business"
                                                            required/>
                                                 </div>
                                                 <div class="col-6">
+                                                    <%
+                                                        if (lastInput != null) {
+                                                            Optional<ValidationError> vErr = vLog.getErrorByInput("vol.prix_place_eco");
+                                                            if (vErr.isPresent()) {
+                                                                out.print(vErr.get().toHtml());
+                                                            }
+                                                        }
+                                                    %>
                                                     <label>Prix place eco: </label>
                                                     <input type="number"
                                                            name="vol.prix_place_eco"
@@ -144,12 +211,28 @@
                                         <div class="mb-3">
                                             <div class="row">
                                                 <div class="col-6">
+                                                    <%
+                                                        if (lastInput != null) {
+                                                            Optional<ValidationError> vErr = vLog.getErrorByInput("vol.nb_place_promo_business");
+                                                            if (vErr.isPresent()) {
+                                                                out.print(vErr.get().toHtml());
+                                                            }
+                                                        }
+                                                    %>
                                                     <label>Promotion en place business: </label>
                                                     <input type="number"
                                                            name="vol.nb_place_promo_business"
                                                            required/>
                                                 </div>
                                                 <div class="col-6">
+                                                    <%
+                                                        if (lastInput != null) {
+                                                            Optional<ValidationError> vErr = vLog.getErrorByInput("vol.nb_place_promo_eco");
+                                                            if (vErr.isPresent()) {
+                                                                out.print(vErr.get().toHtml());
+                                                            }
+                                                        }
+                                                    %>
                                                     <label>Promotion en place eco: </label>
                                                     <input type="number"
                                                            name="vol.nb_place_promo_eco"
