@@ -3,6 +3,7 @@
 <%@ page import="form.ReservationFormData" %>
 <%@ page import="src.summer.beans.validation.ValidationLog" %>
 <%@ page import="src.summer.beans.validation.ValidationError" %>
+<%@ page import="java.util.Optional" %>
 <%
     String idVol = (String) request.getAttribute("idVol");
 
@@ -60,38 +61,48 @@
     <%-- Date reservation --%>
     <div class="mb-3">
         <label class="form-label">Date Reservation</label>
-        <% if (lastInput != null) {
-            ValidationError vErr = vLog.getErrorByInput("formData.date_reservation");
-            if (vErr != null) {
-        %>
-        <div class="alert alert-danger p-2">
-            <ul class="mb-0">
-                <% for (String err : vErr.getErrors()) { %>
-                <li><%= err %>
-                </li>
-                <% } %>
-            </ul>
-        </div>
-        <%
-                }
-            }
-        %>
         <input type="datetime-local"
                name="formData.date_reservation"
                class="form-control"
                value="<%= lastInput != null ? lastInput.getDate_reservation() : "" %>"/>
+        <%
+            if (lastInput != null) {
+                Optional<ValidationError> vErr = vLog.getErrorByInput("formData.date_reservation");
+                if (vErr.isPresent()) {
+                    out.print(vErr.get().toHtml());
+                }
+            }
+        %>
     </div>
 
-    <div>
-        <label>Type Siege: </label>
+    <%-- Type Siege --%>
+    <div class="mb-3">
+        <label class="form-label">Type Siege: </label>
         <select name="formData.id_type_siege">
             <option value="">Choisir le siege</option>
             <%for (TypeSiege typeSiege : typeSieges) { %>
-            <option value="<%= typeSiege.getId()%>">
+            <option
+                    value="<%= typeSiege.getId()%>"
+                    <%
+                        if (lastInput != null) {
+                            if (lastInput.getId_type_siege() == typeSiege.getId()) {
+                                out.print("selected");
+                            }
+                        }
+                    %>
+            >
                 <%= typeSiege.getNom() %>
             </option>
             <% } %>
         </select>
+        <%
+            if (lastInput != null) {
+                Optional<ValidationError> vErr = vLog.getErrorByInput("formData.id_type_siege");
+                if (vErr.isPresent()) {
+                    out.print(vErr.get().toHtml());
+                }
+            }
+        %>
     </div>
 
     <input type="submit" value="Valider ma reservation"/>
