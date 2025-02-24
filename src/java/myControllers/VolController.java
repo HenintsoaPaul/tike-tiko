@@ -109,6 +109,8 @@ public class VolController {
         try (Connection conn = databaseService.getConnection()) {
             ModelView mv = new ModelView("bo/vol/vol_add.jsp", null);
             fetchData(conn, mv);
+
+            mv.addObject("vvols", this.vVolService.select(conn, "select * from v_vol"));
             return mv;
         } catch (SQLException e) {
             throw new RuntimeException(e);
