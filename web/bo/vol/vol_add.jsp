@@ -52,7 +52,7 @@
     <div class="layout-container">
         <!-- Menu -->
         <div>
-            <%@ include file="/layout/menu.jsp" %>
+            <%@ include file="/layout/menu_admin.jsp" %>
         </div>
         <!-- / Menu -->
 
