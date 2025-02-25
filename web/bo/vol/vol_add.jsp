@@ -90,7 +90,16 @@
                                             <label>Avion: </label>
                                             <select name="vol.id_avion" required>
                                                 <%for (Avion avion : avions) { %>
-                                                <option value="<%= avion.getId()%>">
+                                                <option
+                                                        value="<%= avion.getId()%>"
+                                                        <%
+                                                            if (lastInput != null) {
+                                                                if (lastInput.getId_avion() == avion.getId()) {
+                                                                    out.print("selected");
+                                                                }
+                                                            }
+                                                        %>
+                                                >
                                                     <%= avion.getId() %>
                                                 </option>
                                                 <% } %>
@@ -112,6 +121,7 @@
                                                     <label>Heure Depart: </label>
                                                     <input type="datetime-local"
                                                            name="vol.heure_depart"
+                                                           value="<%= lastInput != null ? lastInput.getHeure_depart() : "" %>"
                                                            required/>
                                                 </div>
                                                 <div class="col-6">
@@ -126,6 +136,7 @@
                                                     <label>Heure Arrivee: </label>
                                                     <input type="datetime-local"
                                                            name="vol.heure_arrivee"
+                                                           value="<%= lastInput != null ? lastInput.getHeure_arrivee() : "" %>"
                                                            required/>
                                                 </div>
                                             </div>
@@ -146,7 +157,16 @@
                                                     <label>Ville Depart: </label>
                                                     <select name="vol.id_ville_depart" required>
                                                         <%for (Ville ville : villes) { %>
-                                                        <option value="<%= ville.getId()%>">
+                                                        <option
+                                                                value="<%= ville.getId()%>"
+                                                                <%
+                                                                    if (lastInput != null) {
+                                                                        if (lastInput.getId_ville_depart() == ville.getId()) {
+                                                                            out.print("selected");
+                                                                        }
+                                                                    }
+                                                                %>
+                                                        >
                                                             <%= ville.getNom() %>
                                                         </option>
                                                         <% } %>
@@ -164,7 +184,16 @@
                                                     <label>Ville Destination: </label>
                                                     <select name="vol.id_ville_destination" required>
                                                         <%for (Ville ville : villes) { %>
-                                                        <option value="<%= ville.getId()%>">
+                                                        <option
+                                                                value="<%= ville.getId()%>"
+                                                                <%
+                                                                    if (lastInput != null) {
+                                                                        if (lastInput.getId_ville_destination() == ville.getId()) {
+                                                                            out.print("selected");
+                                                                        }
+                                                                    }
+                                                                %>
+                                                        >
                                                             <%= ville.getNom() %>
                                                         </option>
                                                         <% } %>
@@ -188,6 +217,7 @@
                                                     <label>Prix place business: </label>
                                                     <input type="number"
                                                            name="vol.prix_place_business"
+                                                           value="<%= lastInput != null ? lastInput.getPrix_place_business() : "" %>"
                                                            required/>
                                                 </div>
                                                 <div class="col-6">
@@ -202,6 +232,7 @@
                                                     <label>Prix place eco: </label>
                                                     <input type="number"
                                                            name="vol.prix_place_eco"
+                                                           value="<%= lastInput != null ? lastInput.getPrix_place_eco() : "" %>"
                                                            required/>
                                                 </div>
                                             </div>
@@ -222,6 +253,7 @@
                                                     <label>Promotion en place business: </label>
                                                     <input type="number"
                                                            name="vol.nb_place_promo_business"
+                                                           value="<%= lastInput != null ? lastInput.getNb_place_promo_business() : "" %>"
                                                            required/>
                                                 </div>
                                                 <div class="col-6">
@@ -236,6 +268,7 @@
                                                     <label>Promotion en place eco: </label>
                                                     <input type="number"
                                                            name="vol.nb_place_promo_eco"
+                                                           value="<%= lastInput != null ? lastInput.getNb_place_promo_eco() : "" %>"
                                                            required/>
                                                 </div>
                                             </div>
