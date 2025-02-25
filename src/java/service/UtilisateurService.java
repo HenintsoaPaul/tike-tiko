@@ -11,7 +11,7 @@ public class UtilisateurService {
     DatabaseService databaseService = new DatabaseService();
 
     public Utilisateur authenticate(Connection conn, Utilisateur formUser) throws Exception {
-        String query = "select * from utilisateur where nom = '" + formUser.getNom() + "'";
+        String query = "select * from utilisateur where email = '" + formUser.getEmail() + "'";
         List<Utilisateur> utilisateurs = this.select(conn, query);
 
         Utilisateur u = !utilisateurs.isEmpty() ? utilisateurs.get(0) : null;

@@ -27,16 +27,19 @@ public class ConfigController {
     private final PourcentagePromotionService pourcentagePromotionService = new PourcentagePromotionService();
     private final MinNbHeureReservationService minNbHeureReservationService = new MinNbHeureReservationService();
     private final MinNbHeureAnnulationService minNbHeureAnnulationService = new MinNbHeureAnnulationService();
-
     private final TypeSiegeService typeSiegeService = new TypeSiegeService();
     private final DatabaseService databaseService = new DatabaseService();
 
-    private void fetchData(Connection conn, ModelView mv) {
+    private ModelView getModelView(Connection conn) {
+        ModelView mv = new ModelView("bo/config/index.jsp", null);
+
         mv.addObject("typeSieges", typeSiegeService.selectAll(conn));
 
         mv.addObject("vPourcentagePromotions", vpPromotionService.selectAll(conn));
         mv.addObject("minNbHeureReservations", minNbHeureReservationService.selectAll(conn));
         mv.addObject("minNbHeureAnnulations", minNbHeureAnnulationService.selectAll(conn));
+
+        return mv;
     }
 
     @Authorized
@@ -44,9 +47,7 @@ public class ConfigController {
     @UrlMapping(url = "config")
     public ModelView list() {
         try (Connection conn = databaseService.getConnection()) {
-            ModelView mv = new ModelView("bo/config.jsp", null);
-            fetchData(conn, mv);
-            return mv;
+            return getModelView(conn);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -60,15 +61,11 @@ public class ConfigController {
             @Param(name = "pourcentagePromotion") PourcentagePromotion pourcentagePromotion
     ) {
         try (Connection conn = databaseService.getConnection()) {
-            // traitement...
             pourcentagePromotion.setDate_modification(LocalDateTime.now());
             int rows = this.pourcentagePromotionService.insert(conn, pourcentagePromotion);
             System.out.println("Insert " + rows + " rows in database");
-            // traitement...
 
-            ModelView mv = new ModelView("bo/config.jsp", null);
-            fetchData(conn, mv);
-            return mv;
+            return getModelView(conn);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -82,15 +79,11 @@ public class ConfigController {
             @Param(name = "minNbHeureReservation") MinNbHeureReservation minNbHeureReservation
     ) {
         try (Connection conn = databaseService.getConnection()) {
-            // traitement...
             minNbHeureReservation.setDate_modification(LocalDateTime.now());
             int rows = this.minNbHeureReservationService.insert(conn, minNbHeureReservation);
             System.out.println("Insert " + rows + " rows in database");
-            // traitement...
 
-            ModelView mv = new ModelView("bo/config.jsp", null);
-            fetchData(conn, mv);
-            return mv;
+            return getModelView(conn);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -104,15 +97,11 @@ public class ConfigController {
             @Param(name = "minNbHeureAnnulation") MinNbHeureAnnulation minNbHeureAnnulation
     ) {
         try (Connection conn = databaseService.getConnection()) {
-            // traitement...
             minNbHeureAnnulation.setDate_modification(LocalDateTime.now());
             int rows = this.minNbHeureAnnulationService.insert(conn, minNbHeureAnnulation);
             System.out.println("Insert " + rows + " rows in database");
-            // traitement...
 
-            ModelView mv = new ModelView("bo/config.jsp", null);
-            fetchData(conn, mv);
-            return mv;
+            return getModelView(conn);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

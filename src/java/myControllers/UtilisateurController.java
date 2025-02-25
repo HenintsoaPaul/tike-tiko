@@ -60,7 +60,7 @@ public class UtilisateurController {
             @Param(name = "utilisateur") Utilisateur u
     ) throws Exception {
         try (Connection conn = databaseService.getConnection()) {
-            ModelView mv = new ModelView("bo/config.jsp", null);
+            ModelView mv = new ModelView("bo/config/index.jsp", null);
 
             Utilisateur authenticated = this.utilisateurService.authenticate(conn, u);
 
