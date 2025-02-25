@@ -6,8 +6,10 @@ public class Utilisateur {
 
     int id;
 
-    @Required
     String nom;
+
+    @Required
+    String email;
 
     @Required
     String password;
@@ -35,5 +37,21 @@ public class Utilisateur {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
