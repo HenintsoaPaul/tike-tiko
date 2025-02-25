@@ -1,5 +1,6 @@
 package entity;
 
+import src.summer.annotations.form.validation.IntRange;
 import src.summer.annotations.form.validation.Min;
 import src.summer.annotations.form.validation.Required;
 
@@ -13,11 +14,9 @@ public class Vol {
     int id_avion;
 
     @Required
-    @Min(1)
     int id_ville_depart;
 
     @Required
-    @Min(1)
     int id_ville_destination;
 
     @Required
@@ -26,17 +25,19 @@ public class Vol {
     @Required
     LocalDateTime heure_arrivee;
 
+    @Min(50.0)
     @Required
     double prix_place_business;
 
+    @Min(50.0)
     @Required
     double prix_place_eco;
 
-    @Min(0)
+    @IntRange(minValue = 0, maxValue = 3)
     @Required
     int nb_place_promo_business;
 
-    @Min(0)
+    @IntRange(minValue = 0, maxValue = 5)
     @Required
     int nb_place_promo_eco;
 
