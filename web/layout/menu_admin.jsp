@@ -35,53 +35,108 @@
     <div class="menu-inner-shadow"></div>
 
     <ul class="menu-inner py-1">
-        <!-- Vols client -->
+        <!-- Log(in) -->
         <li
                 <%
                     classes = menuItemClass;
-                    if (activePage.equals("foVolList") || activePage.equals("foVolDetail")) {
+                    if (activePage.equals("login")) {
                         classes += " active open";
                     }
                     out.print("class=\"" + classes + "\"");
                 %>
         >
             <a class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-plane-alt"></i>
-                <div data-i18n="Flights">Vols client</div>
+                <i class="menu-icon tf-icons bx bx-account-alt"></i>
+                <div data-i18n="Account">Account</div>
             </a>
             <ul class="menu-sub">
                 <li
                         <%
                             classes = menuItemClass;
-                            if (activePage.equals("foVolList")) {
+                            if (activePage.equals("login")) {
                                 classes += " active";
                             }
                             out.print("class=\"" + classes + "\"");
                         %>
                 >
-                    <a href="<%= request.getContextPath() %>/fo_vol_list" class="menu-link">
-                        <div data-i18n="Container">Liste des Vols</div>
+                    <a href="<%= request.getContextPath() %>/login" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                        <div data-i18n="Login">Login</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="<%= request.getContextPath() %>/logout" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                        <div data-i18n="Logout">Logout</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <!-- Configs admins (bo) -->
+        <li
+                <%
+                    classes = menuItemClass;
+                    if (activePage.equals("boConfig")) {
+                        classes += " active";
+                    }
+                    out.print("class=\"" + classes + "\"");
+                %>
+        >
+            <a href="<%= request.getContextPath() %>/config" class="menu-link">
+                <div data-i18n="Container">Nos Configurations</div>
+            </a>
+        </li>
+
+        <!-- Vols (bo) -->
+        <li
+                <%
+                    classes = menuItemClass;
+                    if (activePage.equals("volList") || activePage.equals("volDetail") || activePage.equals("volAdd")) {
+                        classes += " active open";
+                    }
+                    out.print("class=\"" + classes + "\"");
+                %>
+        >
+            <a class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-wallet-alt"></i>
+                <div data-i18n="Tables">Vols (bo)</div>
+            </a>
+            <ul class="menu-sub">
+                <li
+                        <%
+                            classes = menuItemClass;
+                            if (activePage.equals("volList")) {
+                                classes += " active";
+                            }
+                            out.print("class=\"" + classes + "\"");
+                        %>
+                >
+                    <a href="<%= request.getContextPath() %>/vol_list" class="menu-link">
+                        <div data-i18n="Container">Liste vol</div>
                     </a>
                 </li>
                 <li
                         <%
                             classes = menuItemClass;
-                            if (activePage.equals("foVolDetail")) {
+                            if (activePage.equals("volAdd")) {
                                 classes += " active";
                             }
                             out.print("class=\"" + classes + "\"");
                         %>
                 >
-                    <div data-i18n="Container">Detail vol</div>
+                    <a href="<%= request.getContextPath() %>/vol_add" class="menu-link">
+                        <div data-i18n="Fluid">Ajout vol</div>
+                    </a>
                 </li>
             </ul>
         </li>
 
-        <!-- Reservation client -->
+        <!-- Reservation admin -->
         <li
                 <%
                     classes = menuItemClass;
-                    if (activePage.equals("foReservationDetail")|| activePage.equals("foReservationAdd")) {
+                    if (activePage.equals("boReservationList") || activePage.equals("boReservationDetail")) {
                         classes += " active open";
                     }
                     out.print("class=\"" + classes + "\"");
@@ -89,19 +144,19 @@
         >
             <a class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-plane-alt"></i>
-                <div data-i18n="Planes">Reservations client</div>
+                <div data-i18n="Planes">Reservations</div>
             </a>
             <ul class="menu-sub">
                 <li
                         <%
                             classes = menuItemClass;
-                            if (activePage.equals("foReservationAdd")) {
+                            if (activePage.equals("foReservationList")) {
                                 classes += " active";
                             }
                             out.print("class=\"" + classes + "\"");
                         %>
                 >
-                    <div data-i18n="Container">Faire une reservation</div>
+                    <div data-i18n="Container">Liste des Reservations</div>
                 </li>
                 <li
                         <%
