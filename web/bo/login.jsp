@@ -1,6 +1,9 @@
+<%@ page import="src.summer.beans.validation.ValidationError" %>
+<%@ page import="java.util.Optional" %>
 <%@ page import="entity.Utilisateur" %>
 <%@ page import="src.summer.beans.validation.ValidationLog" %>
 <%@ page import="src.summer.beans.validation.ValidationError" %>
+
 <%
     Utilisateur lastInput = null;
     ValidationLog vLog = (ValidationLog) request.getAttribute("validationLog");
@@ -10,71 +13,86 @@
 %>
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Connexion</title>
-    <!-- Bootstrap CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="utf-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <title>Tike-Tiko Login</title>
+
+    <div>
+        <%@ include file="/layout/link_header.jsp" %>
+    </div>
 </head>
-<body class="d-flex align-items-center justify-content-center vh-100 bg-light">
 
+<body class="g-sidenav-show bg-gray-100">
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-lg">
-                <div class="card-header bg-primary text-white text-center">
-                    <h3>Connexion</h3>
-                </div>
+    <div class="row mt-lg-n10 mt-md-n11 mt-n10">
+        <div class="col-xl-4 col-lg-5 col-md-7 mx-auto">
+            <div class="card z-index-0">
                 <div class="card-body">
-                    <p class="text-center">
-                        <a href="logout" class="btn btn-danger">Se déconnecter</a>
-                    </p>
+                    <form
+                            action="login_auth"
+                            method="POST"
+                    >
 
-                    <form action="login_auth" method="POST">
-                        <!-- Nom d'utilisateur -->
                         <div class="mb-3">
-                            <label class="form-label">Nom :</label>
-                            <% if (lastInput != null) { %>
-                            <% ValidationError vErr = vLog.getErrorByInput("utilisateur.nom"); %>
-                            <% if (vErr != null) { %>
-                            <div class="alert alert-danger p-2">
-                                <ul class="mb-0">
-                                    <% for (String err : vErr.getErrors()) { %>
-                                    <li><%= err %>
-                                    </li>
-                                    <% } %>
-                                </ul>
-                            </div>
-                            <% } %>
-                            <% } %>
-                            <input type="text" class="form-control" name="utilisateur.nom"
-                                   value="<%= lastInput != null ? lastInput.getNom() : "" %>"/>
+                            <%
+                                if (lastInput != null) {
+                                    Optional<ValidationError> vErr = vLog.getErrorByInput("utilisateur.email");
+                                    if (vErr.isPresent()) {
+                                        out.print(vErr.get().toHtml());
+                                    }
+                                }
+                            %>
+                            <label
+                                    for="email"
+                                    class="form-label"
+                            >Email
+                            </label>
+                            <input
+                                    type="email"
+                                    required
+                                    class="form-control"
+                                    id="email"
+                                    placeholder="Entrer votre email"
+                                    name="utilisateur.email"
+                            />
                         </div>
 
-                        <!-- Mot de passe -->
                         <div class="mb-3">
-                            <label class="form-label">Mot de passe :</label>
-                            <% if (lastInput != null) { %>
-                            <% ValidationError vErr = vLog.getErrorByInput("utilisateur.password"); %>
-                            <% if (vErr != null) { %>
-                            <div class="alert alert-danger p-2">
-                                <ul class="mb-0">
-                                    <% for (String err : vErr.getErrors()) { %>
-                                    <li><%= err %>
-                                    </li>
-                                    <% } %>
-                                </ul>
-                            </div>
-                            <% } %>
-                            <% } %>
-                            <input type="password" class="form-control" name="utilisateur.password"
-                                   value="<%= lastInput != null ? lastInput.getPassword() : "" %>"/>
+                            <%
+                                if (lastInput != null) {
+                                    Optional<ValidationError> vErr = vLog.getErrorByInput("utilisateur.password");
+                                    if (vErr.isPresent()) {
+                                        out.print(vErr.get().toHtml());
+                                    }
+                                }
+                            %>
+                            <label
+                                    for="password"
+                                    class="form-label"
+                            >Mot de passe
+                            </label>
+                            <input
+                                    type="password"
+                                    required
+                                    class="form-control"
+                                    id="password"
+                                    name="utilisateur.password"
+                            />
                         </div>
 
                         <div class="text-center">
-                            <input type="submit" class="btn btn-primary w-100" value="Se connecter"/>
+                            <button
+                                    type="submit"
+                                    class="btn bg-gradient-dark w-100 my-4 mb-2"
+                            >
+                                Confirmer
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -82,8 +100,5 @@
         </div>
     </div>
 </div>
-
-<!-- Bootstrap JS (optionnel pour certaines fonctionnalités comme les dropdowns) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
