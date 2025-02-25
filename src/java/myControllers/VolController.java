@@ -33,6 +33,7 @@ public class VolController {
     private void fetchData(Connection conn, ModelView mv) {
         mv.addObject("avions", avionService.select(conn, "select * from avion"));
         mv.addObject("villes", villeService.select(conn, "select * from ville"));
+        mv.addObject("vvols", this.vVolService.select(conn, "select * from v_vol"));
     }
 
     @Get
@@ -41,9 +42,6 @@ public class VolController {
         try (Connection conn = databaseService.getConnection()) {
             ModelView mv = new ModelView("bo/vol/vol_list.jsp", null);
             fetchData(conn, mv);
-
-            mv.addObject("vvols", this.vVolService.select(conn, "select * from v_vol"));
-
             return mv;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -73,11 +71,8 @@ public class VolController {
     ) {
         try (Connection conn = databaseService.getConnection()) {
             ModelView mv = new ModelView("bo/vol/vol_list.jsp", null);
-
             mv.addObject("vvols", this.vVolService.selectWithFilter(conn, volFilterFormData));
-
             fetchData(conn, mv);
-
             return mv;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -92,11 +87,8 @@ public class VolController {
     ) {
         try (Connection conn = databaseService.getConnection()) {
             ModelView mv = new ModelView("fo/vol/vol_list.jsp", null);
-
             mv.addObject("vvols", this.vVolService.selectWithFilter(conn, volFilterFormData));
-
             fetchData(conn, mv);
-
             return mv;
         } catch (SQLException e) {
             throw new RuntimeException(e);
