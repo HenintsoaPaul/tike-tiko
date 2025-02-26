@@ -1,6 +1,6 @@
 package entity.config;
 
-import src.summer.annotations.form.validation.Min;
+import src.summer.annotations.form.validation.Range;
 import src.summer.annotations.form.validation.Required;
 
 import java.time.LocalDateTime;
@@ -10,8 +10,7 @@ public class MinNbHeureAnnulation {
     int id;
 
     @Required
-    // annotation min/max/range
-    @Min(0)
+    @Range(minValue = 0, maxValue = 10)
     double val;
 
     @Required

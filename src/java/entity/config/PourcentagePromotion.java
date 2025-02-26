@@ -1,6 +1,6 @@
 package entity.config;
 
-import src.summer.annotations.form.validation.Min;
+import src.summer.annotations.form.validation.Range;
 import src.summer.annotations.form.validation.Required;
 
 import java.time.LocalDateTime;
@@ -12,9 +12,8 @@ public class PourcentagePromotion {
     @Required
     int id_type_siege;
 
-    // annotation min/max/range
     @Required
-    @Min(0)
+    @Range(minValue = 0, maxValue = 100)
     double val;
 
     @Required
