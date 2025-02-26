@@ -62,10 +62,9 @@ public class ConfigController {
     ) {
         try (Connection conn = databaseService.getConnection()) {
             pourcentagePromotion.setDate_modification(LocalDateTime.now());
-            int rows = this.pourcentagePromotionService.insert(conn, pourcentagePromotion);
-            System.out.println("Insert " + rows + " rows in database");
+            this.pourcentagePromotionService.insert(conn, pourcentagePromotion);
 
-            return getModelView(conn);
+            return new ModelView("redirect:GET:/config", null);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -80,10 +79,9 @@ public class ConfigController {
     ) {
         try (Connection conn = databaseService.getConnection()) {
             minNbHeureReservation.setDate_modification(LocalDateTime.now());
-            int rows = this.minNbHeureReservationService.insert(conn, minNbHeureReservation);
-            System.out.println("Insert " + rows + " rows in database");
+            this.minNbHeureReservationService.insert(conn, minNbHeureReservation);
 
-            return getModelView(conn);
+            return new ModelView("redirect:GET:/config", null);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -98,10 +96,9 @@ public class ConfigController {
     ) {
         try (Connection conn = databaseService.getConnection()) {
             minNbHeureAnnulation.setDate_modification(LocalDateTime.now());
-            int rows = this.minNbHeureAnnulationService.insert(conn, minNbHeureAnnulation);
-            System.out.println("Insert " + rows + " rows in database");
+            this.minNbHeureAnnulationService.insert(conn, minNbHeureAnnulation);
 
-            return getModelView(conn);
+            return new ModelView("redirect:GET:/config", null);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
