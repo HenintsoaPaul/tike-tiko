@@ -2,9 +2,6 @@ package myControllers;
 
 import entity.Utilisateur;
 import service.*;
-import service.config.MinNbHeureAnnulationService;
-import service.config.MinNbHeureReservationService;
-import service.config.PourcentagePromotionService;
 import src.summer.annotations.Param;
 import src.summer.annotations.Validate;
 import src.summer.annotations.controller.Controller;
@@ -21,14 +18,7 @@ public class UtilisateurController {
 
     SummerSession summerSession;
 
-    private final VPourcentagePromotionService vpPromotionService = new VPourcentagePromotionService();
-    private final PourcentagePromotionService pourcentagePromotionService = new PourcentagePromotionService();
-    private final MinNbHeureReservationService minNbHeureReservationService = new MinNbHeureReservationService();
-    private final MinNbHeureAnnulationService minNbHeureAnnulationService = new MinNbHeureAnnulationService();
-
-    private final TypeSiegeService typeSiegeService = new TypeSiegeService();
     private final UtilisateurService utilisateurService = new UtilisateurService();
-    private final ConfigService configService = new ConfigService();
     private final DatabaseService databaseService = new DatabaseService();
 
     private int getUserRoleLevel(Utilisateur utilisateur) {
@@ -41,7 +31,7 @@ public class UtilisateurController {
 
     @Get
     @UrlMapping(url = "login")
-    public ModelView gotoForm() {
+    public ModelView login() {
         return new ModelView("bo/login.jsp", null);
     }
 
@@ -50,7 +40,7 @@ public class UtilisateurController {
     public ModelView logout() {
         summerSession.destroy();
 
-        return new ModelView("bo/login.jsp", null);
+        return new ModelView("redirect:GET:/login", null);
     }
 
     @Post
@@ -60,8 +50,6 @@ public class UtilisateurController {
             @Param(name = "utilisateur") Utilisateur u
     ) throws Exception {
         try (Connection conn = databaseService.getConnection()) {
-            ModelView mv = new ModelView("bo/config/index.jsp", null);
-
             Utilisateur authenticated = this.utilisateurService.authenticate(conn, u);
 
             // Save authentication in session
@@ -69,16 +57,7 @@ public class UtilisateurController {
             summerSession.addAttribute("userRoleLevel", getUserRoleLevel(authenticated));
 
             // Redirection vers une route protegee
-            fetchData(conn, mv);
-            return mv;
+            return new ModelView("redirect:GET:/config", null);
         }
-    }
-
-    private void fetchData(Connection conn, ModelView mv) {
-        mv.addObject("typeSieges", typeSiegeService.selectAll(conn));
-
-        mv.addObject("vPourcentagePromotions", vpPromotionService.selectAll(conn));
-        mv.addObject("minNbHeureReservations", minNbHeureReservationService.selectAll(conn));
-        mv.addObject("minNbHeureAnnulations", minNbHeureAnnulationService.selectAll(conn));
     }
 }
