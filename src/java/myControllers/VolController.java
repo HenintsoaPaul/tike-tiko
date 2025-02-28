@@ -111,7 +111,7 @@ public class VolController {
 
     @Post
     @UrlMapping(url = "vol_save")
-    public ModelView save(
+    public String save(
             @Validate(errorPage = "vol_add")
             @Param(name = "vol") Vol vol
     ) throws SQLException {
@@ -136,15 +136,13 @@ public class VolController {
             int placesBusiness = placeService.insertPlacesBusiness(conn, vol, promoBusiness, nbPlaceBusiness);
             int placesEco = placeService.insertPlacesEco(conn, vol, promoEco, nbPlaceEco);
 
-            System.out.println("placesBusiness = " + placesBusiness);
-            System.out.println("placesEco = " + placesEco);
+            System.out.println("Insert placesBusiness = " + placesBusiness);
+            System.out.println("Insert placesEco = " + placesEco);
             // todo ...
 
             conn.commit();
 
-            ModelView mv = new ModelView("bo/vol/vol_add.jsp", null);
-            fetchData(conn, mv);
-            return mv;
+            return "redirect:GET:/vol_add";
         } catch (SQLException e) {
             assert conn != null;
             conn.rollback();

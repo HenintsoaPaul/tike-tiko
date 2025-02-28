@@ -37,10 +37,9 @@ public class UtilisateurController {
 
     @Get
     @UrlMapping(url = "logout")
-    public ModelView logout() {
+    public String logout() {
         summerSession.destroy();
-
-        return new ModelView("redirect:GET:/login", null);
+        return "redirect:GET:/login";
     }
 
     @Post
