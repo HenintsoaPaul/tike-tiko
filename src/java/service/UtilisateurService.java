@@ -1,6 +1,7 @@
 package service;
 
 import entity.Utilisateur;
+import src.summer.beans.SummerSession;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -29,11 +30,21 @@ public class UtilisateurService {
     public List<Utilisateur> select(Connection conn, String query) {
         return this.databaseService.select(conn, query, rs -> {
             try {
-                return new Utilisateur(rs.getString("nom"), rs.getString("password"));
+                return new Utilisateur(
+                        rs.getInt("id"),
+                        rs.getString("nom"),
+                        rs.getString("password"),
+                        rs.getInt("auth_level")
+                );
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    public void saveInSession(SummerSession summerSession, Utilisateur authenticated) throws Exception {
+        summerSession.addAttribute("isAuthenticated", true);
+        summerSession.addAttribute("userRoleLevel", authenticated.getAuth_level());
     }
 
 }

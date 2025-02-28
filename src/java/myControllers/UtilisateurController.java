@@ -21,20 +21,6 @@ public class UtilisateurController {
     private final UtilisateurService utilisateurService = new UtilisateurService();
     private final DatabaseService databaseService = new DatabaseService();
 
-    private int getUserRoleLevel(Utilisateur utilisateur) {
-        String ref = "admin";
-        if (utilisateur.getNom().equals(ref)) {
-            return 10;
-        }
-        return 1;
-    }
-
-    @Get
-    @UrlMapping(url = "login")
-    public ModelView login() {
-        return new ModelView("bo/login.jsp", null);
-    }
-
     @Get
     @UrlMapping(url = "logout")
     public String logout() {
@@ -42,21 +28,47 @@ public class UtilisateurController {
         return "redirect:GET:/login";
     }
 
+    // BackOffice
+    @Get
+    @UrlMapping(url = "login")
+    public ModelView login() {
+        return new ModelView("bo/login.jsp", null);
+    }
+
+
     @Post
     @UrlMapping(url = "login_auth")
-    public ModelView handleForm(
+    public String login_auth(
             @Validate(errorPage = "login")
             @Param(name = "utilisateur") Utilisateur u
     ) throws Exception {
         try (Connection conn = databaseService.getConnection()) {
             Utilisateur authenticated = this.utilisateurService.authenticate(conn, u);
+            if (authenticated.getAuth_level() == 0) {
+                throw new IllegalArgumentException("N'est pas un admin");
+            }
+            utilisateurService.saveInSession(summerSession, authenticated);
+            return "redirect:GET:/config";
+        }
+    }
 
-            // Save authentication in session
-            summerSession.addAttribute("isAuthenticated", true);
-            summerSession.addAttribute("userRoleLevel", getUserRoleLevel(authenticated));
+    // FrontOffice
+    @Get
+    @UrlMapping(url = "fo_login")
+    public ModelView fo_login() {
+        return new ModelView("fo/login.jsp", null);
+    }
 
-            // Redirection vers une route protegee
-            return new ModelView("redirect:GET:/config", null);
+    @Post
+    @UrlMapping(url = "fo_login_auth")
+    public String fo_login_auth(
+            @Validate(errorPage = "fo_login")
+            @Param(name = "utilisateur") Utilisateur u
+    ) throws Exception {
+        try (Connection conn = databaseService.getConnection()) {
+            Utilisateur authenticated = this.utilisateurService.authenticate(conn, u);
+            utilisateurService.saveInSession(summerSession, authenticated);
+            return "redirect:GET:/mes_reservations";
         }
     }
 }

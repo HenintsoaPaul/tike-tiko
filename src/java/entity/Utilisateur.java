@@ -16,12 +16,11 @@ public class Utilisateur {
 
     int auth_level;
 
-    public Utilisateur() {
-    }
-
-    public Utilisateur(String nom, String password) {
+    public Utilisateur(int id, String nom, String password, int authLevel) {
+        this.id = id;
         this.nom = nom;
         this.password = password;
+        this.auth_level = authLevel;
     }
 
     // Getters n Setters
