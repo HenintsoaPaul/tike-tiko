@@ -4,8 +4,12 @@
 <%@ page import="src.summer.beans.validation.ValidationLog" %>
 <%@ page import="src.summer.beans.validation.ValidationError" %>
 <%@ page import="java.util.Optional" %>
+<%@ page import="views.VVol" %>
+<%@ page import="entity.Utilisateur" %>
 <%
     String idVol = (String) request.getAttribute("idVol");
+    Utilisateur client = (Utilisateur) request.getAttribute("client");
+    VVol v_vol = (VVol) request.getAttribute("v_vol");
 
     int resteEco = (int) request.getAttribute("resteEco");
     int resteBusiness = (int) request.getAttribute("resteBusiness");
@@ -92,8 +96,14 @@
                                                     <label>Client:</label>
                                                     <input type="text"
                                                            name="formData.nom_client"
-                                                           value="Anonymous"
-                                                           class="form-control">
+                                                           value="<%= client.getNom() %>"
+                                                           class="form-control"
+                                                           readonly>
+                                                    <input type="hidden"
+                                                           name="formData.id_client"
+                                                           value="<%= client.getId() %>"
+                                                           class="form-control"
+                                                           readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -158,9 +168,53 @@
 
                         <!-- Data -->
                         <div class="container mt-4">
-                            <h2 class="text-center">
-                                Places sur ce vol
-                            </h2>
+                            <h4 class="text-center">
+                                A propos du vol
+                            </h4>
+                            <table class="table table-bordered table-striped mt-3">
+                                <thead class="thead-dark">
+                                <tr>
+                                    <th>Avion</th>
+                                    <th>Ville Depart</th>
+                                    <th>Ville Destination</th>
+                                    <th>Heure Depart</th>
+                                    <th>Heure Arrivee</th>
+                                    <th>Prix place business</th>
+                                    <th>Prix place eco</th>
+                                    <th>Nb promo business</th>
+                                    <th>Nb promo eco</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><%= v_vol.getId_avion() %>
+                                    </td>
+                                    <td><%= v_vol.getNom_ville_depart() %>
+                                    </td>
+                                    <td><%= v_vol.getNom_ville_destination() %>
+                                    </td>
+                                    <td><%= v_vol.getHeure_depart() %>
+                                    </td>
+                                    <td><%= v_vol.getHeure_arrivee() %>
+                                    </td>
+                                    <td><%= v_vol.getPrix_place_business() %>
+                                    </td>
+                                    <td><%= v_vol.getPrix_place_eco() %>
+                                    </td>
+                                    <td><%= v_vol.getNb_place_promo_business() %>
+                                    </td>
+                                    <td><%= v_vol.getNb_place_promo_eco() %>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Data Reste Places -->
+                        <div class="container mt-4">
+                            <h5 class="text-center">
+                                Places Restants
+                            </h5>
                             <table class="table table-bordered table-striped mt-3">
                                 <thead>
                                 <tr>

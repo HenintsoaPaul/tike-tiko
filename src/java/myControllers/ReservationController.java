@@ -82,6 +82,36 @@ public class ReservationController {
     }
 
     @Get
+    @UrlMapping(url = "reservation_add")
+    public ModelView reservation_add(
+            @Param(name = "idVol") String idVol
+    ) {
+        try (Connection conn = databaseService.getConnection()) {
+            ModelView mv = new ModelView("fo/reservation/reservation_add.jsp", null);
+
+            Vol vol = this.volService.selectById(conn, idVol);
+            Avion avion = this.avionService.selectById(conn, vol.getId_avion());
+
+            int nbPlacesPrisBusiness = reservationService.getNbPlacesPris(conn, 1, vol.getId()),
+                    nbPlacesPrisEco = reservationService.getNbPlacesPris(conn, 2, vol.getId());
+
+            mv.addObject("resteBusiness", avion.getSiege_business() - nbPlacesPrisBusiness);
+            mv.addObject("resteEco", avion.getSiege_eco() - nbPlacesPrisEco);
+
+            mv.addObject("idVol", idVol);
+            mv.addObject("v_vol", vVolService.selectById(conn, idVol));
+            mv.addObject("typeSieges", typeSiegeService.selectAll(conn));
+            mv.addObject("nomClient", summerSession.getAttribute("utilisateur"));
+            MinNbHeureReservation minNbHeureReservation = minNbHeureReservationService.selectCurrent(conn);
+            mv.addObject("limiteReservation", vol.getHeure_depart().plusHours((long) minNbHeureReservation.getVal()));
+
+            return mv;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Get
     @UrlMapping(url = "reservation_cancel")
     public ModelView cancel(
             @Param(name = "idReservation") String idReservation,
