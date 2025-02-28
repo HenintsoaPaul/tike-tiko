@@ -63,6 +63,24 @@ public class ReservationController {
         }
     }
 
+    // FrontOffice
+    @Get
+    @UrlMapping(url = "mes_reservations")
+    public ModelView mes_reservations() {
+        try (Connection conn = databaseService.getConnection()) {
+            ModelView mv = new ModelView("fo/reservation/reservation_list.jsp", null);
+
+            // get user id from session
+            Utilisateur u = (Utilisateur) summerSession.getAttribute("utilisateur");
+            List<VReservation> vReservations = vReservationService.selectByUtilisateur(conn, u);
+
+            mv.addObject("vReservations", vReservations);
+            return mv;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Get
     @UrlMapping(url = "reservation_cancel")
     public ModelView cancel(
