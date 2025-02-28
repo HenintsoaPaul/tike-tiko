@@ -1,5 +1,6 @@
 package entity;
 
+import form.ReservationFormData;
 import src.summer.annotations.form.validation.Required;
 
 import java.time.LocalDateTime;
@@ -22,7 +23,11 @@ public class Reservation {
     String img_passeport;
 
     // Constr
-    public Reservation() {
+    public Reservation(PlaceVol placeVol, ReservationFormData reservationFormData) {
+        this.setId_etat_reservation(3);
+        this.setId_place_vol(placeVol.getId());
+        this.setNom_client(reservationFormData.getNom_client());
+        this.setHeure_reservation(reservationFormData.getDate_reservation());
     }
 
     public Reservation(int id, int id_etat_reservation, int id_place_vol, LocalDateTime heure_reservation,

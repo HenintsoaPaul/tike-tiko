@@ -1,5 +1,6 @@
 package service;
 
+import entity.Utilisateur;
 import views.VReservation;
 
 import java.sql.Connection;
@@ -30,5 +31,13 @@ public class VReservationService {
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    public List<VReservation> selectById(Connection conn, String id) {
+        return this.select(conn, "select * from v_reservation where id = " + id);
+    }
+
+    public List<VReservation> selectByUtilisateur(Connection conn, Utilisateur u) {
+        return this.select(conn, "select * from v_reservation where id_utilisateur = " + u.getId());
     }
 }

@@ -14,6 +14,7 @@ import src.summer.annotations.controller.verb.Get;
 import src.summer.annotations.controller.verb.Post;
 import src.summer.beans.ModelView;
 import src.summer.annotations.Param;
+import src.summer.beans.SummerSession;
 import views.VReservation;
 
 
@@ -39,10 +40,12 @@ public class ReservationController {
     private final DatabaseService databaseService = new DatabaseService();
 
     private void fetchData(Connection conn, ModelView mv, String idReservation) {
-        List<VReservation> vReservations = vReservationService.select(conn, "select * from v_reservation where id = " + idReservation);
+        List<VReservation> vReservations = vReservationService.selectById(conn, idReservation);
         VReservation vr = vReservations.isEmpty() ? null : vReservations.get(0);
         mv.addObject("vReservation", vr);
     }
+
+    private SummerSession summerSession;
 
     @Get
     @UrlMapping(url = "reservation_detail")
@@ -147,18 +150,17 @@ public class ReservationController {
             boolean isLate = heureReservationLimite.isBefore(reservationFormData.getDate_reservation());
 
             if (!isLate) {
-                PlaceVol placeVol = placeVolService.selectNextPlaceLibre(conn, String.valueOf(reservationFormData.getId_vol()), String.valueOf(reservationFormData.getId_type_siege()));
+                PlaceVol placeVol = placeVolService.selectNextPlaceLibre(
+                        conn,
+                        String.valueOf(reservationFormData.getId_vol()),
+                        String.valueOf(reservationFormData.getId_type_siege())
+                );
                 if (placeVol == null) {
                     throw new IllegalArgumentException("Reservation Impossible car ya plus de place de ce type sur ce vol.");
                 }
 
                 // save reservation
-                Reservation reservation = new Reservation();
-                reservation.setId_etat_reservation(3);
-                reservation.setId_place_vol(placeVol.getId());
-                reservation.setNom_client(reservationFormData.getNom_client());
-                reservation.setHeure_reservation(reservationFormData.getDate_reservation());
-
+                Reservation reservation = new Reservation(placeVol, reservationFormData);
                 int idRes = reservationService.insert(conn, reservation);
 
                 // set nom client for place_vol
@@ -170,6 +172,24 @@ public class ReservationController {
                 throw new IllegalArgumentException("Reservation Impossible car l'heure limite est depassee.");
             }
 
+            return mv;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // FrontOffice
+    @Get
+    @UrlMapping(url = "mes_reservations")
+    public ModelView mes_reservations() {
+        try (Connection conn = databaseService.getConnection()) {
+            ModelView mv = new ModelView("fo/reservation/reservation_list.jsp", null);
+
+            // get user id from session
+            Utilisateur u = (Utilisateur) summerSession.getAttribute("utilisateur");
+            List<VReservation> vReservations = vReservationService.selectByUtilisateur(conn, u);
+
+            mv.addObject("vReservations", vReservations);
             return mv;
         } catch (SQLException e) {
             throw new RuntimeException(e);
