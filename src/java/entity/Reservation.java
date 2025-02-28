@@ -17,6 +17,7 @@ public class Reservation {
     @Required
     LocalDateTime heure_reservation;
 
+    int id_utilisateur;
     String nom_client;
     String img_passeport;
 
@@ -25,13 +26,14 @@ public class Reservation {
     }
 
     public Reservation(int id, int id_etat_reservation, int id_place_vol, LocalDateTime heure_reservation,
-                       String nom_client, String img_passeport) {
+                       String nom_client, String img_passeport, int id_utilisateur) {
         this.id = id;
         this.id_etat_reservation = id_etat_reservation;
         this.id_place_vol = id_place_vol;
         this.heure_reservation = heure_reservation;
         this.nom_client = nom_client;
         this.img_passeport = img_passeport;
+        this.id_utilisateur = id_utilisateur;
     }
 
     // Getters n Setters
@@ -81,5 +83,13 @@ public class Reservation {
 
     public void setImg_passeport(String img_passeport) {
         this.img_passeport = img_passeport;
+    }
+
+    public int getId_utilisateur() {
+        return id_utilisateur;
+    }
+
+    public void setId_utilisateur(int id_utilisateur) {
+        this.id_utilisateur = id_utilisateur;
     }
 }

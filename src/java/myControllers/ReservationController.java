@@ -1,9 +1,6 @@
 package myControllers;
 
-import entity.Avion;
-import entity.PlaceVol;
-import entity.Reservation;
-import entity.Vol;
+import entity.*;
 import entity.config.MinNbHeureAnnulation;
 import entity.config.MinNbHeureReservation;
 import form.ReservationFormData;

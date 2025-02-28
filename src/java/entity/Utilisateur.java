@@ -14,6 +14,8 @@ public class Utilisateur {
     @Required
     String password;
 
+    int auth_level;
+
     public Utilisateur() {
     }
 
@@ -53,5 +55,13 @@ public class Utilisateur {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public int getAuth_level() {
+        return auth_level;
+    }
+
+    public void setAuth_level(int auth_level) {
+        this.auth_level = auth_level;
     }
 }
