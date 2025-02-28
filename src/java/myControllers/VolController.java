@@ -6,6 +6,7 @@ import entity.config.PourcentagePromotion;
 import form.VolFilterFormData;
 import service.*;
 import service.config.PourcentagePromotionService;
+import src.summer.annotations.Authorized;
 import src.summer.annotations.Param;
 import src.summer.annotations.Validate;
 import src.summer.annotations.controller.Controller;
@@ -97,6 +98,7 @@ public class VolController {
 
     @Get
     @UrlMapping(url = "vol_add")
+    @Authorized(roleLevel = 10)
     public ModelView add() {
         try (Connection conn = databaseService.getConnection()) {
             ModelView mv = new ModelView("bo/vol/vol_add.jsp", null);
@@ -111,6 +113,7 @@ public class VolController {
 
     @Post
     @UrlMapping(url = "vol_save")
+    @Authorized(roleLevel = 10)
     public String save(
             @Validate(errorPage = "vol_add")
             @Param(name = "vol") Vol vol

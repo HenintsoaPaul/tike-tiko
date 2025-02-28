@@ -16,6 +16,9 @@ public class ReservationFormData {
     String nom_client;
 
     @Required
+    int id_client;
+
+    @Required
     LocalDateTime date_reservation;
 
     // getters n setters
@@ -49,5 +52,13 @@ public class ReservationFormData {
 
     public void setId_vol(int id_vol) {
         this.id_vol = id_vol;
+    }
+
+    public int getId_client() {
+        return id_client;
+    }
+
+    public void setId_client(int id_client) {
+        this.id_client = id_client;
     }
 }
