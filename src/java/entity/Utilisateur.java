@@ -16,6 +16,8 @@ public class Utilisateur {
 
     int auth_level;
 
+    public Utilisateur() {}
+
     public Utilisateur(int id, String nom, String password, int authLevel) {
         this.id = id;
         this.nom = nom;

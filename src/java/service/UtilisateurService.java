@@ -45,6 +45,7 @@ public class UtilisateurService {
     public void saveInSession(SummerSession summerSession, Utilisateur authenticated) throws Exception {
         summerSession.addAttribute("isAuthenticated", true);
         summerSession.addAttribute("userRoleLevel", authenticated.getAuth_level());
+        summerSession.addAttribute("utilisateur", authenticated);
     }
 
 }
