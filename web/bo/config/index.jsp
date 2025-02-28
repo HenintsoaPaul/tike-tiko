@@ -1,5 +1,5 @@
 <%
-    pageContext.setAttribute("activePage", "volAdd");
+    pageContext.setAttribute("activePage", "boConfig");
 %>
 
 <!DOCTYPE html>

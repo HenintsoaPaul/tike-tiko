@@ -15,9 +15,9 @@
         <div class="col-xl">
             <div class="card mb-4" id="analyse-site">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h1 class="text-center mb-0">
+                    <h3 class="text-center mb-0">
                         Pourcentage promotion
-                    </h1>
+                    </h3>
                 </div>
                 <div class="card-body">
                     <form

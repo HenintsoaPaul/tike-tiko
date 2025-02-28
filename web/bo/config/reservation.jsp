@@ -12,9 +12,9 @@
         <div class="col-xl">
             <div class="card mb-4" id="analyse-site">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h1 class="text-center mb-0">
-                        Reservation
-                    </h1>
+                    <h3 class="text-center mb-0">
+                        Limite Reservation
+                    </h3>
                 </div>
                 <div class="card-body">
                     <form
@@ -26,7 +26,7 @@
                             <div class="row">
                                 <!-- val -->
                                 <div class="col-6">
-                                    <label class="form-label">Nb d'heure avant depart voll: </label>
+                                    <label class="form-label">Nb d'heure avant depart vol: </label>
                                     <input type="number"
                                            name="minNbHeureReservation.val"
                                            class="form-control"
