@@ -35,42 +35,18 @@
     <div class="menu-inner-shadow"></div>
 
     <ul class="menu-inner py-1">
-        <!-- Log(in) -->
-        <li
-                <%
-                    classes = menuItemClass;
-                    if (activePage.equals("login")) {
-                        classes += " active open";
-                    }
-                    out.print("class=\"" + classes + "\"");
-                %>
-        >
-            <a class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-account-alt"></i>
-                <div data-i18n="Account">Account</div>
+        <!-- Log(in/out) -->
+        <li class="menu-item">
+            <a href="<%= request.getContextPath() %>/login" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-log-in"></i>
+                <div data-i18n="Login">Login</div>
             </a>
-            <ul class="menu-sub">
-                <li
-                        <%
-                            classes = menuItemClass;
-                            if (activePage.equals("login")) {
-                                classes += " active";
-                            }
-                            out.print("class=\"" + classes + "\"");
-                        %>
-                >
-                    <a href="<%= request.getContextPath() %>/login" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                        <div data-i18n="Login">Login</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="<%= request.getContextPath() %>/logout" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                        <div data-i18n="Logout">Logout</div>
-                    </a>
-                </li>
-            </ul>
+        </li>
+        <li class="menu-item">
+            <a href="<%= request.getContextPath() %>/logout" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-log-out"></i>
+                <div data-i18n="Logout">Logout</div>
+            </a>
         </li>
 
         <!-- Configs admins (bo) -->

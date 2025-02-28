@@ -35,6 +35,20 @@
     <div class="menu-inner-shadow"></div>
 
     <ul class="menu-inner py-1">
+        <!-- Log(in/out) -->
+        <li class="menu-item">
+            <a href="<%= request.getContextPath() %>/fo_login" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-log-in"></i>
+                <div data-i18n="Login">Login</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="<%= request.getContextPath() %>/fo_logout" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-log-out"></i>
+                <div data-i18n="Logout">Logout</div>
+            </a>
+        </li>
+
         <!-- Vols client -->
         <li
                 <%
