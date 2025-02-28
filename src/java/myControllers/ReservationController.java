@@ -101,9 +101,9 @@ public class ReservationController {
             mv.addObject("idVol", idVol);
             mv.addObject("v_vol", vVolService.selectById(conn, idVol));
             mv.addObject("typeSieges", typeSiegeService.selectAll(conn));
-            mv.addObject("nomClient", summerSession.getAttribute("utilisateur"));
+            mv.addObject("utilisateur", summerSession.getAttribute("utilisateur"));
             MinNbHeureReservation minNbHeureReservation = minNbHeureReservationService.selectCurrent(conn);
-            mv.addObject("limiteReservation", vol.getHeure_depart().plusHours((long) minNbHeureReservation.getVal()));
+            mv.addObject("limiteReservation", vol.getHeure_depart().minusHours((long) minNbHeureReservation.getVal()));
 
             return mv;
         } catch (SQLException e) {

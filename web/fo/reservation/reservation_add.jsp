@@ -6,10 +6,12 @@
 <%@ page import="java.util.Optional" %>
 <%@ page import="views.VVol" %>
 <%@ page import="entity.Utilisateur" %>
+<%@ page import="java.time.LocalDateTime" %>
 <%
     String idVol = (String) request.getAttribute("idVol");
-    Utilisateur client = (Utilisateur) request.getAttribute("client");
+    Utilisateur client = (Utilisateur) request.getAttribute("utilisateur");
     VVol v_vol = (VVol) request.getAttribute("v_vol");
+    LocalDateTime limiteReservation = (LocalDateTime) request.getAttribute("limiteReservation");
 
     int resteEco = (int) request.getAttribute("resteEco");
     int resteBusiness = (int) request.getAttribute("resteBusiness");
@@ -166,7 +168,7 @@
                             </div>
                         </div>
 
-                        <!-- Data -->
+                        <!-- Data vol -->
                         <div class="container mt-4">
                             <h4 class="text-center">
                                 A propos du vol
@@ -218,14 +220,14 @@
                             <table class="table table-bordered table-striped mt-3">
                                 <thead>
                                 <tr>
-                                    <th>Vol</th>
+                                    <th>Heure Limite</th>
                                     <th>Reste business</th>
                                     <th>Reste eco</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td><%= idVol %>
+                                    <td><%= limiteReservation %>
                                     </td>
                                     <td><%= resteBusiness %>
                                     </td>
