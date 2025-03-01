@@ -77,17 +77,6 @@
                         <div data-i18n="Container">Liste des Vols</div>
                     </a>
                 </li>
-                <li
-                        <%
-                            classes = menuItemClass;
-                            if (activePage.equals("foVolDetail")) {
-                                classes += " active";
-                            }
-                            out.print("class=\"" + classes + "\"");
-                        %>
-                >
-                    <div data-i18n="Container">Detail vol</div>
-                </li>
             </ul>
         </li>
 
@@ -115,7 +104,7 @@
                             out.print("class=\"" + classes + "\"");
                         %>
                 >
-                    <a href="<%= request.getContextPath() %>/fo_vol_list" class="menu-link">
+                    <a href="<%= request.getContextPath() %>/fo_reservation_list" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-list-ul"></i>
                         <div data-i18n="Container">Mes Reservations</div>
                     </a>
