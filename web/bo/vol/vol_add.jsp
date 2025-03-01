@@ -19,7 +19,7 @@
         lastInput = (Vol) vLog.getLastInput();
     }
 
-    pageContext.setAttribute("activePage", "volAdd");
+    pageContext.setAttribute("activePage", "boVolAdd");
 %>
 
 <!DOCTYPE html>

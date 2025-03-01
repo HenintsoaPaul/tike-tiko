@@ -33,11 +33,11 @@ public class Vol {
     @Required
     double prix_place_eco;
 
-    @IntRange(minValue = 0, maxValue = 3)
+    @IntRange(minValue = 0, maxValue = 10)
     @Required
     int nb_place_promo_business;
 
-    @IntRange(minValue = 0, maxValue = 5)
+    @IntRange(minValue = 0, maxValue = 50)
     @Required
     int nb_place_promo_eco;
 

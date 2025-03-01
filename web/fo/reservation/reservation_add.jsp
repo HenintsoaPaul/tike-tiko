@@ -6,18 +6,15 @@
 <%@ page import="java.util.Optional" %>
 <%@ page import="views.VVol" %>
 <%@ page import="entity.Utilisateur" %>
-<%@ page import="java.time.LocalDateTime" %>
+<%@ page import="dto.PlaceDTO" %>
+<%@ page import="dto.ConfigDTO" %>
 <%
-    String idVol = (String) request.getAttribute("idVol");
     Utilisateur client = (Utilisateur) request.getAttribute("utilisateur");
     VVol v_vol = (VVol) request.getAttribute("v_vol");
-    LocalDateTime limiteReservation = (LocalDateTime) request.getAttribute("limiteReservation");
 
-    int resteEco = (int) request.getAttribute("resteEco");
-    int resteBusiness = (int) request.getAttribute("resteBusiness");
+    PlaceDTO placeDTO = (PlaceDTO) request.getAttribute("placeDTO");
 
-    int attenteEco = (int) request.getAttribute("attenteEco");
-    int attenteBusiness = (int) request.getAttribute("attenteBusiness");
+    ConfigDTO configDTO = (ConfigDTO) request.getAttribute("configDTO");
 
     List<TypeSiege> typeSieges = (List<TypeSiege>) request.getAttribute("typeSieges");
 
@@ -93,7 +90,7 @@
                                                     <label>Vol</label>
                                                     <input type="number"
                                                            name="formData.id_vol"
-                                                           value="<%= idVol %>"
+                                                           value="<%= v_vol.getId() %>"
                                                            class="form-control"
                                                            readonly>
                                                 </div>
@@ -223,29 +220,37 @@
                             <table class="table table-bordered table-striped mt-3">
                                 <thead>
                                 <tr>
-                                    <th>Heure Limite</th>
-                                    <th>Reste business</th>
-                                    <th>Reste eco</th>
+                                    <th>Limite Reservation</th>
+                                    <th>Limite Annulation</th>
+                                    <th>Confirmee business</th>
+                                    <th>Confirmee eco</th>
                                     <th>En Attente business</th>
                                     <th>En Attente eco</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td><%= limiteReservation %>
+                                    <td>
+                                        <%= configDTO.getLimiteReservation() %>
                                     </td>
-                                    <td><%= resteBusiness %>
+                                    <td>
+                                        <%= configDTO.getLimiteAnnulation() %>
                                     </td>
-                                    <td><%= resteEco %>
+                                    <td><%= placeDTO.getValidatedBusiness() %>
                                     </td>
-                                    <td><%= attenteBusiness %>
+                                    <td><%= placeDTO.getValidatedEco() %>
                                     </td>
-                                    <td><%= attenteEco %>
+                                    <td><%= placeDTO.getPendingBusiness() %>
+                                    </td>
+                                    <td><%= placeDTO.getPendingEco() %>
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
+
+                        <%-- Configs actuels --%>
+                        <%@ include file="/parts/current_config.jsp" %>
                     </div>
                 </div>
             </div>

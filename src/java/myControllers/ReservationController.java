@@ -1,5 +1,7 @@
 package myControllers;
 
+import dto.ConfigDTO;
+import dto.PlaceDTO;
 import entity.*;
 import entity.config.MinNbHeureAnnulation;
 import entity.config.MinNbHeureReservation;
@@ -7,6 +9,7 @@ import form.ReservationFormData;
 import service.*;
 import service.config.MinNbHeureAnnulationService;
 import service.config.MinNbHeureReservationService;
+import service.config.PourcentagePromotionService;
 import src.summer.annotations.Validate;
 import src.summer.annotations.controller.Controller;
 import src.summer.annotations.controller.UrlMapping;
@@ -27,6 +30,7 @@ import java.util.List;
 @Controller
 public class ReservationController {
 
+    private final PourcentagePromotionService pourcentagePromotionService = new PourcentagePromotionService();
     private final MinNbHeureAnnulationService minNbHeureAnnulationService = new MinNbHeureAnnulationService();
     private final MinNbHeureReservationService minNbHeureReservationService = new MinNbHeureReservationService();
     private final TypeSiegeService typeSiegeService = new TypeSiegeService();
@@ -94,26 +98,12 @@ public class ReservationController {
             ModelView mv = new ModelView("fo/reservation/reservation_add.jsp", null);
 
             Vol vol = this.volService.selectById(conn, idVol);
-            Avion avion = this.avionService.selectById(conn, vol.getId_avion());
+            mv.addObject("placeDTO", new PlaceDTO(conn, reservationService, vol));
+            mv.addObject("configDTO", new ConfigDTO(conn, pourcentagePromotionService, minNbHeureReservationService, minNbHeureAnnulationService, vol));
 
-            int nbPlacesPrisBusiness = reservationService.getNbReservationConfirme(conn, 1, vol.getId()),
-                    nbPlacesPrisEco = reservationService.getNbReservationConfirme(conn, 2, vol.getId());
-
-            int nbPlacesAttenteBusiness = reservationService.getNbReservation(conn, 1, vol.getId(), 1),
-                    nbPlacesAttenteEco = reservationService.getNbReservation(conn, 2, vol.getId(), 1);
-
-            mv.addObject("resteBusiness", avion.getSiege_business() - nbPlacesPrisBusiness);
-            mv.addObject("resteEco", avion.getSiege_eco() - nbPlacesPrisEco);
-
-            mv.addObject("attenteBusiness", nbPlacesAttenteBusiness);
-            mv.addObject("attenteEco", nbPlacesAttenteEco);
-
-            mv.addObject("idVol", idVol);
             mv.addObject("v_vol", vVolService.selectById(conn, idVol));
             mv.addObject("typeSieges", typeSiegeService.selectAll(conn));
             mv.addObject("utilisateur", summerSession.getAttribute("utilisateur"));
-            MinNbHeureReservation minNbHeureReservation = minNbHeureReservationService.selectCurrent(conn);
-            mv.addObject("limiteReservation", vol.getHeure_depart().minusHours((long) minNbHeureReservation.getVal()));
 
             return mv;
         } catch (SQLException e) {
