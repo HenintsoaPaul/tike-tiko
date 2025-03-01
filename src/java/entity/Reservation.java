@@ -4,6 +4,7 @@ import form.ReservationFormData;
 import src.summer.annotations.form.validation.Required;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Reservation {
     @Required
@@ -108,5 +109,19 @@ public class Reservation {
 
     public void setId_utilisateur(int id_utilisateur) {
         this.id_utilisateur = id_utilisateur;
+    }
+
+    @Override
+    public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return "Reservation{" +
+                "id=" + id +
+                ", id_etat_reservation=" + id_etat_reservation +
+                ", id_place_vol=" + id_place_vol +
+                ", heure_reservation=" + (heure_reservation != null ? heure_reservation.format(formatter) : "null") +
+                ", id_utilisateur=" + id_utilisateur +
+                ", id_reservation_mere=" + (id_reservation_mere != null ? id_reservation_mere : "null") +
+                ", img_passeport='" + (img_passeport != null ? img_passeport : "null") + '\'' +
+                '}';
     }
 }
