@@ -1,7 +1,12 @@
 <%@ page import="views.VVol" %>
 <%@ page import="java.util.List" %>
+<%@ page import="entity.Avion" %>
+<%@ page import="entity.Ville" %>
 <%
     List<VVol> vvols = (List<VVol>) request.getAttribute("vvols");
+
+    List<Ville> villes = (List<Ville>) request.getAttribute("villes");
+    List<Avion> avions = (List<Avion>) request.getAttribute("avions");
 
     pageContext.setAttribute("activePage", "boVolList");
 %>

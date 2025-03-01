@@ -74,7 +74,7 @@
                 %>
         >
             <a class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-wallet-alt"></i>
+                <i class="menu-icon tf-icons bx bx-plane"></i>
                 <div data-i18n="Tables">Vols (bo)</div>
             </a>
             <ul class="menu-sub">
@@ -88,6 +88,7 @@
                         %>
                 >
                     <a href="<%= request.getContextPath() %>/vol_list" class="menu-link">
+                        <i class="tf-icons bx bx-list-check"></i>
                         <div data-i18n="Container">Liste vol</div>
                     </a>
                 </li>
@@ -101,6 +102,7 @@
                         %>
                 >
                     <a href="<%= request.getContextPath() %>/vol_add" class="menu-link">
+                        <i class="tf-icons bx bx-plus-circle"></i>
                         <div data-i18n="Fluid">Ajout vol</div>
                     </a>
                 </li>
