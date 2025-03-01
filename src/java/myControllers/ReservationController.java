@@ -123,9 +123,6 @@ public class ReservationController {
             @Param(name = "dateAnnulation") LocalDateTime dateAnnulation
     ) {
         try (Connection conn = databaseService.getConnection()) {
-            ModelView mv = new ModelView("fo/reservation/reservation_detail.jsp", null);
-
-            // annulation
             // is possible
             MinNbHeureAnnulation minNbHeureAnnulation = this.minNbHeureAnnulationService.selectCurrent(conn);
             Vol vol = this.volService.selectById(conn, idVol);
@@ -135,9 +132,11 @@ public class ReservationController {
             if (!isLate) {
                 System.out.println("Annulation begins...");
 
-                Reservation reservation = this.reservationService.select(conn, "select * from reservation where id = " + idReservation).get(0);
-                reservation.setId_etat_reservation(2);
-                this.reservationService.update(conn, reservation);
+                Reservation reservationMere = this.reservationService.selectById(conn, idReservation);
+                int etatCanceled = 2;
+                Reservation canceled = new Reservation(reservationMere, etatCanceled);
+
+                this.reservationService.insert(conn, canceled);
 
                 System.out.println("Annulation ends...");
             } else {
@@ -147,7 +146,7 @@ public class ReservationController {
             // message
             // annulation
 
-            return "redirect:GET:/reservation_detail";
+            return "redirect:GET:/reservation_list";
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -195,25 +194,6 @@ public class ReservationController {
                 throw new IllegalArgumentException("Reservation Impossible car l'heure limite est depassee.");
             }
 
-            return mv;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    // FrontOffice
-    @Get
-    @UrlMapping(url = "mes_reservations")
-    public ModelView mes_reservations() {
-        try (Connection conn = databaseService.getConnection()) {
-            ModelView mv = new ModelView("fo/reservation/reservation_list.jsp", null);
-
-            // get user id from session
-            Utilisateur u = (Utilisateur) summerSession.getAttribute("utilisateur");
-            List<VReservation> vReservations = vReservationService.selectByUtilisateur(conn, u);
-
-            mv.addObject("vReservations", vReservations);
-            return mv;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

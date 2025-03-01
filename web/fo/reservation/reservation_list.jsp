@@ -3,7 +3,7 @@
 <%
     List<VReservation> vReservations = (List<VReservation>) request.getAttribute("vReservations");
 
-    pageContext.setAttribute("activePage", "reservationList");
+    pageContext.setAttribute("activePage", "foReservationList");
 %>
 
 <!DOCTYPE html>
@@ -57,8 +57,9 @@
                             <table class="table table-bordered table-striped mt-3">
                                 <thead class="thead-dark">
                                 <tr>
+                                    <th>Id</th>
+                                    <th>Id Mere</th>
                                     <th>Id vol</th>
-                                    <th>Client</th>
                                     <th>Type Siege</th>
                                     <th>Date Reservation</th>
                                     <th>Prix sans promo</th>
@@ -70,9 +71,15 @@
                                 <tbody>
                                 <% for (VReservation vReservation : vReservations) {%>
                                 <tr>
-                                    <td><%= vReservation.getId_vol() %>
+                                    <td>
+                                        <a href="reservation_detail?id=<%= vReservation.getId() %>">
+                                            <%= vReservation.getId() %>
+                                        </a>
                                     </td>
-                                    <td><%= vReservation.getNom_client() %>
+                                    <td>
+                                        <%= vReservation.getId_reservation_mere() %>
+                                    </td>
+                                    <td><%= vReservation.getId_vol() %>
                                     </td>
                                     <td><%= vReservation.getNom_type_siege() %>
                                     </td>
@@ -109,6 +116,8 @@
 <!-- / Layout wrapper -->
 
 <!-- script -->
-<div th:replace="~{layout/script}"></div>
+<div>
+    <%@ include file="/layout/script.jsp" %>
+</div>
 </body>
 </html>

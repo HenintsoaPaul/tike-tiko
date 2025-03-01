@@ -25,6 +25,7 @@ public class VReservationService {
                         rs.getDouble("val_promo"),
                         rs.getBoolean("is_promotion"),
                         rs.getInt("id_utilisateur"),
+                        rs.getInt("id_reservation_mere"),
                         rs.getString("img_passeport")
                 );
             } catch (SQLException e) {
