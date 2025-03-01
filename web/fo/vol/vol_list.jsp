@@ -8,7 +8,7 @@
     List<Ville> villes = (List<Ville>) request.getAttribute("villes");
     List<Avion> avions = (List<Avion>) request.getAttribute("avions");
 
-    pageContext.setAttribute("activePage", "volList");
+    pageContext.setAttribute("activePage", "foVolList");
 %>
 
 <!DOCTYPE html>
@@ -225,6 +225,8 @@
 <!-- / Layout wrapper -->
 
 <!-- script -->
-<div th:replace="~{layout/script}"></div>
+<div>
+    <%@ include file="/layout/script.jsp" %>
+</div>
 </body>
 </html>
