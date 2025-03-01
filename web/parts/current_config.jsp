@@ -1,9 +1,3 @@
-<%@ page import="dto.ConfigDTO" %>
-
-<%
-    ConfigDTO configDTO = (ConfigDTO) request.getAttribute("configDTO");
-%>
-
 <div class="container mt-4">
     <h4 class="text-center">
         Configurations Actuelles

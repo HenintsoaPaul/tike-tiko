@@ -9,7 +9,7 @@
     LocalDateTime limiteReservation = (LocalDateTime) request.getAttribute("limiteReservation");
     LocalDateTime limiteAnnulation = (LocalDateTime) request.getAttribute("limiteAnnulation");
 
-    pageContext.setAttribute("activePage", "boVolAdd");
+    pageContext.setAttribute("activePage", "boVolDetail");
 %>
 
 <!DOCTYPE html>
