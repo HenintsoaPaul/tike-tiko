@@ -42,7 +42,6 @@
             <% } %>
             </tbody>
         </table>
-        </table>
     </div>
     <div class="card-footer">
         <form

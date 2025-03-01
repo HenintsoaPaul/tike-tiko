@@ -269,4 +269,5 @@
 <div>
     <%@ include file="/layout/script.jsp" %>
 </div>
+</body>
 </html>
