@@ -18,9 +18,9 @@ public class ReservationService {
                         rs.getInt("id_etat_reservation"),
                         rs.getInt("id_place_vol"),
                         rs.getTimestamp("heure_reservation").toLocalDateTime(),
-                        rs.getString("nom_client"),
                         rs.getString("img_passeport"),
-                        rs.getInt("id_utilisateur")
+                        rs.getInt("id_utilisateur"),
+                        rs.getInt("id_reservation_mere")
                 );
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -30,7 +30,8 @@ public class ReservationService {
 
     public Reservation selectById(Connection conn, String id) {
         String query = "select * from reservation where id = " + id;
-        return this.select(conn, query).get(0);
+        List<Reservation> ll = this.select(conn, query);
+        return ll.isEmpty() ? null : ll.get(0);
     }
 
     public int getNbPlacesPris(Connection conn, int idTypeSiege) {

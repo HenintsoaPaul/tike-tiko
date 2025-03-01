@@ -24,7 +24,7 @@ public class VReservationService {
                         rs.getDouble("prix_sans_promo"),
                         rs.getDouble("val_promo"),
                         rs.getBoolean("is_promotion"),
-                        rs.getString("nom_client"),
+                        rs.getInt("id_utilisateur"),
                         rs.getString("img_passeport")
                 );
             } catch (SQLException e) {
@@ -33,8 +33,9 @@ public class VReservationService {
         });
     }
 
-    public List<VReservation> selectById(Connection conn, String id) {
-        return this.select(conn, "select * from v_reservation where id = " + id);
+    public VReservation selectById(Connection conn, String id) {
+        List<VReservation> ll = this.select(conn, "select * from v_reservation where id = " + id);
+        return ll.isEmpty() ? null : ll.get(0);
     }
 
     public List<VReservation> selectByUtilisateur(Connection conn, Utilisateur u) {
