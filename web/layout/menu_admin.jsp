@@ -67,7 +67,7 @@
         <li
                 <%
                     classes = menuItemClass;
-                    if (activePage.equals("volList") || activePage.equals("volDetail") || activePage.equals("volAdd")) {
+                    if (activePage.equals("boVolList") || activePage.equals("boVolDetail") || activePage.equals("volAdd")) {
                         classes += " active open";
                     }
                     out.print("class=\"" + classes + "\"");
@@ -81,7 +81,7 @@
                 <li
                         <%
                             classes = menuItemClass;
-                            if (activePage.equals("volList")) {
+                            if (activePage.equals("boVolList")) {
                                 classes += " active";
                             }
                             out.print("class=\"" + classes + "\"");
@@ -94,7 +94,7 @@
                 <li
                         <%
                             classes = menuItemClass;
-                            if (activePage.equals("volAdd")) {
+                            if (activePage.equals("boVolAdd")) {
                                 classes += " active";
                             }
                             out.print("class=\"" + classes + "\"");
