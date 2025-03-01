@@ -21,6 +21,7 @@ public class UtilisateurController {
     private final UtilisateurService utilisateurService = new UtilisateurService();
     private final DatabaseService databaseService = new DatabaseService();
 
+    // BackOffice
     @Get
     @UrlMapping(url = "logout")
     public String logout() {
@@ -28,7 +29,6 @@ public class UtilisateurController {
         return "redirect:GET:/login";
     }
 
-    // BackOffice
     @Get
     @UrlMapping(url = "login")
     public ModelView login() {
@@ -54,6 +54,13 @@ public class UtilisateurController {
     }
 
     // FrontOffice
+    @Get
+    @UrlMapping(url = "fo_logout")
+    public String fo_logout() {
+        summerSession.destroy();
+        return "redirect:GET:/fo_login";
+    }
+
     @Get
     @UrlMapping(url = "fo_login")
     public ModelView fo_login() {
