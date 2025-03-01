@@ -123,6 +123,8 @@ public class VolController {
             conn = databaseService.getConnection();
             conn.setAutoCommit(false);
 
+            volService.controller(vol);
+
             // 1/ insert vol
             int idVol = this.volService.insert(conn, vol);
             vol.setId(idVol);
@@ -146,7 +148,7 @@ public class VolController {
             conn.commit();
 
             return "redirect:GET:/vol_add";
-        } catch (SQLException e) {
+        } catch (Exception e) {
             assert conn != null;
             conn.rollback();
             throw new RuntimeException(e);

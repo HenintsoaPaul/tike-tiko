@@ -58,4 +58,16 @@ public class VolService {
         return vol.getHeure_depart()
                 .minusHours((long) minNbHeureAnnulation.getVal());
     }
+
+    public void controller(Vol vol) throws Exception {
+        // depart < arrivee
+        if (!vol.getHeure_depart().isBefore(vol.getHeure_arrivee())) {
+            throw new Exception("heure_depart must be before heure_arrivee");
+        }
+
+        // depart == arrivee
+        if (vol.getHeure_depart() == vol.getHeure_arrivee()) {
+            throw new Exception("heure_depart must be different to heure_arrivee");
+        }
+    }
 }
