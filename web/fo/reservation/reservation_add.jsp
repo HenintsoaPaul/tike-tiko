@@ -4,11 +4,17 @@
 <%@ page import="src.summer.beans.validation.ValidationLog" %>
 <%@ page import="src.summer.beans.validation.ValidationError" %>
 <%@ page import="java.util.Optional" %>
+<%@ page import="views.VVol" %>
+<%@ page import="entity.Utilisateur" %>
+<%@ page import="dto.PlaceDTO" %>
+<%@ page import="dto.ConfigDTO" %>
 <%
-    String idVol = (String) request.getAttribute("idVol");
+    Utilisateur client = (Utilisateur) request.getAttribute("utilisateur");
+    VVol v_vol = (VVol) request.getAttribute("v_vol");
 
-    int resteEco = (int) request.getAttribute("resteEco");
-    int resteBusiness = (int) request.getAttribute("resteBusiness");
+    PlaceDTO placeDTO = (PlaceDTO) request.getAttribute("placeDTO");
+
+    ConfigDTO configDTO = (ConfigDTO) request.getAttribute("configDTO");
 
     List<TypeSiege> typeSieges = (List<TypeSiege>) request.getAttribute("typeSieges");
 
@@ -84,7 +90,7 @@
                                                     <label>Vol</label>
                                                     <input type="number"
                                                            name="formData.id_vol"
-                                                           value="<%= idVol %>"
+                                                           value="<%= v_vol.getId() %>"
                                                            class="form-control"
                                                            readonly>
                                                 </div>
@@ -92,8 +98,14 @@
                                                     <label>Client:</label>
                                                     <input type="text"
                                                            name="formData.nom_client"
-                                                           value="Anonymous"
-                                                           class="form-control">
+                                                           value="<%= client.getNom() %>"
+                                                           class="form-control"
+                                                           readonly>
+                                                    <input type="hidden"
+                                                           name="formData.id_client"
+                                                           value="<%= client.getId() %>"
+                                                           class="form-control"
+                                                           readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -156,31 +168,89 @@
                             </div>
                         </div>
 
-                        <!-- Data -->
+                        <!-- Data vol -->
                         <div class="container mt-4">
-                            <h2 class="text-center">
-                                Places sur ce vol
-                            </h2>
+                            <h4 class="text-center">
+                                A propos du vol
+                            </h4>
                             <table class="table table-bordered table-striped mt-3">
-                                <thead>
+                                <thead class="thead-dark">
                                 <tr>
-                                    <th>Vol</th>
-                                    <th>Reste business</th>
-                                    <th>Reste eco</th>
+                                    <th>Avion</th>
+                                    <th>Ville Depart</th>
+                                    <th>Ville Destination</th>
+                                    <th>Heure Depart</th>
+                                    <th>Heure Arrivee</th>
+                                    <th>Prix place business</th>
+                                    <th>Prix place eco</th>
+                                    <th>Nb promo business</th>
+                                    <th>Nb promo eco</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td><%= idVol %>
+                                    <td><%= v_vol.getId_avion() %>
                                     </td>
-                                    <td><%= resteBusiness %>
+                                    <td><%= v_vol.getNom_ville_depart() %>
                                     </td>
-                                    <td><%= resteEco %>
+                                    <td><%= v_vol.getNom_ville_destination() %>
+                                    </td>
+                                    <td><%= v_vol.getHeure_depart() %>
+                                    </td>
+                                    <td><%= v_vol.getHeure_arrivee() %>
+                                    </td>
+                                    <td><%= v_vol.getPrix_place_business() %>
+                                    </td>
+                                    <td><%= v_vol.getPrix_place_eco() %>
+                                    </td>
+                                    <td><%= v_vol.getNb_place_promo_business() %>
+                                    </td>
+                                    <td><%= v_vol.getNb_place_promo_eco() %>
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
+
+                        <!-- Data Reste Places -->
+                        <div class="container mt-4">
+                            <h5 class="text-center">
+                                Places Restants
+                            </h5>
+                            <table class="table table-bordered table-striped mt-3">
+                                <thead>
+                                <tr>
+                                    <th>Limite Reservation</th>
+                                    <th>Limite Annulation</th>
+                                    <th>Confirmee business</th>
+                                    <th>Confirmee eco</th>
+                                    <th>En Attente business</th>
+                                    <th>En Attente eco</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <%= configDTO.getLimiteReservation() %>
+                                    </td>
+                                    <td>
+                                        <%= configDTO.getLimiteAnnulation() %>
+                                    </td>
+                                    <td><%= placeDTO.getValidatedBusiness() %>
+                                    </td>
+                                    <td><%= placeDTO.getValidatedEco() %>
+                                    </td>
+                                    <td><%= placeDTO.getPendingBusiness() %>
+                                    </td>
+                                    <td><%= placeDTO.getPendingEco() %>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <%-- Configs actuels --%>
+                        <%@ include file="/parts/current_config.jsp" %>
                     </div>
                 </div>
             </div>
@@ -195,7 +265,9 @@
 
 <!-- Overlay -->
 <div class="layout-overlay layout-menu-toggle"></div>
-<!-- / Layout wrapper -->
-
+<!-- script -->
+<div>
+    <%@ include file="/layout/script.jsp" %>
+</div>
 </body>
 </html>

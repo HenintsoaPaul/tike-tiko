@@ -1,15 +1,15 @@
 package myControllers;
 
-import entity.Avion;
-import entity.PlaceVol;
-import entity.Reservation;
-import entity.Vol;
+import dto.ConfigDTO;
+import dto.PlaceDTO;
+import entity.*;
 import entity.config.MinNbHeureAnnulation;
 import entity.config.MinNbHeureReservation;
 import form.ReservationFormData;
 import service.*;
 import service.config.MinNbHeureAnnulationService;
 import service.config.MinNbHeureReservationService;
+import service.config.PourcentagePromotionService;
 import src.summer.annotations.Validate;
 import src.summer.annotations.controller.Controller;
 import src.summer.annotations.controller.UrlMapping;
@@ -17,7 +17,9 @@ import src.summer.annotations.controller.verb.Get;
 import src.summer.annotations.controller.verb.Post;
 import src.summer.beans.ModelView;
 import src.summer.annotations.Param;
+import src.summer.beans.SummerSession;
 import views.VReservation;
+import views.VVol;
 
 
 import java.sql.Connection;
@@ -28,10 +30,12 @@ import java.util.List;
 @Controller
 public class ReservationController {
 
+    private final PourcentagePromotionService pourcentagePromotionService = new PourcentagePromotionService();
     private final MinNbHeureAnnulationService minNbHeureAnnulationService = new MinNbHeureAnnulationService();
     private final MinNbHeureReservationService minNbHeureReservationService = new MinNbHeureReservationService();
     private final TypeSiegeService typeSiegeService = new TypeSiegeService();
 
+    private final VVolService vVolService = new VVolService();
     private final VolService volService = new VolService();
     private final AvionService avionService = new AvionService();
     private final PlaceVolService placeVolService = new PlaceVolService();
@@ -42,14 +46,18 @@ public class ReservationController {
     private final DatabaseService databaseService = new DatabaseService();
 
     private void fetchData(Connection conn, ModelView mv, String idReservation) {
-        List<VReservation> vReservations = vReservationService.select(conn, "select * from v_reservation where id = " + idReservation);
-        VReservation vr = vReservations.isEmpty() ? null : vReservations.get(0);
-        mv.addObject("vReservation", vr);
+        VReservation vReservation = vReservationService.selectById(conn, idReservation);
+        VVol vVol = vVolService.selectById(conn, String.valueOf(vReservation.getId_vol()));
+
+        mv.addObject("vReservation", vReservation);
+        mv.addObject("v_vol", vVol);
     }
+
+    private SummerSession summerSession;
 
     @Get
     @UrlMapping(url = "reservation_detail")
-    public ModelView list(
+    public ModelView reservation_detail(
             @Param(name = "id") String idReservation
     ) {
         try (Connection conn = databaseService.getConnection()) {
@@ -63,40 +71,18 @@ public class ReservationController {
         }
     }
 
+    // FrontOffice
     @Get
-    @UrlMapping(url = "reservation_cancel")
-    public ModelView cancel(
-            @Param(name = "idReservation") String idReservation,
-            @Param(name = "idVol") String idVol,
-            @Param(name = "dateAnnulation") LocalDateTime dateAnnulation
-    ) {
+    @UrlMapping(url = "fo_reservation_list")
+    public ModelView fo_reservation_list() {
         try (Connection conn = databaseService.getConnection()) {
-            ModelView mv = new ModelView("fo/reservation/reservation_detail.jsp", null);
+            ModelView mv = new ModelView("fo/reservation/reservation_list.jsp", null);
 
-            // annulation
-            // is possible
-            MinNbHeureAnnulation minNbHeureAnnulation = this.minNbHeureAnnulationService.selectCurrent(conn);
-            Vol vol = this.volService.selectById(conn, idVol);
-            LocalDateTime heureAnnulationLimite = vol.getHeure_depart().plusHours((long) minNbHeureAnnulation.getVal());
+            // get user id from session
+            Utilisateur u = (Utilisateur) summerSession.getAttribute("utilisateur");
+            List<VReservation> vReservations = vReservationService.selectByUtilisateur(conn, u);
 
-            boolean isLate = heureAnnulationLimite.isBefore(dateAnnulation);
-            if (!isLate) {
-                System.out.println("Annulation begins...");
-
-                Reservation reservation = this.reservationService.select(conn, "select * from reservation where id = " + idReservation).get(0);
-                reservation.setId_etat_reservation(2);
-                this.reservationService.update(conn, reservation);
-
-                System.out.println("Annulation ends...");
-            } else {
-                throw new IllegalArgumentException("Annulation Impossible car l'heure limite d'annulation a ete depassee.");
-            }
-
-            // message
-            // annulation
-
-            fetchData(conn, mv, idReservation);
-
+            mv.addObject("vReservations", vReservations);
             return mv;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -105,22 +91,19 @@ public class ReservationController {
 
     @Get
     @UrlMapping(url = "reservation_add")
-    public ModelView add(
+    public ModelView reservation_add(
             @Param(name = "idVol") String idVol
     ) {
         try (Connection conn = databaseService.getConnection()) {
             ModelView mv = new ModelView("fo/reservation/reservation_add.jsp", null);
 
-            mv.addObject("typeSieges", typeSiegeService.selectAll(conn));
-            mv.addObject("idVol", idVol);
-
             Vol vol = this.volService.selectById(conn, idVol);
-            Avion avion = this.avionService.selectById(conn, vol.getId_avion());
+            mv.addObject("placeDTO", new PlaceDTO(conn, reservationService, vol));
+            mv.addObject("configDTO", new ConfigDTO(conn, pourcentagePromotionService, minNbHeureReservationService, minNbHeureAnnulationService, vol));
 
-            int nbPlacesPrisBusiness = reservationService.getNbPlacesPris(conn, 1),
-                    nbPlacesPrisEco = reservationService.getNbPlacesPris(conn, 2);
-            mv.addObject("resteBusiness", avion.getSiege_business() - nbPlacesPrisBusiness);
-            mv.addObject("resteEco", avion.getSiege_eco() - nbPlacesPrisEco);
+            mv.addObject("v_vol", vVolService.selectById(conn, idVol));
+            mv.addObject("typeSieges", typeSiegeService.selectAll(conn));
+            mv.addObject("utilisateur", summerSession.getAttribute("utilisateur"));
 
             return mv;
         } catch (SQLException e) {
@@ -128,52 +111,81 @@ public class ReservationController {
         }
     }
 
+    @Get
+    @UrlMapping(url = "reservation_cancel")
+    public String cancel(
+            @Param(name = "idReservation") String idReservation,
+            @Param(name = "idVol") String idVol,
+            @Param(name = "dateAnnulation") LocalDateTime dateAnnulation
+    ) {
+        try (Connection conn = databaseService.getConnection()) {
+            Vol vol = this.volService.selectById(conn, idVol);
+            MinNbHeureAnnulation minNbHeureAnnulation = this.minNbHeureAnnulationService.selectCurrent(conn);
+
+            boolean isLate = volService.getLimiteAnnulation(vol, minNbHeureAnnulation)
+                    .isBefore(dateAnnulation);
+
+            if (!isLate) {
+                Reservation reservationMere = this.reservationService.selectById(conn, idReservation);
+
+                int etatCanceled = 2;
+                this.reservationService.insert(conn, new Reservation(reservationMere, etatCanceled));
+            } else {
+                throw new IllegalArgumentException("Annulation Impossible car l'heure limite d'annulation a ete depassee.");
+            }
+
+            // message
+            // annulation
+
+            return "redirect:GET:/reservation_list";
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Post
     @UrlMapping(url = "reservation_save")
-    public ModelView save(
+    public String save(
             @Validate(errorPage = "reservation_add?idVol=2")
             // todo maka nlay params nle url de redirection dynamiquement...
             @Param(name = "formData") ReservationFormData reservationFormData
     ) {
         try (Connection conn = databaseService.getConnection()) {
-            ModelView mv = new ModelView("fo/reservation/reservation_detail.jsp", null);
-
-            // isLate
-            System.out.println("id_vol: " + reservationFormData.getId_vol());
-            System.out.println("tpsiege: " + reservationFormData.getId_type_siege());
-            System.out.println("date: " + reservationFormData.getDate_reservation());
+            if (reservationService.getNbReservationsFaits(conn, reservationFormData) != 0) {
+                throw new IllegalArgumentException("Vous avez deja reservez ce vol.");
+            }
 
             MinNbHeureReservation minNbHeureReservation = minNbHeureReservationService.selectCurrent(conn);
-
             Vol vol = this.volService.selectById(conn, String.valueOf(reservationFormData.getId_vol()));
-            LocalDateTime heureReservationLimite = vol.getHeure_depart().minusHours((long) minNbHeureReservation.getVal());
+
+            LocalDateTime heureReservationLimite = volService.getLimiteReservation(vol, minNbHeureReservation);
+
             boolean isLate = heureReservationLimite.isBefore(reservationFormData.getDate_reservation());
+            System.out.println("Limite: " + heureReservationLimite + " | res: " + reservationFormData.getDate_reservation());
 
             if (!isLate) {
-                PlaceVol placeVol = placeVolService.selectNextPlaceLibre(conn, String.valueOf(reservationFormData.getId_vol()), String.valueOf(reservationFormData.getId_type_siege()));
+                PlaceVol placeVol = placeVolService.selectNextPlaceLibre(
+                        conn,
+                        String.valueOf(reservationFormData.getId_vol()),
+                        String.valueOf(reservationFormData.getId_type_siege())
+                );
                 if (placeVol == null) {
-                    throw new IllegalArgumentException("Reservation Impossible car ya plus de place de ce type sur ce vol.");
+                    throw new IllegalArgumentException("Reservation Impossible car toutes les places ont ete deja prises.");
                 }
 
                 // save reservation
-                Reservation reservation = new Reservation();
-                reservation.setId_etat_reservation(3);
-                reservation.setId_place_vol(placeVol.getId());
-                reservation.setNom_client(reservationFormData.getNom_client());
-                reservation.setHeure_reservation(reservationFormData.getDate_reservation());
-
+                Reservation reservation = new Reservation(placeVol, reservationFormData);
                 int idRes = reservationService.insert(conn, reservation);
 
                 // set nom client for place_vol
                 placeVol.setNom_client(reservationFormData.getNom_client());
                 placeVolService.update(conn, placeVol);
 
-                fetchData(conn, mv, String.valueOf(idRes));
+                return "redirect:GET:/reservation_list";
             } else {
                 throw new IllegalArgumentException("Reservation Impossible car l'heure limite est depassee.");
             }
 
-            return mv;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

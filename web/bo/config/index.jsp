@@ -1,5 +1,5 @@
 <%
-    pageContext.setAttribute("activePage", "volAdd");
+    pageContext.setAttribute("activePage", "boConfig");
 %>
 
 <!DOCTYPE html>
@@ -44,10 +44,16 @@
                 <div class="container-xxl flex-grow-1 container-p-y">
                     <%-- promotion --%>
                     <%@ include file="/bo/config/promotion.jsp" %>
-                    <%-- annulation --%>
-                    <%@ include file="/bo/config/annulation.jsp" %>
-                    <%-- reservation --%>
-                    <%@ include file="/bo/config/reservation.jsp" %>
+                    <div class="row">
+                        <div class="col-6">
+                            <%-- annulation --%>
+                            <%@ include file="/bo/config/annulation.jsp" %>
+                        </div>
+                        <div class="col-6">
+                            <%-- reservation --%>
+                            <%@ include file="/bo/config/reservation.jsp" %>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- / Content -->
@@ -63,5 +69,9 @@
 <div class="layout-overlay layout-menu-toggle"></div>
 <!-- / Layout wrapper -->
 
+<!-- script -->
+<div>
+    <%@ include file="/layout/script.jsp" %>
+</div>
 </body>
 </html>

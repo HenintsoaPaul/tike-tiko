@@ -14,12 +14,15 @@ public class Utilisateur {
     @Required
     String password;
 
-    public Utilisateur() {
-    }
+    int auth_level;
 
-    public Utilisateur(String nom, String password) {
+    public Utilisateur() {}
+
+    public Utilisateur(int id, String nom, String password, int authLevel) {
+        this.id = id;
         this.nom = nom;
         this.password = password;
+        this.auth_level = authLevel;
     }
 
     // Getters n Setters
@@ -53,5 +56,13 @@ public class Utilisateur {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public int getAuth_level() {
+        return auth_level;
+    }
+
+    public void setAuth_level(int auth_level) {
+        this.auth_level = auth_level;
     }
 }

@@ -1,14 +1,15 @@
 <%@ page import="views.VVol" %>
-<%@ page import="java.util.List" %>
-<%@ page import="entity.Avion" %>
-<%@ page import="entity.Ville" %>
+<%@ page import="java.time.LocalDateTime" %>
+<%@ page import="dto.PlaceDTO" %>
 <%
-    List<VVol> vvols = (List<VVol>) request.getAttribute("vvols");
+    VVol v_vol = (VVol) request.getAttribute("v_vol");
 
-    List<Ville> villes = (List<Ville>) request.getAttribute("villes");
-    List<Avion> avions = (List<Avion>) request.getAttribute("avions");
+    PlaceDTO placeDTO = (PlaceDTO) request.getAttribute("placeDTO");
 
-    pageContext.setAttribute("activePage", "boVolList");
+    LocalDateTime limiteReservation = (LocalDateTime) request.getAttribute("limiteReservation");
+    LocalDateTime limiteAnnulation = (LocalDateTime) request.getAttribute("limiteAnnulation");
+
+    pageContext.setAttribute("activePage", "boVolDetail");
 %>
 
 <!DOCTYPE html>
@@ -28,7 +29,7 @@
             content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Nos Vols</title>
+    <title>Detail vol</title>
 
     <div>
         <%@ include file="/layout/link_header.jsp" %>
@@ -52,14 +53,11 @@
                 <!-- Content -->
                 <div class="container-xxl flex-grow-1 container-p-y">
                     <div class="row">
-                        <%-- Filtre --%>
-                        <%@ include file="/parts/filtre_vol.jsp" %>
-
-                        <!-- Data -->
+                        <!-- Data vol -->
                         <div class="container mt-4">
-                            <h2 class="text-center">
-                                Nos vols
-                            </h2>
+                            <h4 class="text-center">
+                                Detail vol
+                            </h4>
                             <table class="table table-bordered table-striped mt-3">
                                 <thead class="thead-dark">
                                 <tr>
@@ -76,12 +74,8 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <% for (VVol v_vol : vvols) { %>
                                 <tr>
-                                    <td>
-                                        <a href="vol_detail?idVol=<%= v_vol.getId() %>">
-                                            <%= v_vol.getId() %>
-                                        </a>
+                                    <td><%= v_vol.getId() %>
                                     </td>
                                     <td><%= v_vol.getId_avion() %>
                                     </td>
@@ -102,7 +96,41 @@
                                     <td><%= v_vol.getNb_place_promo_eco() %>
                                     </td>
                                 </tr>
-                                <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Data Reste Places -->
+                        <div class="container mt-4">
+                            <h5 class="text-center">
+                                Informations Supplementaires
+                            </h5>
+                            <table class="table table-bordered table-striped mt-3">
+                                <thead>
+                                <tr>
+                                    <th>Limite Reservation</th>
+                                    <th>Limite Annulation</th>
+                                    <th>Confirmee business</th>
+                                    <th>Confirmee eco</th>
+                                    <th>En Attente business</th>
+                                    <th>En Attente eco</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><%= limiteReservation %>
+                                    </td>
+                                    <td><%= limiteAnnulation %>
+                                    </td>
+                                    <td><%= placeDTO.getValidatedBusiness() %>
+                                    </td>
+                                    <td><%= placeDTO.getValidatedEco() %>
+                                    </td>
+                                    <td><%= placeDTO.getPendingBusiness() %>
+                                    </td>
+                                    <td><%= placeDTO.getPendingEco() %>
+                                    </td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -120,8 +148,6 @@
 
 <!-- Overlay -->
 <div class="layout-overlay layout-menu-toggle"></div>
-<!-- / Layout wrapper -->
-
 <!-- script -->
 <div>
     <%@ include file="/layout/script.jsp" %>
