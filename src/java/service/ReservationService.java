@@ -34,12 +34,23 @@ public class ReservationService {
         return ll.isEmpty() ? null : ll.get(0);
     }
 
-    public int getNbPlacesPris(Connection conn, int idTypeSiege) {
+    /**
+     * Retourne le nombre de place avec etat_reservation confirmee.
+     */
+    public int getNbReservationConfirme(Connection conn, int idTypeSiege, int idVol) {
+        return this.getNbReservation(conn, idTypeSiege, idVol, 3);
+    }
+
+    /**
+     * Retourne le nombre de place en fonction etat_reservation.
+     */
+    public int getNbReservation(Connection conn, int idTypeSiege, int idVol, int idEtatReservation) {
         String query = "select count(r.id) " +
                 "from reservation r " +
                 "         join place_vol pv on pv.id = r.id_place_vol " +
-                "where r.nom_client is not null " +
-                "  and id_type_siege =" + idTypeSiege;
+                "where r.id_etat_reservation = " + idEtatReservation +
+                " and id_type_siege =" + idTypeSiege +
+                " and id_vol = " + idVol;
         return this.databaseService.select(conn, query, rs -> {
             try {
                 return rs.getInt(1);
