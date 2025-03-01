@@ -1,6 +1,7 @@
 package service;
 
 import entity.Reservation;
+import form.ReservationFormData;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -58,6 +59,37 @@ public class ReservationService {
                 throw new RuntimeException(e);
             }
         }).get(0);
+    }
+
+    /**
+     * Retourne le nombre de reservation faits par un client sur un vol.
+     */
+    private int getNbReservationsFaits(Connection conn, int idUtilisateur, int idVol) {
+        String reservationsUser = "select r.*" +
+                "               from reservation r" +
+                "                        join utilisateur u on r.id_utilisateur = u.id" +
+                "               where u.id = " + idUtilisateur;
+
+        String query = "select count(pv.id)" +
+                "from place_vol pv" +
+                "         join vol v on pv.id_vol = v.id" +
+                "         join ("+reservationsUser+") rs on rs.id_place_vol = pv.id " +
+                "where v.id = " + idVol;
+
+        return this.databaseService.select(conn, query, rs -> {
+            try {
+                return rs.getInt(1);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }).get(0);
+    }
+
+    /**
+     * Retourne le nombre de reservation faits par un client sur un vol.
+     */
+    public int getNbReservationsFaits(Connection conn, ReservationFormData reservationFormData) {
+        return this.getNbReservationsFaits(conn, reservationFormData.getId_client(), reservationFormData.getId_vol());
     }
 
     public int insert(Connection conn, Reservation reservation) {

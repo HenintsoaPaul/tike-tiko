@@ -161,6 +161,10 @@ public class ReservationController {
             @Param(name = "formData") ReservationFormData reservationFormData
     ) {
         try (Connection conn = databaseService.getConnection()) {
+            if (reservationService.getNbReservationsFaits(conn, reservationFormData) != 0) {
+                throw new IllegalArgumentException("Vous avez deja reservez ce vol.");
+            }
+
             MinNbHeureReservation minNbHeureReservation = minNbHeureReservationService.selectCurrent(conn);
             Vol vol = this.volService.selectById(conn, String.valueOf(reservationFormData.getId_vol()));
 

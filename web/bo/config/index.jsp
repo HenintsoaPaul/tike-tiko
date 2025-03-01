@@ -63,5 +63,9 @@
 <div class="layout-overlay layout-menu-toggle"></div>
 <!-- / Layout wrapper -->
 
+<!-- script -->
+<div>
+    <%@ include file="/layout/script.jsp" %>
+</div>
 </body>
 </html>
