@@ -67,7 +67,7 @@
         <li
                 <%
                     classes = menuItemClass;
-                    if (activePage.equals("boVolList") || activePage.equals("boVolDetail") || activePage.equals("volAdd")) {
+                    if (activePage.equals("boVolList") || activePage.equals("boVolDetail") || activePage.equals("boVolAdd")) {
                         classes += " active open";
                     }
                     out.print("class=\"" + classes + "\"");

@@ -1,10 +1,15 @@
 package myControllers;
 
+import dto.PlaceDTO;
 import entity.Avion;
 import entity.Vol;
+import entity.config.MinNbHeureAnnulation;
+import entity.config.MinNbHeureReservation;
 import entity.config.PourcentagePromotion;
 import form.VolFilterFormData;
 import service.*;
+import service.config.MinNbHeureAnnulationService;
+import service.config.MinNbHeureReservationService;
 import service.config.PourcentagePromotionService;
 import src.summer.annotations.Authorized;
 import src.summer.annotations.Param;
@@ -21,9 +26,11 @@ import java.sql.SQLException;
 @Controller
 public class VolController {
 
+    private final MinNbHeureReservationService minNbHeureReservationService = new MinNbHeureReservationService();
+    private final MinNbHeureAnnulationService minNbHeureAnnulationService = new MinNbHeureAnnulationService();
     private final PourcentagePromotionService promotionService = new PourcentagePromotionService();
     private final PlaceVolService placeService = new PlaceVolService();
-
+    private final ReservationService reservationService = new ReservationService();
     private final AvionService avionService = new AvionService();
     private final VilleService villeService = new VilleService();
     private final VolService volService = new VolService();
@@ -143,7 +150,6 @@ public class VolController {
 
             System.out.println("Insert placesBusiness = " + placesBusiness);
             System.out.println("Insert placesEco = " + placesEco);
-            // todo ...
 
             conn.commit();
 
@@ -151,6 +157,31 @@ public class VolController {
         } catch (Exception e) {
             assert conn != null;
             conn.rollback();
+            throw new RuntimeException(e);
+        }
+    }
+
+    // BackOffice
+    @Get
+    @UrlMapping(url = "vol_detail")
+    public ModelView vol_detail(
+            @Param(name = "idVol") String idVol
+    ) {
+        try (Connection conn = databaseService.getConnection()) {
+            ModelView mv = new ModelView("bo/vol/vol_detail.jsp", null);
+
+            Vol vol = this.volService.selectById(conn, idVol);
+            mv.addObject("placeDTO", new PlaceDTO(conn, reservationService, vol));
+
+            MinNbHeureReservation minNbHeureReservation = minNbHeureReservationService.selectCurrent(conn);
+            mv.addObject("limiteReservation", vol.getHeure_depart().minusHours((long) minNbHeureReservation.getVal()));
+
+            MinNbHeureAnnulation minNbHeureAnnulation = minNbHeureAnnulationService.selectCurrent(conn);
+            mv.addObject("limiteAnnulation", vol.getHeure_depart().minusHours((long) minNbHeureAnnulation.getVal()));
+
+            mv.addObject("v_vol", vVolService.selectById(conn, idVol));
+            return mv;
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
