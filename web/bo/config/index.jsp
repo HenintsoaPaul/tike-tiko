@@ -44,10 +44,16 @@
                 <div class="container-xxl flex-grow-1 container-p-y">
                     <%-- promotion --%>
                     <%@ include file="/bo/config/promotion.jsp" %>
-                    <%-- annulation --%>
-                    <%@ include file="/bo/config/annulation.jsp" %>
-                    <%-- reservation --%>
-                    <%@ include file="/bo/config/reservation.jsp" %>
+                    <div class="row">
+                        <div class="col-6">
+                            <%-- annulation --%>
+                            <%@ include file="/bo/config/annulation.jsp" %>
+                        </div>
+                        <div class="col-6">
+                            <%-- reservation --%>
+                            <%@ include file="/bo/config/reservation.jsp" %>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- / Content -->

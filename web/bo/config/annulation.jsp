@@ -8,7 +8,7 @@
 <%-- promotion --%>
 <div class="card mt-4">
     <h3 class="card-header">
-        Heure limite de reservation
+        Heure limite d'annulation
     </h3>
     <div class="card-body">
         <table class="table table-hover">
