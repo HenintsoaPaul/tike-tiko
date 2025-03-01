@@ -40,4 +40,7 @@ public class VVolService {
         return this.select(conn, query);
     }
 
+    public VVol selectById(Connection conn, String id) {
+        return this.select(conn, "select * from v_vol where id = " + id ).get(0);
+    }
 }

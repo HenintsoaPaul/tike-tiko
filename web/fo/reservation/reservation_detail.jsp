@@ -1,8 +1,11 @@
 <%@ page import="views.VReservation" %>
+<%@ page import="views.VVol" %>
 <%
     VReservation vReservation = (VReservation) request.getAttribute("vReservation");
 
-    pageContext.setAttribute("activePage", "reservationDetail");
+    VVol v_vol = (VVol) request.getAttribute("v_vol");
+
+    pageContext.setAttribute("activePage", "foReservationDetail");
 %>
 
 <!DOCTYPE html>
@@ -105,6 +108,10 @@
                                                    name="passeportFile"
                                                    class="form-control"
                                                    required>
+
+                                            <input type="hidden"
+                                                   name="idReservation"
+                                                   value="<%= vReservation.getId() %>">
                                         </div>
 
                                         <button type="submit" class="btn btn-success">
@@ -115,7 +122,7 @@
                             </div>
                         </div>
 
-                        <!-- Data -->
+                        <!-- Data Reservation -->
                         <div class="container mt-4">
                             <h2 class="text-center">
                                 Detail Reservation
@@ -123,22 +130,17 @@
                             <table class="table table-bordered table-striped mt-3">
                                 <thead class="thead-dark">
                                 <tr>
-                                    <th>Id vol</th>
-                                    <th>Client</th>
                                     <th>Type Siege</th>
                                     <th>Date Reservation</th>
                                     <th>Prix sans promo</th>
                                     <th>Prix avec promo</th>
+                                    <th>Obtenu promo</th>
                                     <th>Etat Reservation</th>
                                     <th>Passeport</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td><%= vReservation.getId_vol() %>
-                                    </td>
-                                    <td><%= vReservation.getNom_client() %>
-                                    </td>
                                     <td><%= vReservation.getNom_type_siege() %>
                                     </td>
                                     <td><%= vReservation.getHeure_reservation() %>
@@ -147,10 +149,59 @@
                                     </td>
                                     <td><%= vReservation.getPrix_avec_promo() %>
                                     </td>
+                                    <td><%= vReservation.isIs_promotion() %>
+                                    </td>
                                     <td><%= vReservation.getNom_etat_reservation() %>
                                     </td>
                                     <td>
                                         <%= vReservation.getImg_passeport() %>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Data vol -->
+                        <div class="container mt-4">
+                            <h4 class="text-center">
+                                A propos du vol
+                            </h4>
+                            <table class="table table-bordered table-striped mt-3">
+                                <thead class="thead-dark">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Avion</th>
+                                    <th>Ville Depart</th>
+                                    <th>Ville Destination</th>
+                                    <th>Heure Depart</th>
+                                    <th>Heure Arrivee</th>
+                                    <th>Prix place business</th>
+                                    <th>Prix place eco</th>
+                                    <th>Nb promo business</th>
+                                    <th>Nb promo eco</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><%= v_vol.getId() %>
+                                    </td>
+                                    <td><%= v_vol.getId_avion() %>
+                                    </td>
+                                    <td><%= v_vol.getNom_ville_depart() %>
+                                    </td>
+                                    <td><%= v_vol.getNom_ville_destination() %>
+                                    </td>
+                                    <td><%= v_vol.getHeure_depart() %>
+                                    </td>
+                                    <td><%= v_vol.getHeure_arrivee() %>
+                                    </td>
+                                    <td><%= v_vol.getPrix_place_business() %>
+                                    </td>
+                                    <td><%= v_vol.getPrix_place_eco() %>
+                                    </td>
+                                    <td><%= v_vol.getNb_place_promo_business() %>
+                                    </td>
+                                    <td><%= v_vol.getNb_place_promo_eco() %>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -173,6 +224,8 @@
 <!-- / Layout wrapper -->
 
 <!-- script -->
-<div th:replace="~{layout/script}"></div>
+<div>
+    <%@ include file="/layout/script.jsp" %>
+</div>
 </body>
 </html>

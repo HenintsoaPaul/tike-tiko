@@ -12,10 +12,11 @@ CREATE TABLE type_siege
 
 CREATE TABLE utilisateur
 (
-    id       SERIAL PRIMARY KEY,
-    nom      VARCHAR(100) NOT NULL,
-    email      VARCHAR(100) NOT NULL,
-    password VARCHAR(100) NOT NULL
+    id            SERIAL PRIMARY KEY,
+    nom           VARCHAR(100) NOT NULL,
+    email         VARCHAR(100) NOT NULL,
+    password      VARCHAR(100) NOT NULL,
+    auth_level    INTEGER DEFAULT 0
 );
 
 CREATE TABLE pourcentage_promotion
@@ -86,8 +87,9 @@ CREATE TABLE reservation
     id                  SERIAL PRIMARY KEY,
     id_etat_reservation INT REFERENCES etat_reservation (id),
     id_place_vol        INT REFERENCES place_vol (id),
-    nom_client          VARCHAR(100),
-    img_passeport       VARCHAR(100),
+    id_utilisateur      INT REFERENCES utilisateur (id),
+    id_reservation_mere INT REFERENCES reservation (id),
+    img_passeport       TEXT,
     heure_reservation   TIMESTAMP NOT NULL
 );
 
@@ -102,7 +104,8 @@ from vol v
          left join ville vldest on v.id_ville_destination = vldest.id;
 
 create or replace view v_pourcentage_promotion as
-select pp.*, ts.nom as nom_type_siege
+select pp.*,
+       ts.nom as nom_type_siege
 from pourcentage_promotion pp
          join type_siege ts on pp.id_type_siege = ts.id;
 
@@ -116,8 +119,9 @@ select r.id,
        pv.prix_sans_promo,
        pv.is_promotion,
        pp.val as val_promo,
-       r.nom_client,
-       r.img_passeport
+       r.id_utilisateur,
+       r.img_passeport,
+       r.id_reservation_mere
 from reservation r
          join etat_reservation er on r.id_etat_reservation = er.id
          join place_vol pv on r.id_place_vol = pv.id
@@ -139,9 +143,10 @@ INSERT INTO type_siege (nom)
 VALUES ('Business'),
        ('Économique');
 
-INSERT INTO utilisateur (nom, password, email)
-VALUES ('rakoto', 'rakoto123', 'rakoto@gmail.com'),
-       ('rabe', 'rabe123', 'rabe@gmail.com');
+INSERT INTO utilisateur (nom, password, email, auth_level)
+VALUES ('rakoto', 'rakoto123', 'rakoto@gmail.com', 10),
+       ('rabe', 'rabe123', 'rabe@gmail.com', 5),
+       ('client1', 'client1', 'client1@gmail.com', 0);
 
 INSERT INTO pourcentage_promotion (id_type_siege, val, date_modification)
 VALUES (1, 20, NOW()),

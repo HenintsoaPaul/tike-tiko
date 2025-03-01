@@ -19,7 +19,7 @@
         lastInput = (Vol) vLog.getLastInput();
     }
 
-    pageContext.setAttribute("activePage", "volAdd");
+    pageContext.setAttribute("activePage", "boVolAdd");
 %>
 
 <!DOCTYPE html>
@@ -290,6 +290,7 @@
                             <table class="table table-bordered table-striped mt-3">
                                 <thead class="thead-dark">
                                 <tr>
+                                    <th>Id</th>
                                     <th>Avion</th>
                                     <th>Ville Depart</th>
                                     <th>Ville Destination</th>
@@ -304,6 +305,11 @@
                                 <tbody>
                                 <% for (VVol v_vol : vvols) { %>
                                 <tr>
+                                    <td>
+                                        <a href="vol_detail?idVol=<%= v_vol.getId() %>">
+                                            <%= v_vol.getId() %>
+                                        </a>
+                                    </td>
                                     <td><%= v_vol.getId_avion() %>
                                     </td>
                                     <td><%= v_vol.getNom_ville_depart() %>
@@ -342,6 +348,9 @@
 <!-- Overlay -->
 <div class="layout-overlay layout-menu-toggle"></div>
 <!-- / Layout wrapper -->
-
+<!-- script -->
+<div>
+    <%@ include file="/layout/script.jsp" %>
+</div>
 </body>
 </html>

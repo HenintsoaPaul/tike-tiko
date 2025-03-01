@@ -18,6 +18,7 @@ public class DatabaseService {
     public <T> List<T> select(Connection conn, String query, Function<ResultSet, T> rowMapper) {
         List<T> results = new ArrayList<>();
         try {
+            System.out.println("Will execute : " + query);
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
 
