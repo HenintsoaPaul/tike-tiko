@@ -108,6 +108,10 @@
                                                    name="passeportFile"
                                                    class="form-control"
                                                    required>
+
+                                            <input type="hidden"
+                                                   name="idReservation"
+                                                   value="<%= vReservation.getId() %>">
                                         </div>
 
                                         <button type="submit" class="btn btn-success">

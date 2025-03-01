@@ -1,10 +1,13 @@
 package service;
 
 import entity.Vol;
+import entity.config.MinNbHeureAnnulation;
+import entity.config.MinNbHeureReservation;
 import form.VolFilterFormData;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class VolService {
@@ -46,4 +49,13 @@ public class VolService {
         return this.databaseService.insert(conn, "vol", vol);
     }
 
+    public LocalDateTime getLimiteReservation(Vol vol, MinNbHeureReservation minNbHeureReservation) {
+        return vol.getHeure_depart()
+                .minusHours((long) minNbHeureReservation.getVal());
+    }
+
+    public LocalDateTime getLimiteAnnulation(Vol vol, MinNbHeureAnnulation minNbHeureAnnulation) {
+        return vol.getHeure_depart()
+                .minusHours((long) minNbHeureAnnulation.getVal());
+    }
 }

@@ -96,11 +96,17 @@ public class ReservationController {
             Vol vol = this.volService.selectById(conn, idVol);
             Avion avion = this.avionService.selectById(conn, vol.getId_avion());
 
-            int nbPlacesPrisBusiness = reservationService.getNbPlacesPris(conn, 1, vol.getId()),
-                    nbPlacesPrisEco = reservationService.getNbPlacesPris(conn, 2, vol.getId());
+            int nbPlacesPrisBusiness = reservationService.getNbReservationConfirme(conn, 1, vol.getId()),
+                    nbPlacesPrisEco = reservationService.getNbReservationConfirme(conn, 2, vol.getId());
+
+            int nbPlacesAttenteBusiness = reservationService.getNbReservation(conn, 1, vol.getId(), 1),
+                    nbPlacesAttenteEco = reservationService.getNbReservation(conn, 2, vol.getId(), 1);
 
             mv.addObject("resteBusiness", avion.getSiege_business() - nbPlacesPrisBusiness);
             mv.addObject("resteEco", avion.getSiege_eco() - nbPlacesPrisEco);
+
+            mv.addObject("attenteBusiness", nbPlacesAttenteBusiness);
+            mv.addObject("attenteEco", nbPlacesAttenteEco);
 
             mv.addObject("idVol", idVol);
             mv.addObject("v_vol", vVolService.selectById(conn, idVol));
@@ -123,22 +129,17 @@ public class ReservationController {
             @Param(name = "dateAnnulation") LocalDateTime dateAnnulation
     ) {
         try (Connection conn = databaseService.getConnection()) {
-            // is possible
-            MinNbHeureAnnulation minNbHeureAnnulation = this.minNbHeureAnnulationService.selectCurrent(conn);
             Vol vol = this.volService.selectById(conn, idVol);
-            LocalDateTime heureAnnulationLimite = vol.getHeure_depart().plusHours((long) minNbHeureAnnulation.getVal());
+            MinNbHeureAnnulation minNbHeureAnnulation = this.minNbHeureAnnulationService.selectCurrent(conn);
 
-            boolean isLate = heureAnnulationLimite.isBefore(dateAnnulation);
+            boolean isLate = volService.getLimiteAnnulation(vol, minNbHeureAnnulation)
+                    .isBefore(dateAnnulation);
+
             if (!isLate) {
-                System.out.println("Annulation begins...");
-
                 Reservation reservationMere = this.reservationService.selectById(conn, idReservation);
+
                 int etatCanceled = 2;
-                Reservation canceled = new Reservation(reservationMere, etatCanceled);
-
-                this.reservationService.insert(conn, canceled);
-
-                System.out.println("Annulation ends...");
+                this.reservationService.insert(conn, new Reservation(reservationMere, etatCanceled));
             } else {
                 throw new IllegalArgumentException("Annulation Impossible car l'heure limite d'annulation a ete depassee.");
             }
@@ -160,13 +161,10 @@ public class ReservationController {
             @Param(name = "formData") ReservationFormData reservationFormData
     ) {
         try (Connection conn = databaseService.getConnection()) {
-            ModelView mv = new ModelView("fo/reservation/reservation_detail.jsp", null);
-
-            // isLate
             MinNbHeureReservation minNbHeureReservation = minNbHeureReservationService.selectCurrent(conn);
-
             Vol vol = this.volService.selectById(conn, String.valueOf(reservationFormData.getId_vol()));
-            LocalDateTime heureReservationLimite = vol.getHeure_depart().minusHours((long) minNbHeureReservation.getVal());
+
+            LocalDateTime heureReservationLimite = volService.getLimiteReservation(vol, minNbHeureReservation);
 
             boolean isLate = heureReservationLimite.isBefore(reservationFormData.getDate_reservation());
             System.out.println("Limite: " + heureReservationLimite + " | res: " + reservationFormData.getDate_reservation());
@@ -178,7 +176,7 @@ public class ReservationController {
                         String.valueOf(reservationFormData.getId_type_siege())
                 );
                 if (placeVol == null) {
-                    throw new IllegalArgumentException("Reservation Impossible car ya plus de place de ce type sur ce vol.");
+                    throw new IllegalArgumentException("Reservation Impossible car toutes les places ont ete deja prises.");
                 }
 
                 // save reservation

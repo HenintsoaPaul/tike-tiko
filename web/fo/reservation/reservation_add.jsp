@@ -16,6 +16,9 @@
     int resteEco = (int) request.getAttribute("resteEco");
     int resteBusiness = (int) request.getAttribute("resteBusiness");
 
+    int attenteEco = (int) request.getAttribute("attenteEco");
+    int attenteBusiness = (int) request.getAttribute("attenteBusiness");
+
     List<TypeSiege> typeSieges = (List<TypeSiege>) request.getAttribute("typeSieges");
 
     // form validation
@@ -223,6 +226,8 @@
                                     <th>Heure Limite</th>
                                     <th>Reste business</th>
                                     <th>Reste eco</th>
+                                    <th>En Attente business</th>
+                                    <th>En Attente eco</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -232,6 +237,10 @@
                                     <td><%= resteBusiness %>
                                     </td>
                                     <td><%= resteEco %>
+                                    </td>
+                                    <td><%= attenteBusiness %>
+                                    </td>
+                                    <td><%= attenteEco %>
                                     </td>
                                 </tr>
                                 </tbody>
