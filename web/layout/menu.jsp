@@ -84,8 +84,11 @@
         <li
                 <%
                     classes = menuItemClass;
-                    if (activePage.equals("foReservationList") || activePage.equals("foReservationDetail")) {
+                    if (activePage.equals("foReservationList")) {
                         classes += " active open";
+                    }
+                    else if (activePage.equals("foReservationDetail")) {
+                        classes += " active";
                     }
                     out.print("class=\"" + classes + "\"");
                 %>

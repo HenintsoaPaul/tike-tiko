@@ -32,6 +32,7 @@ public class UtilisateurController {
     @Get
     @UrlMapping(url = "login")
     public ModelView login() {
+        summerSession.destroy();
         return new ModelView("bo/login.jsp", null);
     }
 
@@ -56,6 +57,7 @@ public class UtilisateurController {
     @Get
     @UrlMapping(url = "fo_login")
     public ModelView fo_login() {
+        summerSession.destroy();
         return new ModelView("fo/login.jsp", null);
     }
 
@@ -68,7 +70,7 @@ public class UtilisateurController {
         try (Connection conn = databaseService.getConnection()) {
             Utilisateur authenticated = this.utilisateurService.authenticate(conn, u);
             utilisateurService.saveInSession(summerSession, authenticated);
-            return "redirect:GET:/mes_reservations";
+            return "redirect:GET:/fo_reservation_list";
         }
     }
 }

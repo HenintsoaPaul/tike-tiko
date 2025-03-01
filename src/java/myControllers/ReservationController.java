@@ -16,6 +16,7 @@ import src.summer.beans.ModelView;
 import src.summer.annotations.Param;
 import src.summer.beans.SummerSession;
 import views.VReservation;
+import views.VVol;
 
 
 import java.sql.Connection;
@@ -30,6 +31,7 @@ public class ReservationController {
     private final MinNbHeureReservationService minNbHeureReservationService = new MinNbHeureReservationService();
     private final TypeSiegeService typeSiegeService = new TypeSiegeService();
 
+    private final VVolService vVolService = new VVolService();
     private final VolService volService = new VolService();
     private final AvionService avionService = new AvionService();
     private final PlaceVolService placeVolService = new PlaceVolService();
@@ -40,16 +42,18 @@ public class ReservationController {
     private final DatabaseService databaseService = new DatabaseService();
 
     private void fetchData(Connection conn, ModelView mv, String idReservation) {
-        List<VReservation> vReservations = vReservationService.selectById(conn, idReservation);
-        VReservation vr = vReservations.isEmpty() ? null : vReservations.get(0);
-        mv.addObject("vReservation", vr);
+        VReservation vReservation = vReservationService.selectById(conn, idReservation);
+        VVol vVol = vVolService.selectById(conn, String.valueOf(vReservation.getId_vol()));
+
+        mv.addObject("vReservation", vReservation);
+        mv.addObject("v_vol", vVol);
     }
 
     private SummerSession summerSession;
 
     @Get
     @UrlMapping(url = "reservation_detail")
-    public ModelView list(
+    public ModelView reservation_detail(
             @Param(name = "id") String idReservation
     ) {
         try (Connection conn = databaseService.getConnection()) {
@@ -65,8 +69,8 @@ public class ReservationController {
 
     // FrontOffice
     @Get
-    @UrlMapping(url = "mes_reservations")
-    public ModelView mes_reservations() {
+    @UrlMapping(url = "fo_reservation_list")
+    public ModelView fo_reservation_list() {
         try (Connection conn = databaseService.getConnection()) {
             ModelView mv = new ModelView("fo/reservation/reservation_list.jsp", null);
 
@@ -113,7 +117,7 @@ public class ReservationController {
 
     @Get
     @UrlMapping(url = "reservation_cancel")
-    public ModelView cancel(
+    public String cancel(
             @Param(name = "idReservation") String idReservation,
             @Param(name = "idVol") String idVol,
             @Param(name = "dateAnnulation") LocalDateTime dateAnnulation
@@ -143,34 +147,7 @@ public class ReservationController {
             // message
             // annulation
 
-            fetchData(conn, mv, idReservation);
-
-            return mv;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Get
-    @UrlMapping(url = "reservation_add")
-    public ModelView add(
-            @Param(name = "idVol") String idVol
-    ) {
-        try (Connection conn = databaseService.getConnection()) {
-            ModelView mv = new ModelView("fo/reservation/reservation_add.jsp", null);
-
-            mv.addObject("typeSieges", typeSiegeService.selectAll(conn));
-            mv.addObject("idVol", idVol);
-
-            Vol vol = this.volService.selectById(conn, idVol);
-            Avion avion = this.avionService.selectById(conn, vol.getId_avion());
-
-            int nbPlacesPrisBusiness = reservationService.getNbPlacesPris(conn, 1),
-                    nbPlacesPrisEco = reservationService.getNbPlacesPris(conn, 2);
-            mv.addObject("resteBusiness", avion.getSiege_business() - nbPlacesPrisBusiness);
-            mv.addObject("resteEco", avion.getSiege_eco() - nbPlacesPrisEco);
-
-            return mv;
+            return "redirect:GET:/reservation_detail";
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -178,7 +155,7 @@ public class ReservationController {
 
     @Post
     @UrlMapping(url = "reservation_save")
-    public ModelView save(
+    public String save(
             @Validate(errorPage = "reservation_add?idVol=2")
             // todo maka nlay params nle url de redirection dynamiquement...
             @Param(name = "formData") ReservationFormData reservationFormData
@@ -187,15 +164,13 @@ public class ReservationController {
             ModelView mv = new ModelView("fo/reservation/reservation_detail.jsp", null);
 
             // isLate
-            System.out.println("id_vol: " + reservationFormData.getId_vol());
-            System.out.println("tpsiege: " + reservationFormData.getId_type_siege());
-            System.out.println("date: " + reservationFormData.getDate_reservation());
-
             MinNbHeureReservation minNbHeureReservation = minNbHeureReservationService.selectCurrent(conn);
 
             Vol vol = this.volService.selectById(conn, String.valueOf(reservationFormData.getId_vol()));
             LocalDateTime heureReservationLimite = vol.getHeure_depart().minusHours((long) minNbHeureReservation.getVal());
+
             boolean isLate = heureReservationLimite.isBefore(reservationFormData.getDate_reservation());
+            System.out.println("Limite: " + heureReservationLimite + " | res: " + reservationFormData.getDate_reservation());
 
             if (!isLate) {
                 PlaceVol placeVol = placeVolService.selectNextPlaceLibre(
@@ -215,7 +190,7 @@ public class ReservationController {
                 placeVol.setNom_client(reservationFormData.getNom_client());
                 placeVolService.update(conn, placeVol);
 
-                fetchData(conn, mv, String.valueOf(idRes));
+                return "redirect:GET:/reservation_list";
             } else {
                 throw new IllegalArgumentException("Reservation Impossible car l'heure limite est depassee.");
             }
