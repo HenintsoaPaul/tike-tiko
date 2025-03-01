@@ -2,7 +2,7 @@
 <%
     VReservation vReservation = (VReservation) request.getAttribute("vReservation");
 
-    pageContext.setAttribute("activePage", "reservationDetail");
+    pageContext.setAttribute("activePage", "foReservationDetail");
 %>
 
 <!DOCTYPE html>
@@ -137,7 +137,7 @@
                                 <tr>
                                     <td><%= vReservation.getId_vol() %>
                                     </td>
-                                    <td><%= vReservation.getNom_client() %>
+                                    <td><%= vReservation.getId_utilisateur() %>
                                     </td>
                                     <td><%= vReservation.getNom_type_siege() %>
                                     </td>
@@ -173,6 +173,8 @@
 <!-- / Layout wrapper -->
 
 <!-- script -->
-<div th:replace="~{layout/script}"></div>
+<div>
+    <%@ include file="/layout/script.jsp" %>
+</div>
 </body>
 </html>
