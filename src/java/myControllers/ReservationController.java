@@ -140,7 +140,7 @@ public class ReservationController {
             // message
             // annulation
 
-            return "redirect:GET:/reservation_list";
+            return "redirect:GET:/fo_reservation_list";
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -197,7 +197,7 @@ public class ReservationController {
                 placeVol.setNom_client(reservationFormData.getNom_client());
                 placeVolService.update(conn, placeVol);
 
-                return "redirect:GET:/reservation_list";
+                return "redirect:GET:/fo_reservation_list";
             } else {
                 throw new IllegalArgumentException("Reservation Impossible car l'heure limite est depassee.");
             }

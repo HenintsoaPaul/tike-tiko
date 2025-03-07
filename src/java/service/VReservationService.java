@@ -20,10 +20,7 @@ public class VReservationService {
                         rs.getTimestamp("heure_reservation").toLocalDateTime(),
                         rs.getString("nom_type_siege"),
                         rs.getString("nom_etat_reservation"),
-                        rs.getDouble("prix_avec_promo"),
-                        rs.getDouble("prix_sans_promo"),
-                        rs.getDouble("val_promo"),
-                        rs.getBoolean("is_promotion"),
+                        rs.getDouble("prix_final"),
                         rs.getInt("id_utilisateur"),
                         rs.getInt("id_reservation_mere"),
                         rs.getString("img_passeport")

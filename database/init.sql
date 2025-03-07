@@ -94,6 +94,25 @@ CREATE TABLE reservation
     heure_reservation   TIMESTAMP NOT NULL
 );
 
+CREATE TABLE tranche_age
+(
+    id      SERIAL,
+    nom     VARCHAR(50) NOT NULL,
+    age_min INTEGER default 0,
+    age_max INTEGER default 500,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE reduction_tranche_age
+(
+    id                SERIAL,
+    val_pourcentage   NUMERIC(15, 2) NOT NULL,
+    date_modification TIMESTAMP      NOT NULL,
+    id_tranche_age    INTEGER        NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_tranche_age) REFERENCES tranche_age (id)
+);
+
 -- views
 
 create or replace view v_vol as
