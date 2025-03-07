@@ -64,6 +64,7 @@
                                     <th>Date Reservation</th>
                                     <th>Prix sans promo</th>
                                     <th>Prix avec promo</th>
+                                    <th>Est Promotion</th>
                                     <th>Etat Reservation</th>
                                     <th>Passeport</th>
                                 </tr>
@@ -88,6 +89,8 @@
                                     <td><%= vReservation.getPrix_sans_promo() %>
                                     </td>
                                     <td><%= vReservation.getPrix_avec_promo() %>
+                                    </td>
+                                    <td><%= vReservation.isIs_promotion() %>
                                     </td>
                                     <td><%= vReservation.getNom_etat_reservation() %>
                                     </td>
