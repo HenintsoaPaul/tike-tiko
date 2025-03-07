@@ -12,11 +12,11 @@ CREATE TABLE type_siege
 
 CREATE TABLE utilisateur
 (
-    id            SERIAL PRIMARY KEY,
-    nom           VARCHAR(100) NOT NULL,
-    email         VARCHAR(100) NOT NULL,
-    password      VARCHAR(100) NOT NULL,
-    auth_level    INTEGER DEFAULT 0
+    id         SERIAL PRIMARY KEY,
+    nom        VARCHAR(100) NOT NULL,
+    email      VARCHAR(100) NOT NULL,
+    password   VARCHAR(100) NOT NULL,
+    auth_level INTEGER DEFAULT 0
 );
 
 CREATE TABLE pourcentage_promotion
@@ -113,16 +113,13 @@ from pourcentage_promotion pp
 create or replace view v_reservation as
 select r.id,
        r.heure_reservation,
-       v.id   as id_vol,
-       ts.nom as nom_type_siege,
-       er.nom as nom_etat_reservation,
-       pv.prix_avec_promo,
-       pv.prix_sans_promo,
-       pv.is_promotion,
-       pp.val as val_promo,
+       r.prix_final,
        r.id_utilisateur,
        r.img_passeport,
-       r.id_reservation_mere
+       r.id_reservation_mere,
+       v.id   as id_vol,
+       ts.nom as nom_type_siege,
+       er.nom as nom_etat_reservation
 from reservation r
          join etat_reservation er on r.id_etat_reservation = er.id
          join place_vol pv on r.id_place_vol = pv.id
