@@ -13,6 +13,9 @@ public class ReservationFormData {
     int id_type_siege;
 
     @Required
+    int id_tranche_age;
+
+    @Required
     String nom_client;
 
     @Required
@@ -60,5 +63,13 @@ public class ReservationFormData {
 
     public void setId_client(int id_client) {
         this.id_client = id_client;
+    }
+
+    public int getId_tranche_age() {
+        return id_tranche_age;
+    }
+
+    public void setId_tranche_age(int id_tranche_age) {
+        this.id_tranche_age = id_tranche_age;
     }
 }
