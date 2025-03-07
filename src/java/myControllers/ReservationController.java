@@ -34,6 +34,8 @@ public class ReservationController {
     private final MinNbHeureAnnulationService minNbHeureAnnulationService = new MinNbHeureAnnulationService();
     private final MinNbHeureReservationService minNbHeureReservationService = new MinNbHeureReservationService();
     private final TypeSiegeService typeSiegeService = new TypeSiegeService();
+    private final TrancheAgeService trancheAgeService = new TrancheAgeService();
+    private final ReductionTrancheAgeService reductionTrancheAgeService = new ReductionTrancheAgeService();
 
     private final VVolService vVolService = new VVolService();
     private final VolService volService = new VolService();
@@ -103,6 +105,7 @@ public class ReservationController {
 
             mv.addObject("v_vol", vVolService.selectById(conn, idVol));
             mv.addObject("typeSieges", typeSiegeService.selectAll(conn));
+            mv.addObject("trancheAges", trancheAgeService.selectAll(conn));
             mv.addObject("utilisateur", summerSession.getAttribute("utilisateur"));
 
             return mv;
@@ -173,8 +176,21 @@ public class ReservationController {
                     throw new IllegalArgumentException("Reservation Impossible car toutes les places ont ete deja prises.");
                 }
 
+                // todo: reduction tranche age
+                double prix_final = placeVol.getIs_promotion() ?
+                        placeVol.getPrix_avec_promo() :
+                        placeVol.getPrix_sans_promo();
+
+                System.out.println("Prix final (sans reduction tranche): " + prix_final);
+
+                ReductionTrancheAge reductionTrancheAge = reductionTrancheAgeService.selectCurrent(conn, reservationFormData);
+                prix_final = prix_final - (prix_final * reductionTrancheAge.getVal_pourcentage() / 100);
+
+                System.out.println("Prix final (avec reduction tranche): " + prix_final + " | reduction: " + reductionTrancheAge.getVal_pourcentage());
+                // todo: reduction tranche age
+
                 // save reservation
-                Reservation reservation = new Reservation(placeVol, reservationFormData);
+                Reservation reservation = new Reservation(placeVol, reservationFormData, prix_final);
                 int idRes = reservationService.insert(conn, reservation);
 
                 // set nom client for place_vol

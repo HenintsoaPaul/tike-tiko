@@ -54,11 +54,12 @@ public class Reservation {
     public Reservation(Reservation reservation, int id_etat_reservation) {
         this.id_etat_reservation = id_etat_reservation;
 
-        this.id_place_vol = reservation.getId_place_vol();
-        this.heure_reservation = reservation.getHeure_reservation();
-        this.id_reservation_mere = reservation.getId();
-        this.img_passeport = reservation.getImg_passeport();
-        this.id_utilisateur = reservation.getId_utilisateur();
+        this.setId_place_vol(reservation.getId_place_vol());
+        this.setHeure_reservation(reservation.getHeure_reservation());
+        this.setId_reservation_mere(reservation.getId_reservation_mere());
+        this.setImg_passeport(reservation.getImg_passeport());
+        this.setId_utilisateur(reservation.getId_utilisateur());
+        this.setPrix_final(reservation.getPrix_final());
     }
 
     // Getters n Setters
