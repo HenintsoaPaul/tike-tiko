@@ -8,6 +8,7 @@
 <%@ page import="entity.Utilisateur" %>
 <%@ page import="dto.PlaceDTO" %>
 <%@ page import="dto.ConfigDTO" %>
+<%@ page import="entity.TrancheAge" %>
 <%
     Utilisateur client = (Utilisateur) request.getAttribute("utilisateur");
     VVol v_vol = (VVol) request.getAttribute("v_vol");
@@ -128,7 +129,8 @@
                                                         }
                                                     %>
                                                 </div>
-                                                <div class="col-6">
+                                                <%--TypeSiege--%>
+                                                <div class="col-3">
                                                     <label class="form-label">Type Siege: </label>
                                                     <select name="formData.id_type_siege"
                                                             class="form-control">
@@ -151,6 +153,36 @@
                                                     <%
                                                         if (lastInput != null) {
                                                             Optional<ValidationError> vErr = vLog.getErrorByInput("formData.id_type_siege");
+                                                            if (vErr.isPresent()) {
+                                                                out.print(vErr.get().toHtml());
+                                                            }
+                                                        }
+                                                    %>
+                                                </div>
+                                                <%--TrancheAge--%>
+                                                <div class="col-3">
+                                                    <label class="form-label">Tranche Age: </label>
+                                                    <select name="formData.id_tranche_age"
+                                                            class="form-control">
+                                                        <option value="">Choisir la tranche</option>
+                                                        <%for (TrancheAge trancheAge : trancheAges) { %>
+                                                        <option
+                                                                value="<%= trancheAge.getId()%>"
+                                                                <%
+                                                                    if (lastInput != null) {
+                                                                        if (lastInput.getId_tranche_age() == trancheAge.getId()) {
+                                                                            out.print("selected");
+                                                                        }
+                                                                    }
+                                                                %>
+                                                        >
+                                                            <%= trancheAge.getNom() %>
+                                                        </option>
+                                                        <% } %>
+                                                    </select>
+                                                    <%
+                                                        if (lastInput != null) {
+                                                            Optional<ValidationError> vErr = vLog.getErrorByInput("formData.id_tranche_age");
                                                             if (vErr.isPresent()) {
                                                                 out.print(vErr.get().toHtml());
                                                             }
