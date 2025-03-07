@@ -89,6 +89,7 @@ CREATE TABLE reservation
     id_place_vol        INT REFERENCES place_vol (id),
     id_utilisateur      INT REFERENCES utilisateur (id),
     id_reservation_mere INT REFERENCES reservation (id),
+    prix_final          numeric   NOT NULL,
     img_passeport       TEXT,
     heure_reservation   TIMESTAMP NOT NULL
 );
@@ -128,6 +129,13 @@ from reservation r
          join type_siege ts on pv.id_type_siege = ts.id
          join vol v on pv.id_vol = v.id
          join pourcentage_promotion pp on pv.id_pourcentage_promotion = pp.id;
+
+create or replace view v_curr_reduction_tranche_age as
+select rta.*
+from reduction_tranche_age rta
+where rta.id = (select max(sub_rta.id)
+                from reduction_tranche_age sub_rta
+                where sub_rta.id_tranche_age = rta.id_tranche_age);
 
 
 -- data
