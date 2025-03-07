@@ -18,6 +18,7 @@
     ConfigDTO configDTO = (ConfigDTO) request.getAttribute("configDTO");
 
     List<TypeSiege> typeSieges = (List<TypeSiege>) request.getAttribute("typeSieges");
+    List<TrancheAge> trancheAges = (List<TrancheAge>) request.getAttribute("trancheAges");
 
     // form validation
     ReservationFormData lastInput = null;

@@ -20,6 +20,13 @@ public class TrancheAge {
     public TrancheAge() {
     }
 
+    public TrancheAge(int id, String nom, int ageMin, int ageMax) {
+        this.id = id;
+        this.nom = nom;
+        this.age_min = ageMin;
+        this.age_max = ageMax;
+    }
+
     // Getters n Setters
     public int getId() {
         return id;
