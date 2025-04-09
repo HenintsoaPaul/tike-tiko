@@ -30,6 +30,24 @@
     <div>
         <%@ include file="/layout/link_header.jsp" %>
     </div>
+
+    <script>
+        function downloadPdf(reservationId) {
+            fetch(`http://localhost:8081/download-pdf/api?id=${reservationId}`)
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = 'reservation.pdf';
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(error => console.error('Error downloading the PDF:', error));
+        }
+    </script>
 </head>
 
 <body>
@@ -65,6 +83,7 @@
                                     <th>Prix final</th>
                                     <th>Etat Reservation</th>
                                     <th>Passeport</th>
+                                    <th>Get pdf</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -90,6 +109,9 @@
                                     </td>
                                     <td>
                                         <%= vReservation.getImg_passeport() %>
+                                    </td>
+                                    <td>
+                                        <button onclick="downloadPdf(<%= vReservation.getId() %>)">Download PDF</button>
                                     </td>
                                 </tr>
                                 <%}%>

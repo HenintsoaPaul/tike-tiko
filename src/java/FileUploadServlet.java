@@ -20,18 +20,11 @@ public class FileUploadServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Part filePart = request.getPart("file");
-
-        // Extrait le nom du fichier à partir de l'en-tête "Content-Disposition"
-        String header = filePart.getHeader("Content-Disposition");
-        String fileName = extractFileName(header);
-
-
-        // Chemin où le fichier sera enregistré
+        String fileName = extractFileName(filePart.getHeader("Content-Disposition"));
+    
         String uploadPath = "C:\\Users\\Henintsoa\\Documents\\tike_tiko_data\\" + fileName;
         try (InputStream fileContent = filePart.getInputStream()) {
-            // Crée les répertoires nécessaires s'ils n'existent pas
             Files.createDirectories(Paths.get(uploadPath).getParent());
-            // Enregistre le fichier sur le serveur
             Files.copy(fileContent, Paths.get(uploadPath), StandardCopyOption.REPLACE_EXISTING);
         }
 
