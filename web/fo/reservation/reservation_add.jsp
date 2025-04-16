@@ -203,9 +203,9 @@
 
                         <!-- Data vol -->
                         <div class="container mt-4">
-                            <h4 class="text-center">
+                            <h5 class="text-center">
                                 A propos du vol
-                            </h4>
+                            </h5>
                             <table class="table table-bordered table-striped mt-3">
                                 <thead class="thead-dark">
                                 <tr>

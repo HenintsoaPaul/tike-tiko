@@ -3,6 +3,9 @@
 <%
     List<VReservation> vReservations = (List<VReservation>) request.getAttribute("vReservations");
 
+    Object errObject = request.getAttribute("err");
+    String err = errObject == null ? null : errObject.toString();
+
     pageContext.setAttribute("activePage", "foReservationList");
 %>
 
@@ -33,7 +36,8 @@
 
     <script>
         function downloadPdf(reservationId) {
-            fetch(`http://localhost:8081/download-pdf/api?id=${reservationId}`)
+            const url = "http://localhost:8081/download-pdf/api?id=" + reservationId;
+            fetch(url)
                 .then(response => response.blob())
                 .then(blob => {
                     const url = window.URL.createObjectURL(blob);
@@ -72,6 +76,18 @@
                             <h2 class="text-center">
                                 Mes Reservations
                             </h2>
+
+                            <%--Msg--%>
+                            <% if (err != null) { %>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Erreur!</strong>
+                                <span><%= err %></span>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <% } %>
+
                             <table class="table table-bordered table-striped mt-3">
                                 <thead class="thead-dark">
                                 <tr>
