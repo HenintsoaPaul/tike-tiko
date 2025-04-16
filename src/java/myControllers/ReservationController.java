@@ -194,11 +194,13 @@ public class ReservationController {
                         placeVol.getPrix_sans_promo();
 
                 int idTrancheAge = reservationFormData.getId_tranche_age();
-                prix_final = reductionTrancheAgeService.applyReduction(conn, idTrancheAge, prix_final);
+                ReductionTrancheAge rta = reductionTrancheAgeService.selectCurrentByTrancheAge(conn, idTrancheAge);
+                prix_final = reductionTrancheAgeService.applyReduction(rta, prix_final);
 
                 // save reservation
                 Reservation reservation = new Reservation(placeVol, reservationFormData, prix_final);
-                int idRes = reservationService.insert(conn, reservation);
+                reservation.setId_reduction_tranche_age(rta.getId());
+                reservationService.insert(conn, reservation);
 
                 // set nom client for place_vol
                 placeVol.setNom_client(reservationFormData.getNom_client());

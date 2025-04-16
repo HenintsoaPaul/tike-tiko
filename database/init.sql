@@ -82,18 +82,6 @@ CREATE TABLE etat_reservation
     nom VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE reservation
-(
-    id                  SERIAL PRIMARY KEY,
-    id_etat_reservation INT REFERENCES etat_reservation (id),
-    id_place_vol        INT REFERENCES place_vol (id),
-    id_utilisateur      INT REFERENCES utilisateur (id),
-    id_reservation_mere INT REFERENCES reservation (id),
-    prix_final          numeric   NOT NULL,
-    img_passeport       TEXT,
-    heure_reservation   TIMESTAMP NOT NULL
-);
-
 CREATE TABLE tranche_age
 (
     id      SERIAL,
@@ -111,6 +99,19 @@ CREATE TABLE reduction_tranche_age
     id_tranche_age    INTEGER        NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (id_tranche_age) REFERENCES tranche_age (id)
+);
+
+CREATE TABLE reservation
+(
+    id                       SERIAL PRIMARY KEY,
+    id_etat_reservation      INT REFERENCES etat_reservation (id),
+    id_place_vol             INT REFERENCES place_vol (id),
+    id_utilisateur           INT REFERENCES utilisateur (id),
+    id_reservation_mere      INT REFERENCES reservation (id),
+    id_reduction_tranche_age INT REFERENCES reduction_tranche_age (id),
+    prix_final               numeric   NOT NULL,
+    img_passeport            TEXT,
+    heure_reservation        TIMESTAMP NOT NULL
 );
 
 -- views

@@ -20,6 +20,7 @@ public class Reservation {
     LocalDateTime heure_reservation;
 
     int id_utilisateur;
+    int id_reduction_tranche_age;
     Integer id_reservation_mere;
     String img_passeport;
 
@@ -39,11 +40,12 @@ public class Reservation {
     // Constr pour mapper les lignes venant du bdd
     public Reservation(int id, int id_etat_reservation, int id_place_vol,
                        LocalDateTime heure_reservation, String img_passeport,
-                       int id_utilisateur, int id_reservation_mere, double prixFinal) {
+                       int id_utilisateur, int id_reduction_tranche_age, int id_reservation_mere, double prixFinal) {
         this.id = id;
         this.id_etat_reservation = id_etat_reservation;
         this.id_place_vol = id_place_vol;
         this.heure_reservation = heure_reservation;
+        this.id_reduction_tranche_age = id_reduction_tranche_age;
         this.id_reservation_mere = id_reservation_mere;
         this.img_passeport = img_passeport;
         this.id_utilisateur = id_utilisateur;
@@ -125,6 +127,14 @@ public class Reservation {
 
     public void setPrix_final(double prix_final) {
         this.prix_final = prix_final;
+    }
+
+    public int getId_reduction_tranche_age() {
+        return id_reduction_tranche_age;
+    }
+
+    public void setId_reduction_tranche_age(int id_reduction_tranche_age) {
+        this.id_reduction_tranche_age = id_reduction_tranche_age;
     }
 
     @Override
