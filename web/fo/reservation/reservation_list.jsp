@@ -1,5 +1,6 @@
 <%@ page import="views.VReservation" %>
 <%@ page import="java.util.List" %>
+<%@ page import="service.DateFormatterService" %>
 <%
     List<VReservation> vReservations = (List<VReservation>) request.getAttribute("vReservations");
 
@@ -7,6 +8,8 @@
     String err = errObject == null ? null : errObject.toString();
 
     pageContext.setAttribute("activePage", "foReservationList");
+
+    DateFormatterService formatterService = new DateFormatterService();
 %>
 
 <!DOCTYPE html>
@@ -117,7 +120,7 @@
                                     </td>
                                     <td><%= vReservation.getNom_type_siege() %>
                                     </td>
-                                    <td><%= vReservation.getHeure_reservation() %>
+                                    <td><%= formatterService.format(vReservation.getHeure_reservation()) %>
                                     </td>
                                     <td><%= vReservation.getPrix_final() %>
                                     </td>
