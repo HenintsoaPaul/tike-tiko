@@ -21,7 +21,9 @@ public class ReservationService {
                         rs.getTimestamp("heure_reservation").toLocalDateTime(),
                         rs.getString("img_passeport"),
                         rs.getInt("id_utilisateur"),
-                        rs.getInt("id_reservation_mere")
+                        rs.getInt("id_reduction_tranche_age"),
+                        rs.getInt("id_reservation_mere"),
+                        rs.getDouble("prix_final")
                 );
             } catch (SQLException e) {
                 throw new RuntimeException(e);

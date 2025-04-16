@@ -18,6 +18,7 @@ import src.summer.annotations.controller.verb.Post;
 import src.summer.beans.ModelView;
 import src.summer.annotations.Param;
 import src.summer.beans.SummerSession;
+import src.summer.exception.SummerSessionException;
 import views.VReservation;
 import views.VVol;
 
@@ -34,6 +35,8 @@ public class ReservationController {
     private final MinNbHeureAnnulationService minNbHeureAnnulationService = new MinNbHeureAnnulationService();
     private final MinNbHeureReservationService minNbHeureReservationService = new MinNbHeureReservationService();
     private final TypeSiegeService typeSiegeService = new TypeSiegeService();
+    private final TrancheAgeService trancheAgeService = new TrancheAgeService();
+    private final ReductionTrancheAgeService reductionTrancheAgeService = new ReductionTrancheAgeService();
 
     private final VVolService vVolService = new VVolService();
     private final VolService volService = new VolService();
@@ -82,6 +85,14 @@ public class ReservationController {
             Utilisateur u = (Utilisateur) summerSession.getAttribute("utilisateur");
             List<VReservation> vReservations = vReservationService.selectByUtilisateur(conn, u);
 
+            Object err = summerSession.getAttribute("err");
+            mv.addObject("err", err);
+            if (err != null) {
+                try {
+                summerSession.addAttribute("err", null);
+                } catch (SummerSessionException ignored) {}
+            }
+
             mv.addObject("vReservations", vReservations);
             return mv;
         } catch (SQLException e) {
@@ -103,6 +114,7 @@ public class ReservationController {
 
             mv.addObject("v_vol", vVolService.selectById(conn, idVol));
             mv.addObject("typeSieges", typeSiegeService.selectAll(conn));
+            mv.addObject("trancheAges", trancheAgeService.selectAll(conn));
             mv.addObject("utilisateur", summerSession.getAttribute("utilisateur"));
 
             return mv;
@@ -137,7 +149,7 @@ public class ReservationController {
             // message
             // annulation
 
-            return "redirect:GET:/reservation_list";
+            return "redirect:GET:/fo_reservation_list";
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -149,10 +161,12 @@ public class ReservationController {
             @Validate(errorPage = "reservation_add?idVol=2")
             // todo maka nlay params nle url de redirection dynamiquement...
             @Param(name = "formData") ReservationFormData reservationFormData
-    ) {
+    ) throws SummerSessionException {
         try (Connection conn = databaseService.getConnection()) {
             if (reservationService.getNbReservationsFaits(conn, reservationFormData) != 0) {
-                throw new IllegalArgumentException("Vous avez deja reservez ce vol.");
+//                throw new IllegalArgumentException("Vous avez deja reservez ce vol.");
+                summerSession.addAttribute("err", "Vous avez deja reservez ce vol.");
+                return "redirect:GET:/fo_reservation_list";
             }
 
             MinNbHeureReservation minNbHeureReservation = minNbHeureReservationService.selectCurrent(conn);
@@ -170,24 +184,40 @@ public class ReservationController {
                         String.valueOf(reservationFormData.getId_type_siege())
                 );
                 if (placeVol == null) {
-                    throw new IllegalArgumentException("Reservation Impossible car toutes les places ont ete deja prises.");
+//                    throw new IllegalArgumentException("Reservation Impossible car toutes les places ont ete deja prises.");
+                    summerSession.addAttribute("err", "Reservation Impossible car toutes les places ont ete deja prises.");
+                    return "redirect:GET:/fo_reservation_list";
                 }
 
+                double prix_final = placeVol.getIs_promotion() ?
+                        placeVol.getPrix_avec_promo() :
+                        placeVol.getPrix_sans_promo();
+
+                int idTrancheAge = reservationFormData.getId_tranche_age();
+                ReductionTrancheAge rta = reductionTrancheAgeService.selectCurrentByTrancheAge(conn, idTrancheAge);
+                prix_final = reductionTrancheAgeService.applyReduction(rta, prix_final);
+
                 // save reservation
-                Reservation reservation = new Reservation(placeVol, reservationFormData);
-                int idRes = reservationService.insert(conn, reservation);
+                Reservation reservation = new Reservation(placeVol, reservationFormData, prix_final);
+                reservation.setId_reduction_tranche_age(rta.getId());
+                reservationService.insert(conn, reservation);
 
                 // set nom client for place_vol
                 placeVol.setNom_client(reservationFormData.getNom_client());
                 placeVolService.update(conn, placeVol);
 
-                return "redirect:GET:/reservation_list";
+                return "redirect:GET:/fo_reservation_list";
             } else {
-                throw new IllegalArgumentException("Reservation Impossible car l'heure limite est depassee.");
+//                throw new IllegalArgumentException("Reservation Impossible car l'heure limite est depassee.");
+                summerSession.addAttribute("err", "Reservation Impossible car l'heure limite est depassee.");
+                return "redirect:GET:/fo_reservation_list";
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+//            throw new RuntimeException(e);
+            e.printStackTrace();
+            summerSession.addAttribute("err", e.getMessage());
+            return "redirect:GET:/fo_reservation_list";
         }
     }
 }

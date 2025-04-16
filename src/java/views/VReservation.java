@@ -10,27 +10,20 @@ public class VReservation {
     LocalDateTime heure_reservation;
     String nom_type_siege;
     String nom_etat_reservation;
-    double prix_avec_promo;
-    double prix_sans_promo;
-    double val_promo;
-    boolean is_promotion;
+    double prix_final;
     int id_utilisateur;
     int id_reservation_mere;
     String img_passeport;
 
     // Constr
     public VReservation(int id, int idVol, LocalDateTime heureReservation, String nomTypeSiege, String nomEtatReservation,
-                        double prixAvecPromotion, double prixSansPromotion, double valPromo, boolean isPromotion,
-                        int idUtilisateur, int idReservationMere, String imgPasseport) {
+                        double prixFinal, int idUtilisateur, int idReservationMere, String imgPasseport) {
         this.id = id;
         this.id_vol = idVol;
         this.heure_reservation = heureReservation;
         this.nom_type_siege = nomTypeSiege;
         this.nom_etat_reservation = nomEtatReservation;
-        this.prix_avec_promo = prixAvecPromotion;
-        this.prix_sans_promo = prixSansPromotion;
-        this.val_promo = valPromo;
-        this.is_promotion = isPromotion;
+        this.setPrix_final(prixFinal);
         this.id_utilisateur = idUtilisateur;
         this.id_reservation_mere = idReservationMere;
         this.img_passeport = imgPasseport;
@@ -77,36 +70,12 @@ public class VReservation {
         this.nom_etat_reservation = nom_etat_reservation;
     }
 
-    public double getPrix_avec_promo() {
-        return prix_avec_promo;
+    public double getPrix_final() {
+        return prix_final;
     }
 
-    public void setPrix_avec_promo(double prix_avec_promo) {
-        this.prix_avec_promo = prix_avec_promo;
-    }
-
-    public double getPrix_sans_promo() {
-        return prix_sans_promo;
-    }
-
-    public void setPrix_sans_promo(double prix_sans_promo) {
-        this.prix_sans_promo = prix_sans_promo;
-    }
-
-    public boolean isIs_promotion() {
-        return is_promotion;
-    }
-
-    public void setIs_promotion(boolean is_promotion) {
-        this.is_promotion = is_promotion;
-    }
-
-    public double getVal_promo() {
-        return val_promo;
-    }
-
-    public void setVal_promo(double val_promo) {
-        this.val_promo = val_promo;
+    public void setPrix_final(double prix_final) {
+        this.prix_final = prix_final;
     }
 
     public int getId_utilisateur() {

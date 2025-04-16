@@ -1,9 +1,15 @@
 <%@ page import="views.VReservation" %>
 <%@ page import="java.util.List" %>
+<%@ page import="service.DateFormatterService" %>
 <%
     List<VReservation> vReservations = (List<VReservation>) request.getAttribute("vReservations");
 
+    Object errObject = request.getAttribute("err");
+    String err = errObject == null ? null : errObject.toString();
+
     pageContext.setAttribute("activePage", "foReservationList");
+
+    DateFormatterService formatterService = new DateFormatterService();
 %>
 
 <!DOCTYPE html>
@@ -30,6 +36,25 @@
     <div>
         <%@ include file="/layout/link_header.jsp" %>
     </div>
+
+    <script>
+        function downloadPdf(reservationId) {
+            const url = "http://localhost:8081/download-pdf/api?id=" + reservationId;
+            fetch(url)
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = 'reservation.pdf';
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(error => console.error('Error downloading the PDF:', error));
+        }
+    </script>
 </head>
 
 <body>
@@ -54,6 +79,18 @@
                             <h2 class="text-center">
                                 Mes Reservations
                             </h2>
+
+                            <%--Msg--%>
+                            <% if (err != null) { %>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Erreur!</strong>
+                                <span><%= err %></span>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <% } %>
+
                             <table class="table table-bordered table-striped mt-3">
                                 <thead class="thead-dark">
                                 <tr>
@@ -62,11 +99,10 @@
                                     <th>Id vol</th>
                                     <th>Type Siege</th>
                                     <th>Date Reservation</th>
-                                    <th>Prix sans promo</th>
-                                    <th>Prix avec promo</th>
-                                    <th>Est Promotion</th>
+                                    <th>Prix final</th>
                                     <th>Etat Reservation</th>
                                     <th>Passeport</th>
+                                    <th>Get pdf</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -84,18 +120,17 @@
                                     </td>
                                     <td><%= vReservation.getNom_type_siege() %>
                                     </td>
-                                    <td><%= vReservation.getHeure_reservation() %>
+                                    <td><%= formatterService.format(vReservation.getHeure_reservation()) %>
                                     </td>
-                                    <td><%= vReservation.getPrix_sans_promo() %>
-                                    </td>
-                                    <td><%= vReservation.getPrix_avec_promo() %>
-                                    </td>
-                                    <td><%= vReservation.isIs_promotion() %>
+                                    <td><%= vReservation.getPrix_final() %>
                                     </td>
                                     <td><%= vReservation.getNom_etat_reservation() %>
                                     </td>
                                     <td>
                                         <%= vReservation.getImg_passeport() %>
+                                    </td>
+                                    <td>
+                                        <button onclick="downloadPdf(<%= vReservation.getId() %>)">Download PDF</button>
                                     </td>
                                 </tr>
                                 <%}%>

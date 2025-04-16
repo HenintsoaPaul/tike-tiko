@@ -32,9 +32,12 @@ public class PlaceVolService {
     }
 
     public PlaceVol selectNextPlaceLibre(Connection conn, String id_vol, String id_type_siege) {
-        String query = "select * from place_vol where nom_client is null and id_vol = " + id_vol
+        // String query = "select * from place_vol where nom_client is null and id_vol = " + id_vol
+        //         + " and id_type_siege = " + id_type_siege +
+        //         " order by id asc limit 1";
+        String query = "select * from place_vol where id_vol = " + id_vol
                 + " and id_type_siege = " + id_type_siege +
-                " order by id desc limit 1";
+                " order by id asc limit 1";
         List<PlaceVol> ll = this.select(conn, query);
         return !ll.isEmpty() ? ll.get(0) : null;
     }

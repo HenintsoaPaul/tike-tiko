@@ -8,6 +8,7 @@
 <%@ page import="entity.Utilisateur" %>
 <%@ page import="dto.PlaceDTO" %>
 <%@ page import="dto.ConfigDTO" %>
+<%@ page import="entity.TrancheAge" %>
 <%
     Utilisateur client = (Utilisateur) request.getAttribute("utilisateur");
     VVol v_vol = (VVol) request.getAttribute("v_vol");
@@ -17,6 +18,7 @@
     ConfigDTO configDTO = (ConfigDTO) request.getAttribute("configDTO");
 
     List<TypeSiege> typeSieges = (List<TypeSiege>) request.getAttribute("typeSieges");
+    List<TrancheAge> trancheAges = (List<TrancheAge>) request.getAttribute("trancheAges");
 
     // form validation
     ReservationFormData lastInput = null;
@@ -128,7 +130,8 @@
                                                         }
                                                     %>
                                                 </div>
-                                                <div class="col-6">
+                                                <%--TypeSiege--%>
+                                                <div class="col-3">
                                                     <label class="form-label">Type Siege: </label>
                                                     <select name="formData.id_type_siege"
                                                             class="form-control">
@@ -157,6 +160,36 @@
                                                         }
                                                     %>
                                                 </div>
+                                                <%--TrancheAge--%>
+                                                <div class="col-3">
+                                                    <label class="form-label">Tranche Age: </label>
+                                                    <select name="formData.id_tranche_age"
+                                                            class="form-control">
+                                                        <option value="">Choisir la tranche</option>
+                                                        <%for (TrancheAge trancheAge : trancheAges) { %>
+                                                        <option
+                                                                value="<%= trancheAge.getId()%>"
+                                                                <%
+                                                                    if (lastInput != null) {
+                                                                        if (lastInput.getId_tranche_age() == trancheAge.getId()) {
+                                                                            out.print("selected");
+                                                                        }
+                                                                    }
+                                                                %>
+                                                        >
+                                                            <%= trancheAge.getNom() %>
+                                                        </option>
+                                                        <% } %>
+                                                    </select>
+                                                    <%
+                                                        if (lastInput != null) {
+                                                            Optional<ValidationError> vErr = vLog.getErrorByInput("formData.id_tranche_age");
+                                                            if (vErr.isPresent()) {
+                                                                out.print(vErr.get().toHtml());
+                                                            }
+                                                        }
+                                                    %>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -170,9 +203,9 @@
 
                         <!-- Data vol -->
                         <div class="container mt-4">
-                            <h4 class="text-center">
+                            <h5 class="text-center">
                                 A propos du vol
-                            </h4>
+                            </h5>
                             <table class="table table-bordered table-striped mt-3">
                                 <thead class="thead-dark">
                                 <tr>

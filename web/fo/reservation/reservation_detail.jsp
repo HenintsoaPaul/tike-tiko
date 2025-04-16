@@ -132,9 +132,7 @@
                                 <tr>
                                     <th>Type Siege</th>
                                     <th>Date Reservation</th>
-                                    <th>Prix sans promo</th>
-                                    <th>Prix avec promo</th>
-                                    <th>Obtenu promo</th>
+                                    <th>Prix final</th>
                                     <th>Etat Reservation</th>
                                     <th>Passeport</th>
                                 </tr>
@@ -145,11 +143,7 @@
                                     </td>
                                     <td><%= vReservation.getHeure_reservation() %>
                                     </td>
-                                    <td><%= vReservation.getPrix_sans_promo() %>
-                                    </td>
-                                    <td><%= vReservation.getPrix_avec_promo() %>
-                                    </td>
-                                    <td><%= vReservation.isIs_promotion() %>
+                                    <td><%= vReservation.getPrix_final() %>
                                     </td>
                                     <td><%= vReservation.getNom_etat_reservation() %>
                                     </td>
