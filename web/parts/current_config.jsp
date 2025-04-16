@@ -5,8 +5,8 @@
     <table class="table table-bordered table-striped mt-3">
         <thead>
         <tr>
-            <th>Promo Business</th>
-            <th>Promo Eco</th>
+            <th>Promo Business (%)</th>
+            <th>Promo Eco (%)</th>
             <th>Heure Reservation</th>
             <th>Heure Annulation</th>
         </tr>
