@@ -189,18 +189,12 @@ public class ReservationController {
                     return "redirect:GET:/fo_reservation_list";
                 }
 
-                // todo: reduction tranche age
                 double prix_final = placeVol.getIs_promotion() ?
                         placeVol.getPrix_avec_promo() :
                         placeVol.getPrix_sans_promo();
 
-                System.out.println("Prix final (sans reduction tranche): " + prix_final);
-
-                ReductionTrancheAge reductionTrancheAge = reductionTrancheAgeService.selectCurrent(conn, reservationFormData);
-                prix_final = prix_final - (prix_final * reductionTrancheAge.getVal_pourcentage() / 100);
-
-                System.out.println("Prix final (avec reduction tranche): " + prix_final + " | reduction: " + reductionTrancheAge.getVal_pourcentage());
-                // todo: reduction tranche age
+                int idTrancheAge = reservationFormData.getId_tranche_age();
+                prix_final = reductionTrancheAgeService.applyReduction(conn, idTrancheAge, prix_final);
 
                 // save reservation
                 Reservation reservation = new Reservation(placeVol, reservationFormData, prix_final);
