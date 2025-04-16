@@ -2,6 +2,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="entity.Avion" %>
 <%@ page import="entity.Ville" %>
+<%@ page import="service.DateFormatterService" %>
 <%
     List<VVol> vvols = (List<VVol>) request.getAttribute("vvols");
 
@@ -9,6 +10,8 @@
     List<Avion> avions = (List<Avion>) request.getAttribute("avions");
 
     pageContext.setAttribute("activePage", "foVolList");
+
+    DateFormatterService formatterService = new DateFormatterService();
 %>
 
 <!DOCTYPE html>
@@ -84,9 +87,9 @@
                                     </td>
                                     <td><%= v_vol.getNom_ville_destination() %>
                                     </td>
-                                    <td><%= v_vol.getHeure_depart() %>
+                                    <td><%= formatterService.format(v_vol.getHeure_depart()) %>
                                     </td>
-                                    <td><%= v_vol.getHeure_arrivee() %>
+                                    <td><%= formatterService.format(v_vol.getHeure_arrivee()) %>
                                     </td>
                                     <td><%= v_vol.getPrix_place_business() %>
                                     </td>
