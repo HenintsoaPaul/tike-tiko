@@ -30,7 +30,18 @@ public class ReductionTrancheAgeService {
         return select(conn, "select * from v_curr_reduction_tranche_age where id_tranche_age = " + idTrancheAge).get(0);
     }
 
-    public ReductionTrancheAge selectCurrent(Connection conn, ReservationFormData reservationFormData) {
-        return this.selectCurrentByTrancheAge(conn, reservationFormData.getId_tranche_age());
+    private ReductionTrancheAge selectCurrent(Connection conn, int idTrancheAge) {
+        return this.selectCurrentByTrancheAge(conn, idTrancheAge);
+    }
+
+    public double applyReduction(Connection conn, int idTrancheAge, double prix_final) {
+        System.out.println("Prix final (sans reduction tranche): " + prix_final);
+
+        ReductionTrancheAge reductionTrancheAge = this.selectCurrent(conn, idTrancheAge);
+        prix_final = prix_final - (prix_final * reductionTrancheAge.getVal_pourcentage() / 100);
+
+        System.out.println("Prix final (avec reduction tranche): " + prix_final + " | reduction: " + reductionTrancheAge.getVal_pourcentage());
+
+        return prix_final;
     }
 }
