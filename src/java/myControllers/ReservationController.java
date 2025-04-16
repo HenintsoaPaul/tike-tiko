@@ -18,6 +18,7 @@ import src.summer.annotations.controller.verb.Post;
 import src.summer.beans.ModelView;
 import src.summer.annotations.Param;
 import src.summer.beans.SummerSession;
+import src.summer.exception.SummerSessionException;
 import views.VReservation;
 import views.VVol;
 
@@ -83,6 +84,14 @@ public class ReservationController {
             // get user id from session
             Utilisateur u = (Utilisateur) summerSession.getAttribute("utilisateur");
             List<VReservation> vReservations = vReservationService.selectByUtilisateur(conn, u);
+
+            Object err = summerSession.getAttribute("err");
+            mv.addObject("err", err);
+            if (err != null) {
+                try {
+                summerSession.addAttribute("err", null);
+                } catch (SummerSessionException ignored) {}
+            }
 
             mv.addObject("vReservations", vReservations);
             return mv;
@@ -152,10 +161,12 @@ public class ReservationController {
             @Validate(errorPage = "reservation_add?idVol=2")
             // todo maka nlay params nle url de redirection dynamiquement...
             @Param(name = "formData") ReservationFormData reservationFormData
-    ) {
+    ) throws SummerSessionException {
         try (Connection conn = databaseService.getConnection()) {
             if (reservationService.getNbReservationsFaits(conn, reservationFormData) != 0) {
-                throw new IllegalArgumentException("Vous avez deja reservez ce vol.");
+//                throw new IllegalArgumentException("Vous avez deja reservez ce vol.");
+                summerSession.addAttribute("err", "Vous avez deja reservez ce vol.");
+                return "redirect:GET:/fo_reservation_list";
             }
 
             MinNbHeureReservation minNbHeureReservation = minNbHeureReservationService.selectCurrent(conn);
@@ -173,7 +184,9 @@ public class ReservationController {
                         String.valueOf(reservationFormData.getId_type_siege())
                 );
                 if (placeVol == null) {
-                    throw new IllegalArgumentException("Reservation Impossible car toutes les places ont ete deja prises.");
+//                    throw new IllegalArgumentException("Reservation Impossible car toutes les places ont ete deja prises.");
+                    summerSession.addAttribute("err", "Reservation Impossible car toutes les places ont ete deja prises.");
+                    return "redirect:GET:/fo_reservation_list";
                 }
 
                 // todo: reduction tranche age
@@ -199,11 +212,16 @@ public class ReservationController {
 
                 return "redirect:GET:/fo_reservation_list";
             } else {
-                throw new IllegalArgumentException("Reservation Impossible car l'heure limite est depassee.");
+//                throw new IllegalArgumentException("Reservation Impossible car l'heure limite est depassee.");
+                summerSession.addAttribute("err", "Reservation Impossible car l'heure limite est depassee.");
+                return "redirect:GET:/fo_reservation_list";
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+//            throw new RuntimeException(e);
+            e.printStackTrace();
+            summerSession.addAttribute("err", e.getMessage());
+            return "redirect:GET:/fo_reservation_list";
         }
     }
 }
