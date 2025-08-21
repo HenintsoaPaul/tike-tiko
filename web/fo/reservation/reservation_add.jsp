@@ -119,6 +119,7 @@
                                                     <label class="form-label">Date Reservation</label>
                                                     <input type="datetime-local"
                                                            name="formData.date_reservation"
+                                                           required
                                                            class="form-control"
                                                            value="<%= lastInput != null ? lastInput.getDate_reservation() : "" %>"/>
                                                     <%
@@ -134,6 +135,7 @@
                                                 <div class="col-3">
                                                     <label class="form-label">Type Siege: </label>
                                                     <select name="formData.id_type_siege"
+                                                            required
                                                             class="form-control">
                                                         <option value="">Choisir le siege</option>
                                                         <%for (TypeSiege typeSiege : typeSieges) { %>
@@ -164,6 +166,7 @@
                                                 <div class="col-3">
                                                     <label class="form-label">Tranche Age: </label>
                                                     <select name="formData.id_tranche_age"
+                                                            required
                                                             class="form-control">
                                                         <option value="">Choisir la tranche</option>
                                                         <%for (TrancheAge trancheAge : trancheAges) { %>
