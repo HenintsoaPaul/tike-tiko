@@ -15,14 +15,14 @@
                 <div class="mb-3">
                     <div class="row">
                         <div class="col-6">
-                            <label>Heure Depart Min: </label>
-                            <input type="datetime-local"
+                            <label class="form-label">Heure Depart Min: </label>
+                            <input class="form-control" type="datetime-local"
                                    name="volFiltre.heure_depart_min"
                             />
                         </div>
                         <div class="col-6">
-                            <label>Heure Depart Max: </label>
-                            <input type="datetime-local"
+                            <label class="form-label">Heure Depart Max: </label>
+                            <input class="form-control" type="datetime-local"
                                    name="volFiltre.heure_depart_max"
                             />
                         </div>
@@ -33,14 +33,14 @@
                 <div class="mb-3">
                     <div class="row">
                         <div class="col-6">
-                            <label>Heure Arrivee Min: </label>
-                            <input type="datetime-local"
+                            <label class="form-label">Heure Arrivee Min: </label>
+                            <input class="form-control" type="datetime-local"
                                    name="volFiltre.heure_arrivee_min"
                             />
                         </div>
                         <div class="col-6">
-                            <label>Heure Arrivee Max: </label>
-                            <input type="datetime-local"
+                            <label class="form-label">Heure Arrivee Max: </label>
+                            <input class="form-control" type="datetime-local"
                                    name="volFiltre.heure_arrivee_max"
                             />
                         </div>
@@ -51,8 +51,8 @@
                 <div class="mb-3">
                     <div class="row">
                         <div class="col-6">
-                            <label>Ville Depart: </label>
-                            <select name="volFiltre.id_ville_depart">
+                            <label class="form-label">Ville Depart: </label>
+                            <select class="form-control" name="volFiltre.id_ville_depart">
                                 <option value="-1">
                                     Choisir ville Depart
                                 </option>
@@ -64,8 +64,8 @@
                             </select>
                         </div>
                         <div class="col-6">
-                            <label>Ville Destination: </label>
-                            <select name="volFiltre.id_ville_destination">
+                            <label class="form-label">Ville Destination: </label>
+                            <select class="form-control" name="volFiltre.id_ville_destination">
                                 <option value="-1">
                                     Choisir ville Destination
                                 </option>
@@ -81,8 +81,8 @@
 
                 <!-- avion -->
                 <div class="mb-3">
-                    <label>Avion: </label>
-                    <select name="volFiltre.id_avion">
+                    <label class="form-label">Avion: </label>
+                    <select class="form-control" name="volFiltre.id_avion">
                         <option value="-1">
                             Choisir avion
                         </option>

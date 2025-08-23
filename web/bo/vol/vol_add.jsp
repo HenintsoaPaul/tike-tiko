@@ -68,7 +68,7 @@
                             <div class="card mb-4" id="analyse-site">
                                 <div class="card-header d-flex justify-content-between align-items-center">
                                     <h1 class="text-center mb-0">
-                                        Ajouter vol
+                                        Ajouter un nouveau vol
                                     </h1>
                                 </div>
                                 <div class="card-body">
@@ -87,8 +87,8 @@
                                                     }
                                                 }
                                             %>
-                                            <label>Avion: </label>
-                                            <select name="vol.id_avion" required>
+                                            <label class="form-label">Avion: </label>
+                                            <select name="vol.id_avion" required class="form-control">
                                                 <%for (Avion avion : avions) { %>
                                                 <option
                                                         value="<%= avion.getId()%>"
@@ -118,8 +118,9 @@
                                                             }
                                                         }
                                                     %>
-                                                    <label>Heure Depart: </label>
+                                                    <label class="form-label">Heure Depart: </label>
                                                     <input type="datetime-local"
+                                                           class="form-control"
                                                            name="vol.heure_depart"
                                                            value="<%= lastInput != null ? lastInput.getHeure_depart() : "" %>"
                                                            required/>
@@ -133,8 +134,9 @@
                                                             }
                                                         }
                                                     %>
-                                                    <label>Heure Arrivee: </label>
+                                                    <label class="form-label">Heure Arrivee: </label>
                                                     <input type="datetime-local"
+                                                           class="form-control"
                                                            name="vol.heure_arrivee"
                                                            value="<%= lastInput != null ? lastInput.getHeure_arrivee() : "" %>"
                                                            required/>
@@ -154,8 +156,8 @@
                                                             }
                                                         }
                                                     %>
-                                                    <label>Ville Depart: </label>
-                                                    <select name="vol.id_ville_depart" required>
+                                                    <label class="form-label">Ville Depart: </label>
+                                                    <select name="vol.id_ville_depart" required class="form-control">
                                                         <%for (Ville ville : villes) { %>
                                                         <option
                                                                 value="<%= ville.getId()%>"
@@ -181,8 +183,8 @@
                                                             }
                                                         }
                                                     %>
-                                                    <label>Ville Destination: </label>
-                                                    <select name="vol.id_ville_destination" required>
+                                                    <label class="form-label">Ville Destination: </label>
+                                                    <select name="vol.id_ville_destination" required class="form-control">
                                                         <%for (Ville ville : villes) { %>
                                                         <option
                                                                 value="<%= ville.getId()%>"
@@ -214,8 +216,9 @@
                                                             }
                                                         }
                                                     %>
-                                                    <label>Prix place business: </label>
+                                                    <label class="form-label">Prix place business: </label>
                                                     <input type="number"
+                                                           class="form-control"
                                                            name="vol.prix_place_business"
                                                            value="<%= lastInput != null ? lastInput.getPrix_place_business() : "" %>"
                                                            required/>
@@ -229,8 +232,9 @@
                                                             }
                                                         }
                                                     %>
-                                                    <label>Prix place eco: </label>
+                                                    <label class="form-label">Prix place eco: </label>
                                                     <input type="number"
+                                                           class="form-control"
                                                            name="vol.prix_place_eco"
                                                            value="<%= lastInput != null ? lastInput.getPrix_place_eco() : "" %>"
                                                            required/>
@@ -250,8 +254,9 @@
                                                             }
                                                         }
                                                     %>
-                                                    <label>Promotion en place business: </label>
+                                                    <label class="form-label">Nombre place business en promo: </label>
                                                     <input type="number"
+                                                           class="form-control"
                                                            name="vol.nb_place_promo_business"
                                                            value="<%= lastInput != null ? lastInput.getNb_place_promo_business() : "" %>"
                                                            required/>
@@ -265,8 +270,9 @@
                                                             }
                                                         }
                                                     %>
-                                                    <label>Promotion en place eco: </label>
+                                                    <label class="form-label">Nombre place eco en promo: </label>
                                                     <input type="number"
+                                                           class="form-control"
                                                            name="vol.nb_place_promo_eco"
                                                            value="<%= lastInput != null ? lastInput.getNb_place_promo_eco() : "" %>"
                                                            required/>
