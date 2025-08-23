@@ -1,122 +1,118 @@
-CREATE TABLE avion
-(
-    id               SERIAL PRIMARY KEY,
-    modele           VARCHAR(50) NOT NULL,
-    siege_business   INTEGER     NOT NULL,
-    siege_eco        INTEGER     NOT NULL,
-    date_fabrication DATE        NOT NULL
-);
-
 CREATE TABLE ville
 (
     id  SERIAL PRIMARY KEY,
-    nom VARCHAR(50) NOT NULL
-);
-
-CREATE TABLE min_nb_heure_reservation
-(
-    id                SERIAL PRIMARY KEY,
-    val               NUMERIC(15, 2) NOT NULL,
-    date_modification TIMESTAMP      NOT NULL
-);
-
-CREATE TABLE min_nb_heure_annulation
-(
-    id                SERIAL PRIMARY KEY,
-    val               NUMERIC(15, 2) NOT NULL,
-    date_modification TIMESTAMP      NOT NULL
+    nom VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE type_siege
 (
     id  SERIAL PRIMARY KEY,
-    nom VARCHAR(50) NOT NULL
-);
-
-CREATE TABLE vol
-(
-    id                  SERIAL PRIMARY KEY,
-    heure_depart        TIMESTAMP      NOT NULL,
-    heure_arrivee       TIMESTAMP      NOT NULL,
-    prix_place_business NUMERIC(15, 2) NOT NULL,
-    prix_place_eco      NUMERIC(15, 2) NOT NULL,
-    id_avion            INTEGER        NOT NULL,
-    id_ville_arrivee    INTEGER        NOT NULL,
-    id_ville_depart     INTEGER        NOT NULL,
-    FOREIGN KEY (id_avion) REFERENCES avion (id),
-    FOREIGN KEY (id_ville_arrivee) REFERENCES ville (id),
-    FOREIGN KEY (id_ville_depart) REFERENCES ville (id)
-);
-
-CREATE TABLE promotion
-(
-    id            SERIAL PRIMARY KEY,
-    nb_place      INTEGER        NOT NULL,
-    prix_promo    NUMERIC(15, 2) NOT NULL,
-    date_creation TIMESTAMP      NOT NULL,
-    date_fin      DATE           NOT NULL,
-    id_vol        INTEGER        NOT NULL,
-    id_type_siege INTEGER        NOT NULL,
-    FOREIGN KEY (id_vol) REFERENCES vol (id),
-    FOREIGN KEY (id_type_siege) REFERENCES type_siege (id)
+    nom VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE utilisateur
 (
     id         SERIAL PRIMARY KEY,
-    password   VARCHAR(50) NOT NULL,
-    nom        VARCHAR(50) NOT NULL,
-    email      VARCHAR(50) NOT NULL,
-    auth_level INTEGER default 0
+    nom        VARCHAR(100) NOT NULL,
+    email      VARCHAR(100) NOT NULL,
+    password   VARCHAR(100) NOT NULL,
+    auth_level INTEGER DEFAULT 0
+);
+
+CREATE TABLE pourcentage_promotion
+(
+    id                SERIAL PRIMARY KEY,
+    id_type_siege     INT REFERENCES type_siege (id),
+    val               NUMERIC   NOT NULL,
+    date_modification TIMESTAMP NOT NULL
+);
+
+CREATE TABLE min_nb_heure_reservation
+(
+    id                SERIAL PRIMARY KEY,
+    val               NUMERIC   NOT NULL,
+    date_modification TIMESTAMP NOT NULL
+);
+
+CREATE TABLE min_nb_heure_annulation
+(
+    id                SERIAL PRIMARY KEY,
+    val               NUMERIC   NOT NULL,
+    date_modification TIMESTAMP NOT NULL
+);
+
+CREATE TABLE avion
+(
+    id               SERIAL PRIMARY KEY,
+    modele           VARCHAR(100) NOT NULL,
+    siege_business   INT          NOT NULL,
+    siege_eco        INT          NOT NULL,
+    date_fabrication DATE         NOT NULL
+);
+
+CREATE TABLE vol
+(
+    id                      SERIAL PRIMARY KEY,
+    id_avion                INT REFERENCES avion (id),
+    id_ville_depart         INT REFERENCES ville (id),
+    id_ville_destination    INT REFERENCES ville (id),
+    heure_depart            TIMESTAMP NOT NULL,
+    heure_arrivee           TIMESTAMP NOT NULL,
+    prix_place_business     NUMERIC   NOT NULL,
+    prix_place_eco          NUMERIC   NOT NULL,
+    nb_place_promo_business INT       NOT NULL,
+    nb_place_promo_eco      INT       NOT NULL
 );
 
 CREATE TABLE place_vol
 (
-    id            SERIAL PRIMARY KEY,
-    prix_place    NUMERIC(15, 2) NOT NULL,
-    id_type_siege INTEGER        NOT NULL,
-    id_vol        INTEGER        NOT NULL,
-    FOREIGN KEY (id_type_siege) REFERENCES type_siege (id),
-    FOREIGN KEY (id_vol) REFERENCES vol (id)
+    id                       SERIAL PRIMARY KEY,
+    id_vol                   INT REFERENCES vol (id),
+    id_type_siege            INT REFERENCES type_siege (id),
+    id_pourcentage_promotion INT REFERENCES pourcentage_promotion (id),
+    prix_sans_promo          numeric NOT NULL,
+    prix_avec_promo          numeric,
+    nom_client               VARCHAR(100),
+    is_promotion             BOOLEAN NOT NULL
 );
 
 CREATE TABLE etat_reservation
 (
     id  SERIAL PRIMARY KEY,
-    nom VARCHAR(50) NOT NULL
+    nom VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE tranche_age
 (
-    id      SERIAL PRIMARY KEY,
+    id      SERIAL,
     nom     VARCHAR(50) NOT NULL,
     age_min INTEGER default 0,
-    age_max INTEGER default 500
+    age_max INTEGER default 500,
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE reduction_tranche_age
 (
-    id                SERIAL PRIMARY KEY,
+    id                SERIAL,
     val_pourcentage   NUMERIC(15, 2) NOT NULL,
     date_modification TIMESTAMP      NOT NULL,
     id_tranche_age    INTEGER        NOT NULL,
+    PRIMARY KEY (id),
     FOREIGN KEY (id_tranche_age) REFERENCES tranche_age (id)
 );
 
 CREATE TABLE reservation
 (
-    id                  SERIAL PRIMARY KEY,
-    img_passeport       TEXT,
-    date_paiement       TIMESTAMP,
-    heure_reservation   TIMESTAMP NOT NULL,
-    id_etat_reservation INTEGER   NOT NULL,
-    id_utilisateur      INTEGER   NOT NULL,
-    id_place_vol        INTEGER   NOT NULL,
-    FOREIGN KEY (id_etat_reservation) REFERENCES etat_reservation (id),
-    FOREIGN KEY (id_utilisateur) REFERENCES utilisateur (id),
-    FOREIGN KEY (id_place_vol) REFERENCES place_vol (id)
+    id                       SERIAL PRIMARY KEY,
+    id_etat_reservation      INT REFERENCES etat_reservation (id),
+    id_place_vol             INT REFERENCES place_vol (id),
+    id_utilisateur           INT REFERENCES utilisateur (id),
+    id_reservation_mere      INT REFERENCES reservation (id),
+    id_reduction_tranche_age INT REFERENCES reduction_tranche_age (id),
+    prix_final               numeric   NOT NULL,
+    img_passeport            TEXT,
+    heure_reservation        TIMESTAMP NOT NULL
 );
-
 
 -- views
 
