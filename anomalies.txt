@@ -4,16 +4,20 @@ De lasa mi-throws `No http found for route` ilay framework.
 
 ENHANCEMENTS
 1/ All
-    1/ Date formatters
     2/ inputs
         1/ js validators
         2/ js validator errors
-    3/ Show framework errors
 2/ Back office:
        1/ Navbar option: mes reservations
        2/ Add vol
             1/ error on submit
             2/ Stack overflow exception
 3/ Front office:
-    1/ ID du vol dans la liste des vols
     2/ Disable boutton des reservation si reservation deja faite
+
+
+BUT
+1/ BO
+    1/ Home
+        * dashboard avec chiffre d'affaires: total montant payes, total nombre vol
+    2/ Detail vol
