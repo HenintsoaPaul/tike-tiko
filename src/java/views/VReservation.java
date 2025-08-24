@@ -12,12 +12,11 @@ public class VReservation {
     String nom_etat_reservation;
     double prix_final;
     int id_utilisateur;
-    int id_reservation_mere;
     String img_passeport;
 
     // Constr
     public VReservation(int id, int idVol, LocalDateTime heureReservation, String nomTypeSiege, String nomEtatReservation,
-                        double prixFinal, int idUtilisateur, int idReservationMere, String imgPasseport) {
+                        double prixFinal, int idUtilisateur, String imgPasseport) {
         this.id = id;
         this.id_vol = idVol;
         this.heure_reservation = heureReservation;
@@ -25,7 +24,6 @@ public class VReservation {
         this.nom_etat_reservation = nomEtatReservation;
         this.setPrix_final(prixFinal);
         this.id_utilisateur = idUtilisateur;
-        this.id_reservation_mere = idReservationMere;
         this.img_passeport = imgPasseport;
     }
 
@@ -92,13 +90,5 @@ public class VReservation {
 
     public void setImg_passeport(String img_passeport) {
         this.img_passeport = img_passeport;
-    }
-
-    public int getId_reservation_mere() {
-        return id_reservation_mere;
-    }
-
-    public void setId_reservation_mere(int id_reservation_mere) {
-        this.id_reservation_mere = id_reservation_mere;
     }
 }

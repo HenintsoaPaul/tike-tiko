@@ -11,7 +11,7 @@ public class VolFilterFormData {
 
     int id_avion;
     int id_ville_depart;
-    int id_ville_destination;
+    int id_ville_arrivee;
 
     // db
     public String getFullFilterQuery() {
@@ -47,9 +47,9 @@ public class VolFilterFormData {
             query += " and id_ville_depart = " + id_ville_depart;
         }
 
-        // ville_destination
-        if (id_ville_destination != -1) {
-            query += " and id_ville_destination = " + id_ville_destination;
+        // ville_arrivee
+        if (id_ville_arrivee != -1) {
+            query += " and id_ville_arrivee = " + id_ville_arrivee;
         }
 
         return query;
@@ -104,11 +104,11 @@ public class VolFilterFormData {
         this.id_ville_depart = id_ville_depart;
     }
 
-    public int getId_ville_destination() {
-        return id_ville_destination;
+    public int getId_ville_arrivee() {
+        return id_ville_arrivee;
     }
 
-    public void setId_ville_destination(int id_ville_destination) {
-        this.id_ville_destination = id_ville_destination;
+    public void setId_ville_arrivee(int id_ville_arrivee) {
+        this.id_ville_arrivee = id_ville_arrivee;
     }
 }

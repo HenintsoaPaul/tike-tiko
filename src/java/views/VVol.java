@@ -8,33 +8,36 @@ public class VVol {
 
     int id_avion;
     int id_ville_depart;
-    int id_ville_destination;
+    int id_ville_arrivee;
 
     LocalDateTime heure_depart;
     LocalDateTime heure_arrivee;
 
     double prix_place_business;
     double prix_place_eco;
-
-    int nb_place_promo_business;
-    int nb_place_promo_eco;
+    int nb_place_business;
+    int nb_place_eco;
 
     String nom_ville_depart;
-    String nom_ville_destination;
+    String nom_ville_arrivee;
 
-    public VVol(int id, int idAvion, int idVilleDepart, int idVilleDestination, LocalDateTime heureDepart, LocalDateTime heureArrivee, double prixPlaceBusiness, double prixPlaceEco, int nbPlacePromoBusiness, int nbPlacePromoEco, String nomVilleDepart, String nomVilleDestination) {
+    public VVol(int id, int idAvion, int idVilleDepart, int idVilleDestination,
+                LocalDateTime heureDepart, LocalDateTime heureArrivee,
+                double prixPlaceBusiness, double prixPlaceEco,
+                int nbPlaceBusiness, int nbPlaceEco,
+                String nomVilleDepart, String nomVilleDestination) {
         this.id = id;
         this.id_avion = idAvion;
         this.id_ville_depart = idVilleDepart;
-        this.id_ville_destination = idVilleDestination;
+        this.id_ville_arrivee = idVilleDestination;
         this.heure_depart = heureDepart;
         this.heure_arrivee = heureArrivee;
         this.prix_place_business = prixPlaceBusiness;
         this.prix_place_eco = prixPlaceEco;
-        this.nb_place_promo_business = nbPlacePromoBusiness;
-        this.nb_place_promo_eco = nbPlacePromoEco;
         this.nom_ville_depart = nomVilleDepart;
-        this.nom_ville_destination = nomVilleDestination;
+        this.nom_ville_arrivee = nomVilleDestination;
+        this.setNb_place_business(nbPlaceBusiness);
+        this.setNb_place_eco(nbPlaceEco);
     }
 
     // getters n setters
@@ -62,12 +65,12 @@ public class VVol {
         this.id_ville_depart = id_ville_depart;
     }
 
-    public int getId_ville_destination() {
-        return id_ville_destination;
+    public int getId_ville_arrivee() {
+        return id_ville_arrivee;
     }
 
-    public void setId_ville_destination(int id_ville_destination) {
-        this.id_ville_destination = id_ville_destination;
+    public void setId_ville_arrivee(int id_ville_arrivee) {
+        this.id_ville_arrivee = id_ville_arrivee;
     }
 
     public LocalDateTime getHeure_depart() {
@@ -102,22 +105,6 @@ public class VVol {
         this.prix_place_eco = prix_place_eco;
     }
 
-    public int getNb_place_promo_business() {
-        return nb_place_promo_business;
-    }
-
-    public void setNb_place_promo_business(int nb_place_promo_business) {
-        this.nb_place_promo_business = nb_place_promo_business;
-    }
-
-    public int getNb_place_promo_eco() {
-        return nb_place_promo_eco;
-    }
-
-    public void setNb_place_promo_eco(int nb_place_promo_eco) {
-        this.nb_place_promo_eco = nb_place_promo_eco;
-    }
-
     public String getNom_ville_depart() {
         return nom_ville_depart;
     }
@@ -126,11 +113,27 @@ public class VVol {
         this.nom_ville_depart = nom_ville_depart;
     }
 
-    public String getNom_ville_destination() {
-        return nom_ville_destination;
+    public String getNom_ville_arrivee() {
+        return nom_ville_arrivee;
     }
 
-    public void setNom_ville_destination(String nom_ville_destination) {
-        this.nom_ville_destination = nom_ville_destination;
+    public void setNom_ville_arrivee(String nom_ville_arrivee) {
+        this.nom_ville_arrivee = nom_ville_arrivee;
+    }
+
+    public int getNb_place_business() {
+        return nb_place_business;
+    }
+
+    public void setNb_place_business(int nb_place_business) {
+        this.nb_place_business = nb_place_business;
+    }
+
+    public int getNb_place_eco() {
+        return nb_place_eco;
+    }
+
+    public void setNb_place_eco(int nb_place_eco) {
+        this.nb_place_eco = nb_place_eco;
     }
 }

@@ -46,12 +46,14 @@ public class PlaceDTO {
     }
 
     // constr
-    public PlaceDTO (Connection conn, ReservationService reservationService, Vol vol) {
-        int nbPlacesPrisBusiness = reservationService.getNbReservationConfirme(conn, 1, vol.getId()),
-                nbPlacesPrisEco = reservationService.getNbReservationConfirme(conn, 2, vol.getId());
+    public PlaceDTO(Connection conn, ReservationService reservationService, Vol vol) {
+        int idVol = vol.getId();
 
-        int nbPlacesAttenteBusiness = reservationService.getNbReservation(conn, 1, vol.getId(), 1),
-                nbPlacesAttenteEco = reservationService.getNbReservation(conn, 2, vol.getId(), 1);
+        int nbPlacesPrisBusiness = reservationService.getNbReservationConfirme(conn, 1, idVol),
+                nbPlacesPrisEco = reservationService.getNbReservationConfirme(conn, 2, idVol);
+
+        int nbPlacesAttenteBusiness = reservationService.getNbReservationAttente(conn, 1, idVol),
+                nbPlacesAttenteEco = reservationService.getNbReservationAttente(conn, 2, idVol);
 
         this.validatedBusiness = nbPlacesPrisBusiness;
         this.validatedEco = nbPlacesPrisEco;
