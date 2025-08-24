@@ -92,6 +92,20 @@
                         <div data-i18n="Container">Liste promotions</div>
                     </a>
                 </li>
+                <li
+                        <%
+                            classes = menuItemClass;
+                            if (activePage.equals("promotionAdd")) {
+                                classes += " active";
+                            }
+                            out.print("class=\"" + classes + "\"");
+                        %>
+                >
+                    <a href="<%= request.getContextPath() %>/promotion_add" class="menu-link">
+                        <i class="tf-icons bx bx-plus-circle"></i>
+                        <div data-i18n="Fluid">Ajout promotion</div>
+                    </a>
+                </li>
             </ul>
         </li>
 

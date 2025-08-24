@@ -49,6 +49,14 @@ public class Promotion {
         this.id = id;
     }
 
+    public int getId_vol() {
+        return id_vol;
+    }
+
+    public void setId_vol(int id_vol) {
+        this.id_vol = id_vol;
+    }
+
     public int getId_type_siege() {
         return id_type_siege;
     }
@@ -57,12 +65,12 @@ public class Promotion {
         this.id_type_siege = id_type_siege;
     }
 
-    public LocalDateTime getDate_fin() {
-        return date_fin;
+    public int getNb_place() {
+        return nb_place;
     }
 
-    public void setDate_fin(LocalDateTime date_fin) {
-        this.date_fin = date_fin;
+    public void setNb_place(int nb_place) {
+        this.nb_place = nb_place;
     }
 
     public double getPrix_promo() {
@@ -71,5 +79,13 @@ public class Promotion {
 
     public void setPrix_promo(double prix_promo) {
         this.prix_promo = prix_promo;
+    }
+
+    public LocalDateTime getDate_fin() {
+        return date_fin;
+    }
+
+    public void setDate_fin(LocalDateTime date_fin) {
+        this.date_fin = date_fin;
     }
 }
