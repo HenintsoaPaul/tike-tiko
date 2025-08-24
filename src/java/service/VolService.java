@@ -21,13 +21,11 @@ public class VolService {
                         rs.getInt("id"),
                         rs.getInt("id_avion"),
                         rs.getInt("id_ville_depart"),
-                        rs.getInt("id_ville_destination"),
+                        rs.getInt("id_ville_arrivee"),
                         rs.getTimestamp("heure_depart").toLocalDateTime(),
                         rs.getTimestamp("heure_arrivee").toLocalDateTime(),
                         rs.getDouble("prix_place_business"),
-                        rs.getDouble("prix_place_eco"),
-                        rs.getInt("nb_place_promo_business"),
-                        rs.getInt("nb_place_promo_eco")
+                        rs.getDouble("prix_place_eco")
                 );
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -59,7 +57,7 @@ public class VolService {
                 .minusHours((long) minNbHeureAnnulation.getVal());
     }
 
-    public void controller(Vol vol) throws Exception {
+    public void verifierDates(Vol vol) throws Exception {
         // depart < arrivee
         if (!vol.getHeure_depart().isBefore(vol.getHeure_arrivee())) {
             throw new Exception("heure_depart must be before heure_arrivee");

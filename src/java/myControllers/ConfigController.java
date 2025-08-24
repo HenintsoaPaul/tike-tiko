@@ -2,11 +2,12 @@ package myControllers;
 
 import entity.config.MinNbHeureAnnulation;
 import entity.config.MinNbHeureReservation;
-import entity.config.PourcentagePromotion;
+import entity.config.Promotion;
 import service.*;
 import service.config.MinNbHeureAnnulationService;
 import service.config.MinNbHeureReservationService;
-import service.config.PourcentagePromotionService;
+import service.config.PromotionService;
+import service.views.VReductionTrancheAgeService;
 import src.summer.annotations.Authorized;
 import src.summer.annotations.Param;
 import src.summer.annotations.Validate;
@@ -23,8 +24,9 @@ import java.time.LocalDateTime;
 @Controller
 public class ConfigController {
 
-    private final VPourcentagePromotionService vpPromotionService = new VPourcentagePromotionService();
-    private final PourcentagePromotionService pourcentagePromotionService = new PourcentagePromotionService();
+    private final VReductionTrancheAgeService vReductionTrancheAgeService = new VReductionTrancheAgeService();
+    private final TrancheAgeService trancheAgeService = new TrancheAgeService();
+    private final PromotionService promotionService = new PromotionService();
     private final MinNbHeureReservationService minNbHeureReservationService = new MinNbHeureReservationService();
     private final MinNbHeureAnnulationService minNbHeureAnnulationService = new MinNbHeureAnnulationService();
     private final TypeSiegeService typeSiegeService = new TypeSiegeService();
@@ -35,7 +37,9 @@ public class ConfigController {
 
         mv.addObject("typeSieges", typeSiegeService.selectAll(conn));
 
-        mv.addObject("vPourcentagePromotions", vpPromotionService.selectAll(conn));
+        mv.addObject("vReductionTrancheAges", vReductionTrancheAgeService.selectAll(conn));
+        mv.addObject("trancheAges", trancheAgeService.selectAll(conn));
+
         mv.addObject("minNbHeureReservations", minNbHeureReservationService.selectAll(conn));
         mv.addObject("minNbHeureAnnulations", minNbHeureAnnulationService.selectAll(conn));
 
@@ -56,13 +60,13 @@ public class ConfigController {
     @Authorized
     @Post
     @UrlMapping(url = "config_pourcentage")
-    public ModelView pourcentagePromotion(
+    public ModelView promotion(
             @Validate(errorPage = "config")
-            @Param(name = "pourcentagePromotion") PourcentagePromotion pourcentagePromotion
+            @Param(name = "promotion") Promotion promotion
     ) {
         try (Connection conn = databaseService.getConnection()) {
-            pourcentagePromotion.setDate_modification(LocalDateTime.now());
-            this.pourcentagePromotionService.insert(conn, pourcentagePromotion);
+//            promotion.setDate_fin(LocalDateTime.now());
+            this.promotionService.insert(conn, promotion);
 
             return new ModelView("redirect:GET:/config", null);
         } catch (SQLException e) {

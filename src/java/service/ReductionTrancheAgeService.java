@@ -1,6 +1,6 @@
 package service;
 
-import entity.ReductionTrancheAge;
+import entity.config.age.ReductionTrancheAge;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -26,15 +26,16 @@ public class ReductionTrancheAgeService {
     }
 
     public ReductionTrancheAge selectCurrentByTrancheAge(Connection conn, int idTrancheAge) {
-        return select(conn, "select * from v_curr_reduction_tranche_age where id_tranche_age = " + idTrancheAge).get(0);
+        String query = "select * from v_curr_reduction_tranche_age where id_tranche_age = " + idTrancheAge;
+        return select(conn, query).get(0);
     }
 
     public double applyReduction(ReductionTrancheAge rta, double prix_final) {
-        System.out.println("Prix final (sans reduction tranche): " + prix_final);
+        double reduction = rta.getVal_pourcentage();
 
-        prix_final = prix_final - (prix_final * rta.getVal_pourcentage() / 100);
+        prix_final = prix_final - (prix_final * reduction / 100);
 
-        System.out.println("Prix final (avec reduction tranche): " + prix_final + " | reduction: " + rta.getVal_pourcentage());
+        System.out.println("Prix place: " + prix_final + " | Reduction tranche age: " + reduction + " %");
 
         return prix_final;
     }

@@ -1,4 +1,4 @@
-package entity;
+package entity.config.age;
 
 import src.summer.annotations.form.validation.Required;
 

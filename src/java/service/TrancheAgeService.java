@@ -1,6 +1,6 @@
 package service;
 
-import entity.TrancheAge;
+import entity.config.age.TrancheAge;
 
 import java.sql.Connection;
 import java.sql.SQLException;

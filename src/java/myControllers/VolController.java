@@ -5,12 +5,11 @@ import entity.Avion;
 import entity.Vol;
 import entity.config.MinNbHeureAnnulation;
 import entity.config.MinNbHeureReservation;
-import entity.config.PourcentagePromotion;
 import form.VolFilterFormData;
 import service.*;
 import service.config.MinNbHeureAnnulationService;
 import service.config.MinNbHeureReservationService;
-import service.config.PourcentagePromotionService;
+import service.views.VVolService;
 import src.summer.annotations.Authorized;
 import src.summer.annotations.Param;
 import src.summer.annotations.Validate;
@@ -28,7 +27,6 @@ public class VolController {
 
     private final MinNbHeureReservationService minNbHeureReservationService = new MinNbHeureReservationService();
     private final MinNbHeureAnnulationService minNbHeureAnnulationService = new MinNbHeureAnnulationService();
-    private final PourcentagePromotionService promotionService = new PourcentagePromotionService();
     private final PlaceVolService placeService = new PlaceVolService();
     private final ReservationService reservationService = new ReservationService();
     private final AvionService avionService = new AvionService();
@@ -130,7 +128,7 @@ public class VolController {
             conn = databaseService.getConnection();
             conn.setAutoCommit(false);
 
-            volService.controller(vol);
+            volService.verifierDates(vol);
 
             // 1/ insert vol
             int idVol = this.volService.insert(conn, vol);
@@ -138,18 +136,7 @@ public class VolController {
             System.out.println("Insert vol of id: " + idVol);
 
             // 2/ insert de toutes les place_vol pour le vol que l'on vient d'inserer
-            Avion avion = avionService.selectById(conn, vol.getId_avion());
-            int nbPlaceBusiness = avion.getSiege_business(),
-                    nbPlaceEco = avion.getSiege_eco();
-
-            PourcentagePromotion promoBusiness = this.promotionService.selectPourcentagePromotionByIdTypeSiege(conn, 1),
-                    promoEco = this.promotionService.selectPourcentagePromotionByIdTypeSiege(conn, 2);
-
-            int placesBusiness = placeService.insertPlacesBusiness(conn, vol, promoBusiness, nbPlaceBusiness);
-            int placesEco = placeService.insertPlacesEco(conn, vol, promoEco, nbPlaceEco);
-
-            System.out.println("Insert placesBusiness = " + placesBusiness);
-            System.out.println("Insert placesEco = " + placesEco);
+            insertPlacesOfNewVol(conn, vol);
 
             conn.commit();
 
@@ -159,6 +146,18 @@ public class VolController {
             conn.rollback();
             throw new RuntimeException(e);
         }
+    }
+
+    private void insertPlacesOfNewVol(Connection conn, Vol vol) {
+        Avion avion = avionService.selectById(conn, vol.getId_avion());
+        int nbPlaceBusiness = avion.getSiege_business(),
+                nbPlaceEco = avion.getSiege_eco();
+
+        int placesBusiness = placeService.insertPlaces(conn, vol, nbPlaceBusiness, 1);
+        int placesEco = placeService.insertPlaces(conn, vol, nbPlaceEco, 2);
+
+        System.out.println("Insert placesBusiness = " + placesBusiness);
+        System.out.println("Insert placesEco = " + placesEco);
     }
 
     // BackOffice
