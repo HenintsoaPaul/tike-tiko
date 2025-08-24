@@ -1,15 +1,21 @@
 package service;
 
 import entity.Reservation;
+import entity.Vol;
+import entity.config.MinNbHeureReservation;
 import form.ReservationFormData;
+import service.config.MinNbHeureReservationService;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class ReservationService {
 
     private final DatabaseService databaseService = new DatabaseService();
+    private final MinNbHeureReservationService minNbHeureReservationService = new MinNbHeureReservationService();
+    private final VolService volService = new VolService();
 
     public List<Reservation> select(Connection conn, String query) {
         return this.databaseService.select(conn, query, rs -> {
@@ -22,8 +28,8 @@ public class ReservationService {
                         rs.getString("img_passeport"),
                         rs.getInt("id_utilisateur"),
                         rs.getInt("id_reduction_tranche_age"),
-                        rs.getInt("id_reservation_mere"),
-                        rs.getDouble("prix_final")
+                        rs.getDouble("prix_final"),
+                        rs.getBoolean("on_promotion")
                 );
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -41,6 +47,13 @@ public class ReservationService {
      * Retourne le nombre de place avec etat_reservation confirmee.
      */
     public int getNbReservationConfirme(Connection conn, int idTypeSiege, int idVol) {
+        return this.getNbReservation(conn, idTypeSiege, idVol, 1);
+    }
+
+    /**
+     * Retourne le nombre de place avec etat_reservation en attente.
+     */
+    public int getNbReservationAttente(Connection conn, int idTypeSiege, int idVol) {
         return this.getNbReservation(conn, idTypeSiege, idVol, 3);
     }
 
@@ -75,7 +88,7 @@ public class ReservationService {
         String query = "select count(pv.id)" +
                 "from place_vol pv" +
                 "         join vol v on pv.id_vol = v.id" +
-                "         join ("+reservationsUser+") rs on rs.id_place_vol = pv.id " +
+                "         join (" + reservationsUser + ") rs on rs.id_place_vol = pv.id " +
                 "where v.id = " + idVol;
 
         return this.databaseService.select(conn, query, rs -> {
@@ -100,5 +113,14 @@ public class ReservationService {
 
     public int update(Connection conn, Reservation reservation) {
         return this.databaseService.update(conn, "reservation", reservation);
+    }
+
+    public boolean isLateReservation(Connection conn, Vol vol, LocalDateTime dateReservation) {
+        MinNbHeureReservation minNbHeureReservation = minNbHeureReservationService.selectCurrent(conn);
+
+        LocalDateTime heureReservationLimite = volService.getLimiteReservation(vol, minNbHeureReservation);
+
+        System.out.println("Limite: " + heureReservationLimite + " | reservation: " + dateReservation);
+        return heureReservationLimite.isBefore(dateReservation);
     }
 }
