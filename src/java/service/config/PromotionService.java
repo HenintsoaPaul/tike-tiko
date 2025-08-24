@@ -1,7 +1,9 @@
 package service.config;
 
+import entity.Reservation;
 import entity.config.Promotion;
 import service.DatabaseService;
+import service.ReservationService;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -29,6 +31,15 @@ public class PromotionService {
         });
     }
 
+    public List<Reservation> getPaidReservationsForPromotion(Connection conn, Promotion promotion) {
+        String paidReservationsQuery = "select r.*"
+                + " from reservation r"
+                + "     join promotion p on p.id = r.id_promotion"
+                + " where id_etat_reservation = 1"
+                + "     and p.id = " + promotion.getId();
+
+        return new ReservationService().select(conn, paidReservationsQuery);
+    }
 
     public List<Promotion> getPromotionForVol(Connection conn, int idVol, int idTypeSiege, LocalDateTime dateReservation) {
         String paidReservationsQuery = "select count(r.id) as nb_paid"

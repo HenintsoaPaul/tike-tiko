@@ -1,9 +1,9 @@
 package myControllers;
 
+import entity.Reservation;
 import entity.config.Promotion;
-import service.DatabaseService;
-import service.TypeSiegeService;
-import service.VolService;
+import entity.config.age.ReductionTrancheAge;
+import service.*;
 import service.config.PromotionService;
 import service.views.VPromotionService;
 import src.summer.annotations.Authorized;
@@ -16,11 +16,16 @@ import src.summer.annotations.controller.verb.Post;
 import src.summer.beans.ModelView;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class PromotionController {
 
+    private final ReductionTrancheAgeService reductionTrancheAgeService = new ReductionTrancheAgeService();
+    private final ReservationService reservationService = new ReservationService();
     private final VolService volService = new VolService();
     private final TypeSiegeService typeSiegeService = new TypeSiegeService();
     private final PromotionService promotionService = new PromotionService();
@@ -62,7 +67,8 @@ public class PromotionController {
 //    @Post
 //    @UrlMapping(url = "promotion_filter")
 //    public ModelView filter(
-////            @Validate(errorPage = "promotion_list")
+
+    /// /            @Validate(errorPage = "promotion_list")
 //            @Param(name = "volFiltre") VolFilterFormData volFilterFormData
 //    ) {
 //        try (Connection conn = databaseService.getConnection()) {
@@ -78,7 +84,7 @@ public class PromotionController {
 //    @Post
 //    @UrlMapping(url = "fo_promotion_filter")
 //    public ModelView fo_filter(
-////            @Validate(errorPage = "promotion_list")
+//           @Validate(errorPage = "promotion_list")
 //            @Param(name = "volFiltre") VolFilterFormData volFilterFormData
 //    ) {
 //        try (Connection conn = databaseService.getConnection()) {
@@ -90,7 +96,6 @@ public class PromotionController {
 //            throw new RuntimeException(e);
 //        }
 //    }
-
     @Get
     @UrlMapping(url = "promotion_add")
     @Authorized(roleLevel = 10)
@@ -131,19 +136,120 @@ public class PromotionController {
             throw new RuntimeException(e);
         }
     }
-//
-//    private void insertPlacesOfNewVol(Connection conn, Vol vol) {
-//        Avion avion = avionService.selectById(conn, vol.getId_avion());
-//        int nbPlaceBusiness = avion.getSiege_business(),
-//                nbPlaceEco = avion.getSiege_eco();
-//
-//        int placesBusiness = placeService.insertPlaces(conn, vol, nbPlaceBusiness, 1);
-//        int placesEco = placeService.insertPlaces(conn, vol, nbPlaceEco, 2);
-//
-//        System.out.println("Insert placesBusiness = " + placesBusiness);
-//        System.out.println("Insert placesEco = " + placesEco);
-//    }
-//
+
+    @Authorized
+    @Get
+    @UrlMapping(url = "promotion_decaler_reservations_non_payes")
+    public String promotion_decaler_reservations_non_payes(
+            String idPromotion
+    ) throws SQLException {
+        Connection conn = null;
+        try {
+            conn = databaseService.getConnection();
+
+            Promotion promotion = promotionService.select(conn, "select * from promotion where id = " + idPromotion).get(0);
+            int idVol = promotion.getId_vol(), idTypeSiege = promotion.getId_type_siege();
+
+            // get reservations non payes lies a cette promotion
+            int idEtatReservation = 3; // en attente
+            String queryUnvalidatedReservations = "select r.* from reservation r"
+                    + " join place_vol pv on pv.id = r.id_place_vol"
+                    + " where r.id_etat_reservation = " + idEtatReservation
+                    + "     and r.id_promotion = " + idPromotion
+                    + " order by id asc";
+
+            List<Reservation> unvalidatedReservations = reservationService.select(conn, queryUnvalidatedReservations);
+            int nbADecaler = unvalidatedReservations.size();
+
+            // Aucune reservation en attente a decaler...
+            if (nbADecaler == 0) return "redirect:GET:/promotion_list";
+
+            // get next promotions meme ktq
+            String queryNextPossiblePromotions = "select * from promotion"
+                    + " where id_vol = " + idVol
+                    + "     and id_type_siege = " + idTypeSiege
+                    + "     and date_fin >= '" + promotion.getDate_fin() + "'"
+                    + "     and id < " + promotion.getId()
+                    + " order by id asc";
+
+            List<Promotion> nextPossiblePromotions = promotionService.select(conn, queryNextPossiblePromotions);
+
+            conn.setAutoCommit(false);
+
+            for (Promotion nextPromotion : nextPossiblePromotions) {
+                List<Reservation> paidReservations = this.promotionService
+                        .getPaidReservationsForPromotion(conn, nextPromotion);
+
+                int placeLibre = nextPromotion.getNb_place() - paidReservations.size();
+
+                if (placeLibre <= 0) continue;
+
+                decalerManyReservationsTo(conn, nextPromotion, unvalidatedReservations, placeLibre);
+            }
+
+            // Annuler toutes les reservations restantes
+            int nbAnnuler = annulerBatchReservation(conn, unvalidatedReservations);
+            System.out.println("[Decaler reservation]: " + nbADecaler + " initalement a decaler.");
+            System.out.println("[Decaler reservation]: " + nbAnnuler + " annulee");
+            // ...
+
+            conn.commit();
+
+            return "redirect:GET:/promotion_list";
+        } catch (Exception e) {
+            assert conn != null;
+            conn.rollback();
+            throw new RuntimeException(e);
+        }
+    }
+
+    private int annulerBatchReservation(Connection conn, List<Reservation> unvalidatedReservations) {
+        List<Integer> ids = unvalidatedReservations.stream()
+                .map(Reservation::getId).collect(Collectors.toList());
+
+        String idsString = ids.stream().map(Object::toString).collect(Collectors.joining(", "));
+
+        String query = "update reservation\n" +
+                "set id_etat_reservation = 3\n" +
+                "where id in ( " + idsString + " )";
+
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            return stmt.executeUpdate(); // Return affected rows
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1; // Indicate failure
+        }
+    }
+
+    private void decalerManyReservationsTo(
+            Connection conn,
+            Promotion nextPromotion,
+            List<Reservation> unvalidatedReservations,
+            int placeLibre
+    ) {
+        for (int i = 0; i < placeLibre; i++) {
+            decalerReservationTo(conn, nextPromotion, unvalidatedReservations.get(0));
+            unvalidatedReservations.remove(0);
+        }
+    }
+
+    private void decalerReservationTo(Connection conn, Promotion nextPromotion, Reservation reservation) {
+        double prix_final = nextPromotion.getPrix_promo();
+
+        int idRta = reservation.getId_reduction_tranche_age();
+        if (idRta > 0) {
+            String query = "select * from reduction_tranche_age where id = " + idRta;
+            ReductionTrancheAge rta = reductionTrancheAgeService.select(conn, query).get(0);
+            prix_final = reductionTrancheAgeService.applyReduction(rta, prix_final);
+        }
+
+        reservation.setPrix_final(prix_final);
+        reservation.setId_promotion(nextPromotion.getId());
+
+        reservationService.update(conn, reservation);
+        System.out.println("[Decaler reservation individu]: id_ " + reservation.getId() + " decaler vers promotion_id_ " + nextPromotion.getId());
+    }
+
 //    // BackOffice
 //    @Get
 //    @UrlMapping(url = "promotion_detail")
