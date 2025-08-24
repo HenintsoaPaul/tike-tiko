@@ -1,6 +1,7 @@
-package service;
+package service.views;
 
 import form.VolFilterFormData;
+import service.DatabaseService;
 import views.VVol;
 
 import java.sql.Connection;
@@ -18,15 +19,15 @@ public class VVolService {
                         rs.getInt("id"),
                         rs.getInt("id_avion"),
                         rs.getInt("id_ville_depart"),
-                        rs.getInt("id_ville_destination"),
+                        rs.getInt("id_ville_arrivee"),
                         rs.getTimestamp("heure_depart").toLocalDateTime(),
                         rs.getTimestamp("heure_arrivee").toLocalDateTime(),
                         rs.getDouble("prix_place_business"),
                         rs.getDouble("prix_place_eco"),
-                        rs.getInt("nb_place_promo_business"),
-                        rs.getInt("nb_place_promo_eco"),
+                        rs.getInt("nb_place_business"),
+                        rs.getInt("nb_place_eco"),
                         rs.getString("nom_ville_depart"),
-                        rs.getString("nom_ville_destination")
+                        rs.getString("nom_ville_arrivee")
                 );
             } catch (SQLException e) {
                 throw new RuntimeException(e);

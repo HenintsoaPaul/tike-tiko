@@ -1,6 +1,7 @@
-package service;
+package service.views;
 
 import entity.Utilisateur;
+import service.DatabaseService;
 import views.VReservation;
 
 import java.sql.Connection;
@@ -22,7 +23,6 @@ public class VReservationService {
                         rs.getString("nom_etat_reservation"),
                         rs.getDouble("prix_final"),
                         rs.getInt("id_utilisateur"),
-                        rs.getInt("id_reservation_mere"),
                         rs.getString("img_passeport")
                 );
             } catch (SQLException e) {
