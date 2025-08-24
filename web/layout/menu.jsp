@@ -34,15 +34,15 @@
     <ul class="menu-inner py-1">
         <!-- Log(in/out) -->
         <li class="menu-item">
-            <a href="<%= request.getContextPath() %>/fo_login" class="menu-link">
+            <a href="<%= request.getContextPath() %>/fo_logout" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-log-in"></i>
-                <div data-i18n="Login">Login</div>
+                <div data-i18n="Login">Go client login</div>
             </a>
         </li>
         <li class="menu-item">
-            <a href="<%= request.getContextPath() %>/fo_logout" class="menu-link">
+            <a href="<%= request.getContextPath() %>/logout" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-log-out"></i>
-                <div data-i18n="Logout">Logout</div>
+                <div data-i18n="Logout">Go admin login</div>
             </a>
         </li>
 
