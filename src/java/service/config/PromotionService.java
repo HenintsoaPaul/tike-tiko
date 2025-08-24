@@ -37,7 +37,7 @@ public class PromotionService {
                 + " where pv.id_vol = " + idVol
                 + "     and id_type_siege = " + idTypeSiege
                 + "     and id_etat_reservation = 1"
-                + "     and on_promotion = true";
+                + "     and id_promotion is not null";
 
         int nbPaid = this.databaseService.select(conn, paidReservationsQuery, rs -> {
             try {
@@ -50,7 +50,7 @@ public class PromotionService {
         String query = "select * from promotion"
                 + " where id_vol = " + idVol
                 + "     and id_type_siege = " + idTypeSiege
-                + "     and date_fin >= '" + dateReservation.toLocalDate().toString()  + "'"// still enough time
+                + "     and date_fin >= '" + dateReservation + "'"// still enough time
                 + "     and nb_place - " + nbPaid + " > 0" // still enough place
                 + " order by id desc limit 1";
         return this.select(conn, query);

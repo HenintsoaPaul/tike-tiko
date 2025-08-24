@@ -220,9 +220,12 @@ public class ReservationController {
 
             System.out.println("Prix place: " + prix_final);
             boolean onPromotion = false;
+            Integer idPromotion = null;
+
             if (!promotions.isEmpty()) {
                 prix_final = promotions.get(0).getPrix_promo();
                 onPromotion = true;
+                idPromotion = promotions.get(0).getId();
                 System.out.println("Prix place: " + prix_final + " | onPromotion: " + onPromotion);
             }
 
@@ -232,8 +235,9 @@ public class ReservationController {
             prix_final = reductionTrancheAgeService.applyReduction(rta, prix_final);
 
             // Save
-            Reservation reservation = new Reservation(placeVol, reservationFormData, prix_final, onPromotion);
+            Reservation reservation = new Reservation(placeVol, reservationFormData, prix_final);
             reservation.setId_reduction_tranche_age(rta.getId());
+            if (onPromotion) reservation.setId_promotion(idPromotion);
             reservationService.insert(conn, reservation);
 
             return "redirect:GET:/fo_reservation_list";

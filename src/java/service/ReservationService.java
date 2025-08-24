@@ -29,7 +29,7 @@ public class ReservationService {
                         rs.getInt("id_utilisateur"),
                         rs.getInt("id_reduction_tranche_age"),
                         rs.getDouble("prix_final"),
-                        rs.getBoolean("on_promotion")
+                        rs.getInt("id_promotion")
                 );
             } catch (SQLException e) {
                 throw new RuntimeException(e);

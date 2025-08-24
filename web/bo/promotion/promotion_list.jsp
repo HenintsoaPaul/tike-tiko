@@ -85,7 +85,7 @@
                                     <td>TODO
                                     </td>
                                     <td>
-                                        <a href="promotion_decaler_reservations_non_payes?idVol=<%= vPromo.getId() %>">
+                                        <a href="promotion_decaler_reservations_non_payes?idPromotion=<%= vPromo.getId() %>">
                                             Decaler les reservations non payees
                                         </a>
                                     </td>
