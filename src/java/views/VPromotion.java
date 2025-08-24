@@ -62,4 +62,28 @@ public class VPromotion {
     public void setPrix_promo(double prix_promo) {
         this.prix_promo = prix_promo;
     }
+
+    public int getId_vol() {
+        return id_vol;
+    }
+
+    public void setId_vol(int id_vol) {
+        this.id_vol = id_vol;
+    }
+
+    public String getNom_type_siege() {
+        return nom_type_siege;
+    }
+
+    public void setNom_type_siege(String nom_type_siege) {
+        this.nom_type_siege = nom_type_siege;
+    }
+
+    public int getNb_place() {
+        return nb_place;
+    }
+
+    public void setNb_place(int nb_place) {
+        this.nb_place = nb_place;
+    }
 }

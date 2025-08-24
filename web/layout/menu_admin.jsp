@@ -63,6 +63,38 @@
             </a>
         </li>
 
+        <!-- Promotions -->
+        <li
+                <%
+                    classes = menuItemClass;
+                    if (activePage.equals("promotionList") || activePage.equals("promotionDetail")) {
+                        classes += " active open";
+                    }
+                    out.print("class=\"" + classes + "\"");
+                %>
+        >
+            <a class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-cart-alt"></i>
+                <div data-i18n="Promotions">Promotions</div>
+            </a>
+            <ul class="menu-sub">
+                <li
+                        <%
+                            classes = menuItemClass;
+                            if (activePage.equals("promotionList")) {
+                                classes += " active";
+                            }
+                            out.print("class=\"" + classes + "\"");
+                        %>
+                >
+                    <a href="<%= request.getContextPath() %>/promotion_list" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-list-ul"></i>
+                        <div data-i18n="Container">Liste promotions</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
         <!-- Vols (bo) -->
         <li
                 <%
@@ -75,7 +107,7 @@
         >
             <a class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-plane"></i>
-                <div data-i18n="Tables">Vols (bo)</div>
+                <div data-i18n="Tables">Vols admin</div>
             </a>
             <ul class="menu-sub">
                 <li

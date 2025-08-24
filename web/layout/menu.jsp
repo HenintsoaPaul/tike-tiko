@@ -46,6 +46,38 @@
             </a>
         </li>
 
+        <!-- Promotions -->
+        <li
+                <%
+                    classes = menuItemClass;
+                    if (activePage.equals("foPromotionList") || activePage.equals("foPromotionDetail")) {
+                        classes += " active open";
+                    }
+                    out.print("class=\"" + classes + "\"");
+                %>
+        >
+            <a class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-cart-alt"></i>
+                <div data-i18n="Promotions">Promotions</div>
+            </a>
+            <ul class="menu-sub">
+                <li
+                        <%
+                            classes = menuItemClass;
+                            if (activePage.equals("foPromotionList")) {
+                                classes += " active";
+                            }
+                            out.print("class=\"" + classes + "\"");
+                        %>
+                >
+                    <a href="<%= request.getContextPath() %>/fo_promotion_list" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-list-ul"></i>
+                        <div data-i18n="Container">Liste promotions</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
         <!-- Vols client -->
         <li
                 <%
@@ -58,7 +90,7 @@
         >
             <a class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-plane-alt"></i>
-                <div data-i18n="Flights">Vols client</div>
+                <div data-i18n="Flights">Vols clients</div>
             </a>
             <ul class="menu-sub">
                 <li
@@ -72,7 +104,7 @@
                 >
                     <a href="<%= request.getContextPath() %>/fo_vol_list" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-list-ul"></i>
-                        <div data-i18n="Container">Liste des Vols</div>
+                        <div data-i18n="Container">Liste des vols</div>
                     </a>
                 </li>
             </ul>
