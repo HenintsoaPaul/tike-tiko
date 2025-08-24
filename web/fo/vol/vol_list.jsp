@@ -33,9 +33,7 @@
 
     <title>Liste des vols</title>
 
-    <div>
-        <%@ include file="/layout/link_header.jsp" %>
-    </div>
+    <%@ include file="/layout/link_header.jsp" %>
 </head>
 
 <body>
@@ -73,8 +71,6 @@
                                     <th>Heure Arrivee</th>
                                     <th>Prix place business</th>
                                     <th>Prix place eco</th>
-                                    <th>Nb promo business</th>
-                                    <th>Nb promo eco</th>
                                     <th>Actions</th>
                                 </tr>
                                 </thead>
@@ -85,7 +81,7 @@
                                     </td>
                                     <td><%= v_vol.getNom_ville_depart() %>
                                     </td>
-                                    <td><%= v_vol.getNom_ville_destination() %>
+                                    <td><%= v_vol.getNom_ville_arrivee() %>
                                     </td>
                                     <td><%= formatterService.format(v_vol.getHeure_depart()) %>
                                     </td>
@@ -94,10 +90,6 @@
                                     <td><%= v_vol.getPrix_place_business() %>
                                     </td>
                                     <td><%= v_vol.getPrix_place_eco() %>
-                                    </td>
-                                    <td><%= v_vol.getNb_place_promo_business() %>
-                                    </td>
-                                    <td><%= v_vol.getNb_place_promo_eco() %>
                                     </td>
                                     <td>
                                         <a href="reservation_add?idVol=<%= v_vol.getId() %>">

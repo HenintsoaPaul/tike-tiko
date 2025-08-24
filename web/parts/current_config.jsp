@@ -5,20 +5,20 @@
     <table class="table table-bordered table-striped mt-3">
         <thead>
         <tr>
-            <th>Promo Business (%)</th>
-            <th>Promo Eco (%)</th>
+<%--            <th>Promo Business (%)</th>--%>
+<%--            <th>Promo Eco (%)</th>--%>
             <th>Heure Reservation</th>
             <th>Heure Annulation</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-            <td>
-                <%= configDTO.getPourcentagePromotionBusiness().getVal() %>
-            </td>
-            <td>
-                <%= configDTO.getPourcentagePromotionEco().getVal() %>
-            </td>
+<%--            <td>--%>
+<%--                <%= configDTO.getPourcentagePromotionBusiness().getVal() %>--%>
+<%--            </td>--%>
+<%--            <td>--%>
+<%--                <%= configDTO.getPourcentagePromotionEco().getVal() %>--%>
+<%--            </td>--%>
             <td>
                 <%= configDTO.getMinNbHeureReservation().getVal() %>
             </td>

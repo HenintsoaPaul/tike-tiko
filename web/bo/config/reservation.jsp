@@ -29,7 +29,7 @@
                     <%= res.getVal() %>
                 </td>
                 <td>
-                    <%= res.getDate_modification() %>
+                    <%= formatterService.format(res.getDate_modification()) %>
                 </td>
             </tr>
             <% } %>

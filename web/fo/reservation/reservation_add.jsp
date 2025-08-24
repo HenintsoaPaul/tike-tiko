@@ -8,7 +8,8 @@
 <%@ page import="entity.Utilisateur" %>
 <%@ page import="dto.PlaceDTO" %>
 <%@ page import="dto.ConfigDTO" %>
-<%@ page import="entity.TrancheAge" %>
+<%@ page import="entity.config.age.TrancheAge" %>
+<%@ page import="service.DateFormatterService" %>
 <%
     Utilisateur client = (Utilisateur) request.getAttribute("utilisateur");
     VVol v_vol = (VVol) request.getAttribute("v_vol");
@@ -28,6 +29,11 @@
     }
 
     pageContext.setAttribute("activePage", "reservationAdd");
+
+    DateFormatterService formatterService = new DateFormatterService();
+
+//    Object errObject = request.getAttribute("err");
+//    String err = errObject == null ? null : errObject.toString();
 %>
 
 <!DOCTYPE html>
@@ -49,9 +55,7 @@
 
     <title>Reserver un vol</title>
 
-    <div>
-        <%@ include file="/layout/link_header.jsp" %>
-    </div>
+    <%@ include file="/layout/link_header.jsp" %>
 </head>
 
 <body>
@@ -79,6 +83,15 @@
                                         Reserver un vol
                                     </h1>
                                 </div>
+
+<%--                                &lt;%&ndash;Msg&ndash;%&gt;--%>
+<%--                                <% if (err != null) { %>--%>
+<%--                                <div class="alert alert-danger alert-dismissible fade show" role="alert">--%>
+<%--                                    <strong>Erreur!</strong>--%>
+<%--                                    <span><%= err %></span>--%>
+<%--                                </div>--%>
+<%--                                <% } %>--%>
+
                                 <div class="card-body">
                                     <form
                                             action="reservation_save"
@@ -89,17 +102,17 @@
                                         <div class="mb-3">
                                             <div class="row">
                                                 <div class="col-6">
-                                                    <label>Vol</label>
+                                                    <label for="id_vol" class="form-label">Vol</label>
                                                     <input type="number"
                                                            name="formData.id_vol"
                                                            value="<%= v_vol.getId() %>"
                                                            class="form-control"
+                                                           id="id_vol"
                                                            readonly>
                                                 </div>
                                                 <div class="col-6">
-                                                    <label>Client:</label>
+                                                    <label for="id_client" class="form-label">Client:</label>
                                                     <input type="text"
-                                                           name="formData.nom_client"
                                                            value="<%= client.getNom() %>"
                                                            class="form-control"
                                                            readonly>
@@ -107,6 +120,7 @@
                                                            name="formData.id_client"
                                                            value="<%= client.getId() %>"
                                                            class="form-control"
+                                                           id="id_client"
                                                            readonly>
                                                 </div>
                                             </div>
@@ -116,12 +130,15 @@
                                         <div class="mb-3">
                                             <div class="row">
                                                 <div class="col-6">
-                                                    <label class="form-label">Date Reservation</label>
+                                                    <label for="date_reservation" class="form-label">Date
+                                                        Reservation</label>
                                                     <input type="datetime-local"
                                                            name="formData.date_reservation"
                                                            required
                                                            class="form-control"
-                                                           value="<%= lastInput != null ? lastInput.getDate_reservation() : "" %>"/>
+                                                           value="<%= lastInput != null ? lastInput.getDate_reservation() : "" %>"
+                                                           id="date_reservation"
+                                                    />
                                                     <%
                                                         if (lastInput != null) {
                                                             Optional<ValidationError> vErr = vLog.getErrorByInput("formData.date_reservation");
@@ -133,10 +150,12 @@
                                                 </div>
                                                 <%--TypeSiege--%>
                                                 <div class="col-3">
-                                                    <label class="form-label">Type Siege: </label>
+                                                    <label for="id_type_siege" class="form-label">Type Siege: </label>
                                                     <select name="formData.id_type_siege"
                                                             required
-                                                            class="form-control">
+                                                            class="form-control"
+                                                            id="id_type_siege"
+                                                    >
                                                         <option value="">Choisir le siege</option>
                                                         <%for (TypeSiege typeSiege : typeSieges) { %>
                                                         <option
@@ -164,14 +183,16 @@
                                                 </div>
                                                 <%--TrancheAge--%>
                                                 <div class="col-3">
-                                                    <label class="form-label">Tranche Age: </label>
+                                                    <label for="id_tranche_age" class="form-label">Tranche Age: </label>
                                                     <select name="formData.id_tranche_age"
                                                             required
-                                                            class="form-control">
+                                                            class="form-control"
+                                                            id="id_tranche_age"
+                                                    >
                                                         <option value="">Choisir la tranche</option>
                                                         <%for (TrancheAge trancheAge : trancheAges) { %>
                                                         <option
-                                                                value="<%= trancheAge.getId()%>"
+                                                                value="<%= trancheAge.getId() %>"
                                                                 <%
                                                                     if (lastInput != null) {
                                                                         if (lastInput.getId_tranche_age() == trancheAge.getId()) {
@@ -219,8 +240,6 @@
                                     <th>Heure Arrivee</th>
                                     <th>Prix place business</th>
                                     <th>Prix place eco</th>
-                                    <th>Nb promo business</th>
-                                    <th>Nb promo eco</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -229,64 +248,111 @@
                                     </td>
                                     <td><%= v_vol.getNom_ville_depart() %>
                                     </td>
-                                    <td><%= v_vol.getNom_ville_destination() %>
+                                    <td><%= v_vol.getNom_ville_arrivee() %>
                                     </td>
-                                    <td><%= v_vol.getHeure_depart() %>
+                                    <td><%= formatterService.format(v_vol.getHeure_depart()) %>
                                     </td>
-                                    <td><%= v_vol.getHeure_arrivee() %>
+                                    <td><%= formatterService.format(v_vol.getHeure_arrivee()) %>
                                     </td>
                                     <td><%= v_vol.getPrix_place_business() %>
                                     </td>
                                     <td><%= v_vol.getPrix_place_eco() %>
                                     </td>
-                                    <td><%= v_vol.getNb_place_promo_business() %>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Data Reste Places Eco -->
+                        <div class="container mt-4">
+                            <h5 class="text-center">
+                                Places Eco
+                            </h5>
+                            <table class="table table-bordered table-striped mt-3">
+                                <thead>
+                                <tr>
+                                    <th>Total</th>
+                                    <th>Confirmee</th>
+                                    <th>En Attente</th>
+                                    <th>Reste</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><%= v_vol.getNb_place_eco() %>
                                     </td>
-                                    <td><%= v_vol.getNb_place_promo_eco() %>
+                                    <td><%= placeDTO.getValidatedEco() %>
+                                    </td>
+                                    <td><%= placeDTO.getPendingEco() %>
+                                    </td>
+                                    <td><%= v_vol.getNb_place_eco() - (placeDTO.getValidatedEco() + placeDTO.getPendingEco()) %>
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
 
-                        <!-- Data Reste Places -->
+                        <!-- Data Reste Places Business -->
                         <div class="container mt-4">
                             <h5 class="text-center">
-                                Places Restants
+                                Places Business
                             </h5>
                             <table class="table table-bordered table-striped mt-3">
                                 <thead>
                                 <tr>
+                                    <th>Total</th>
+                                    <th>Confirmee</th>
+                                    <th>En Attente</th>
+                                    <th>Reste</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><%= v_vol.getNb_place_business() %>
+                                    </td>
+                                    <td><%= placeDTO.getValidatedBusiness() %>
+                                    </td>
+                                    <td><%= placeDTO.getPendingBusiness() %>
+                                    </td>
+                                    <td><%= v_vol.getNb_place_business() - (placeDTO.getValidatedBusiness() + placeDTO.getPendingBusiness()) %>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Data Limites -->
+                        <div class="container mt-4">
+                            <h5 class="text-center">
+                                Attentions
+                            </h5>
+                            <table class="table table-bordered table-striped mt-3">
+                                <thead>
+                                <tr>
+                                    <th>Marge de reservation</th>
                                     <th>Limite Reservation</th>
+                                    <th>Marge d'annulation</th>
                                     <th>Limite Annulation</th>
-                                    <th>Confirmee business</th>
-                                    <th>Confirmee eco</th>
-                                    <th>En Attente business</th>
-                                    <th>En Attente eco</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr>
                                     <td>
-                                        <%= configDTO.getLimiteReservation() %>
+                                        <%= configDTO.getMinNbHeureReservation().getVal() %> h.
                                     </td>
                                     <td>
-                                        <%= configDTO.getLimiteAnnulation() %>
+                                        <%= formatterService.format(configDTO.getLimiteReservation()) %>
                                     </td>
-                                    <td><%= placeDTO.getValidatedBusiness() %>
+                                    <td>
+                                        <%= configDTO.getMinNbHeureAnnulation().getVal() %> h.
                                     </td>
-                                    <td><%= placeDTO.getValidatedEco() %>
-                                    </td>
-                                    <td><%= placeDTO.getPendingBusiness() %>
-                                    </td>
-                                    <td><%= placeDTO.getPendingEco() %>
+                                    <td>
+                                        <%= formatterService.format(configDTO.getLimiteAnnulation()) %>
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
-
-                        <%-- Configs actuels --%>
-                        <%@ include file="/parts/current_config.jsp" %>
                     </div>
                 </div>
             </div>

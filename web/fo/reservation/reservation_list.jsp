@@ -33,9 +33,7 @@
 
     <title>Mes Reservations</title>
 
-    <div>
-        <%@ include file="/layout/link_header.jsp" %>
-    </div>
+    <%@ include file="/layout/link_header.jsp" %>
 
     <script>
         function downloadPdf(reservationId) {
@@ -85,9 +83,9 @@
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                 <strong>Erreur!</strong>
                                 <span><%= err %></span>
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">×</span>
-                                </button>
+<%--                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">--%>
+<%--                                    <span aria-hidden="true">x</span>--%>
+<%--                                </button>--%>
                             </div>
                             <% } %>
 
@@ -95,7 +93,6 @@
                                 <thead class="thead-dark">
                                 <tr>
                                     <th>Id</th>
-                                    <th>Id Mere</th>
                                     <th>Id vol</th>
                                     <th>Type Siege</th>
                                     <th>Date Reservation</th>
@@ -112,9 +109,6 @@
                                         <a href="reservation_detail?id=<%= vReservation.getId() %>">
                                             <%= vReservation.getId() %>
                                         </a>
-                                    </td>
-                                    <td>
-                                        <%= vReservation.getId_reservation_mere() %>
                                     </td>
                                     <td><%= vReservation.getId_vol() %>
                                     </td>

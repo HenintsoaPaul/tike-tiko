@@ -6,6 +6,7 @@
 <%@ page import="entity.Vol" %>
 <%@ page import="src.summer.beans.validation.ValidationError" %>
 <%@ page import="java.util.Optional" %>
+<%@ page import="service.DateFormatterService" %>
 <%
     List<VVol> vvols = (List<VVol>) request.getAttribute("vvols");
 
@@ -20,6 +21,8 @@
     }
 
     pageContext.setAttribute("activePage", "boVolAdd");
+
+    DateFormatterService formatterService = new DateFormatterService();
 %>
 
 <!DOCTYPE html>
@@ -41,9 +44,7 @@
 
     <title>Ajouter vol</title>
 
-    <div>
-        <%@ include file="/layout/link_header.jsp" %>
-    </div>
+    <%@ include file="/layout/link_header.jsp" %>
 </head>
 
 <body>
@@ -144,7 +145,7 @@
                                             </div>
                                         </div>
 
-                                        <!-- ville depart+destination -->
+                                        <!-- ville depart+arrivee -->
                                         <div class="mb-3">
                                             <div class="row">
                                                 <div class="col-6">
@@ -177,20 +178,20 @@
                                                 <div class="col-6">
                                                     <%
                                                         if (lastInput != null) {
-                                                            Optional<ValidationError> vErr = vLog.getErrorByInput("vol.id_ville_destination");
+                                                            Optional<ValidationError> vErr = vLog.getErrorByInput("vol.id_ville_arrivee");
                                                             if (vErr.isPresent()) {
                                                                 out.print(vErr.get().toHtml());
                                                             }
                                                         }
                                                     %>
-                                                    <label class="form-label">Ville Destination: </label>
-                                                    <select name="vol.id_ville_destination" required class="form-control">
+                                                    <label class="form-label">Ville Arrivee: </label>
+                                                    <select name="vol.id_ville_arrivee" required class="form-control">
                                                         <%for (Ville ville : villes) { %>
                                                         <option
                                                                 value="<%= ville.getId()%>"
                                                                 <%
                                                                     if (lastInput != null) {
-                                                                        if (lastInput.getId_ville_destination() == ville.getId()) {
+                                                                        if (lastInput.getId_ville_arrivee() == ville.getId()) {
                                                                             out.print("selected");
                                                                         }
                                                                     }
@@ -242,44 +243,6 @@
                                             </div>
                                         </div>
 
-                                        <!-- promotion -->
-                                        <div class="mb-3">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <%
-                                                        if (lastInput != null) {
-                                                            Optional<ValidationError> vErr = vLog.getErrorByInput("vol.nb_place_promo_business");
-                                                            if (vErr.isPresent()) {
-                                                                out.print(vErr.get().toHtml());
-                                                            }
-                                                        }
-                                                    %>
-                                                    <label class="form-label">Nombre place business en promo: </label>
-                                                    <input type="number"
-                                                           class="form-control"
-                                                           name="vol.nb_place_promo_business"
-                                                           value="<%= lastInput != null ? lastInput.getNb_place_promo_business() : "" %>"
-                                                           required/>
-                                                </div>
-                                                <div class="col-6">
-                                                    <%
-                                                        if (lastInput != null) {
-                                                            Optional<ValidationError> vErr = vLog.getErrorByInput("vol.nb_place_promo_eco");
-                                                            if (vErr.isPresent()) {
-                                                                out.print(vErr.get().toHtml());
-                                                            }
-                                                        }
-                                                    %>
-                                                    <label class="form-label">Nombre place eco en promo: </label>
-                                                    <input type="number"
-                                                           class="form-control"
-                                                           name="vol.nb_place_promo_eco"
-                                                           value="<%= lastInput != null ? lastInput.getNb_place_promo_eco() : "" %>"
-                                                           required/>
-                                                </div>
-                                            </div>
-                                        </div>
-
                                         <button type="submit" class="btn btn-primary">
                                             Confimer
                                         </button>
@@ -299,13 +262,11 @@
                                     <th>Id</th>
                                     <th>Avion</th>
                                     <th>Ville Depart</th>
-                                    <th>Ville Destination</th>
+                                    <th>Ville Arrivee</th>
                                     <th>Heure Depart</th>
                                     <th>Heure Arrivee</th>
                                     <th>Prix place business</th>
                                     <th>Prix place eco</th>
-                                    <th>Nb promo business</th>
-                                    <th>Nb promo eco</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -320,19 +281,15 @@
                                     </td>
                                     <td><%= v_vol.getNom_ville_depart() %>
                                     </td>
-                                    <td><%= v_vol.getNom_ville_destination() %>
+                                    <td><%= v_vol.getNom_ville_arrivee() %>
                                     </td>
-                                    <td><%= v_vol.getHeure_depart() %>
+                                    <td><%= formatterService.format(v_vol.getHeure_depart()) %>
                                     </td>
-                                    <td><%= v_vol.getHeure_arrivee() %>
+                                    <td><%= formatterService.format(v_vol.getHeure_arrivee()) %>
                                     </td>
                                     <td><%= v_vol.getPrix_place_business() %>
                                     </td>
                                     <td><%= v_vol.getPrix_place_eco() %>
-                                    </td>
-                                    <td><%= v_vol.getNb_place_promo_business() %>
-                                    </td>
-                                    <td><%= v_vol.getNb_place_promo_eco() %>
                                     </td>
                                 </tr>
                                 <% } %>

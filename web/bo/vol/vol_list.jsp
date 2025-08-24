@@ -2,6 +2,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="entity.Avion" %>
 <%@ page import="entity.Ville" %>
+<%@ page import="service.DateFormatterService" %>
 <%
     List<VVol> vvols = (List<VVol>) request.getAttribute("vvols");
 
@@ -9,6 +10,8 @@
     List<Avion> avions = (List<Avion>) request.getAttribute("avions");
 
     pageContext.setAttribute("activePage", "boVolList");
+
+    DateFormatterService formatterService = new DateFormatterService();
 %>
 
 <!DOCTYPE html>
@@ -30,9 +33,7 @@
 
     <title>Nos Vols</title>
 
-    <div>
-        <%@ include file="/layout/link_header.jsp" %>
-    </div>
+    <%@ include file="/layout/link_header.jsp" %>
 </head>
 
 <body>
@@ -71,8 +72,6 @@
                                     <th>Heure Arrivee</th>
                                     <th>Prix place business</th>
                                     <th>Prix place eco</th>
-                                    <th>Nb promo business</th>
-                                    <th>Nb promo eco</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -87,19 +86,15 @@
                                     </td>
                                     <td><%= v_vol.getNom_ville_depart() %>
                                     </td>
-                                    <td><%= v_vol.getNom_ville_destination() %>
+                                    <td><%= v_vol.getNom_ville_arrivee() %>
                                     </td>
-                                    <td><%= v_vol.getHeure_depart() %>
+                                    <td><%= formatterService.format(v_vol.getHeure_depart()) %>
                                     </td>
-                                    <td><%= v_vol.getHeure_arrivee() %>
+                                    <td><%= formatterService.format(v_vol.getHeure_arrivee()) %>
                                     </td>
                                     <td><%= v_vol.getPrix_place_business() %>
                                     </td>
                                     <td><%= v_vol.getPrix_place_eco() %>
-                                    </td>
-                                    <td><%= v_vol.getNb_place_promo_business() %>
-                                    </td>
-                                    <td><%= v_vol.getNb_place_promo_eco() %>
                                     </td>
                                 </tr>
                                 <% } %>

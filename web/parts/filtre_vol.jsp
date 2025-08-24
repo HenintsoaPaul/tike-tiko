@@ -65,7 +65,7 @@
                         </div>
                         <div class="col-6">
                             <label class="form-label">Ville Destination: </label>
-                            <select class="form-control" name="volFiltre.id_ville_destination">
+                            <select class="form-control" name="volFiltre.id_ville_arrivee">
                                 <option value="-1">
                                     Choisir ville Destination
                                 </option>

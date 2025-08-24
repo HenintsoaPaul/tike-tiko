@@ -1,11 +1,11 @@
 <%@ page import="java.util.List" %>
 <%@ page import="entity.TypeSiege" %>
-<%@ page import="views.VPourcentagePromotion" %>
+<%@ page import="views.VPromotion" %>
 
 <%
     List<TypeSiege> typeSieges = (List<TypeSiege>) request.getAttribute("typeSieges");
 
-    List<VPourcentagePromotion> vPourcentagePromotions = (List<VPourcentagePromotion>) request.getAttribute("vPourcentagePromotions");
+    List<VPromotion> vPourcentagePromotions = (List<VPromotion>) request.getAttribute("vPourcentagePromotions");
 %>
 
 <%-- promotion --%>
@@ -24,7 +24,7 @@
             </tr>
             </thead>
             <tbody>
-            <% for (VPourcentagePromotion pp : vPourcentagePromotions) { %>
+            <% for (VPromotion pp : vPourcentagePromotions) { %>
             <tr>
                 <td>
                     <%= pp.getId() %>

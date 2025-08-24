@@ -1,5 +1,8 @@
+<%@ page import="service.DateFormatterService" %>
 <%
     pageContext.setAttribute("activePage", "boConfig");
+
+    DateFormatterService formatterService = new DateFormatterService();
 %>
 
 <!DOCTYPE html>
@@ -21,9 +24,7 @@
 
     <title>Nos Configurations</title>
 
-    <div>
-        <%@ include file="/layout/link_header.jsp" %>
-    </div>
+    <%@ include file="/layout/link_header.jsp" %>
 </head>
 
 <body>
@@ -42,8 +43,10 @@
             <div class="content-wrapper">
                 <!-- Content -->
                 <div class="container-xxl flex-grow-1 container-p-y">
-                    <%-- promotion --%>
-                    <%@ include file="/bo/config/promotion.jsp" %>
+                    <%--                    &lt;%&ndash; promotion &ndash;%&gt;--%>
+                    <%--                    <%@ include file="/bo/config/promotion.jsp" %>--%>
+                    <%-- reduction tranche age --%>
+                    <%@ include file="/bo/config/reduction_tranche_age.jsp" %>
                     <div class="row">
                         <div class="col-6">
                             <%-- annulation --%>
