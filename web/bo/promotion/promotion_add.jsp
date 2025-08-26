@@ -152,7 +152,7 @@
                                                                     }
                                                                 %>
                                                         >
-                                                            <%= typeSiege.getId() %>
+                                                            <%= typeSiege.getNom() %>
                                                         </option>
                                                         <% } %>
                                                     </select>
@@ -178,7 +178,8 @@
                                                            type="number"
                                                            class="form-control"
                                                            name="promotion.prix_promo"
-                                                           value="<%= lastInput != null ? lastInput.getPrix_promo() : "" %>"
+                                                           value="<%= lastInput != null ? lastInput.getPrix_promo() : "0" %>"
+                                                           min="0"
                                                            required/>
                                                 </div>
                                                 <div class="col-6">
@@ -195,7 +196,8 @@
                                                            type="number"
                                                            class="form-control"
                                                            name="promotion.nb_place"
-                                                           value="<%= lastInput != null ? lastInput.getNb_place() : "" %>"
+                                                           value="<%= lastInput != null ? lastInput.getNb_place() : "0" %>"
+                                                           min="0"
                                                            required/>
                                                 </div>
                                             </div>

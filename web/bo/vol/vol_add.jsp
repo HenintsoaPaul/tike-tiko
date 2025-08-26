@@ -6,7 +6,7 @@
 <%@ page import="entity.Vol" %>
 <%@ page import="src.summer.beans.validation.ValidationError" %>
 <%@ page import="java.util.Optional" %>
-<%@ page import="service.DateFormatterService" %>
+<%@ page import="service.util.DateFormatterService" %>
 <%
     List<VVol> vvols = (List<VVol>) request.getAttribute("vvols");
 
@@ -21,6 +21,9 @@
     }
 
     pageContext.setAttribute("activePage", "boVolAdd");
+
+    Object errObject = request.getAttribute("err");
+    String err = errObject == null ? null : errObject.toString();
 
     DateFormatterService formatterService = new DateFormatterService();
 %>
@@ -217,11 +220,13 @@
                                                             }
                                                         }
                                                     %>
-                                                    <label class="form-label">Prix place business: </label>
-                                                    <input type="number"
+                                                    <label for="prix_business" class="form-label">Prix place
+                                                        business: </label>
+                                                    <input id="prix_business" type="number"
                                                            class="form-control"
                                                            name="vol.prix_place_business"
                                                            value="<%= lastInput != null ? lastInput.getPrix_place_business() : "" %>"
+                                                           min="50"
                                                            required/>
                                                 </div>
                                                 <div class="col-6">
@@ -233,11 +238,12 @@
                                                             }
                                                         }
                                                     %>
-                                                    <label class="form-label">Prix place eco: </label>
-                                                    <input type="number"
+                                                    <label for="prix_eco" class="form-label">Prix place eco: </label>
+                                                    <input id="prix_eco" type="number"
                                                            class="form-control"
                                                            name="vol.prix_place_eco"
                                                            value="<%= lastInput != null ? lastInput.getPrix_place_eco() : "" %>"
+                                                           min="50"
                                                            required/>
                                                 </div>
                                             </div>
@@ -246,6 +252,15 @@
                                         <button type="submit" class="btn btn-primary">
                                             Confimer
                                         </button>
+
+                                        <%--Msg--%>
+                                        <% if (err != null) { %>
+                                        <br>
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+<%--                                            <strong>Erreur!</strong>--%>
+                                            <span><%= err %></span>
+                                        </div>
+                                        <% } %>
                                     </form>
                                 </div>
                             </div>

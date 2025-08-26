@@ -1,6 +1,6 @@
 <%@ page import="views.VReservation" %>
 <%@ page import="java.util.List" %>
-<%@ page import="service.DateFormatterService" %>
+<%@ page import="service.util.DateFormatterService" %>
 <%
     List<VReservation> vReservations = (List<VReservation>) request.getAttribute("vReservations");
 

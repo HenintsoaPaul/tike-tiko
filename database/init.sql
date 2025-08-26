@@ -167,11 +167,14 @@ select r.id,
        r.heure_reservation,
        r.prix_final,
        r.id_utilisateur,
+       u.nom  as nom_utilisateur,
+       r.id_promotion,
        r.img_passeport,
        v.id   as id_vol,
        ts.nom as nom_type_siege,
        er.nom as nom_etat_reservation
 from reservation r
+         join utilisateur u on r.id_utilisateur = u.id
          join etat_reservation er on r.id_etat_reservation = er.id
          join place_vol pv on r.id_place_vol = pv.id
          join type_siege ts on pv.id_type_siege = ts.id

@@ -4,6 +4,7 @@ import entity.Vol;
 import entity.config.MinNbHeureAnnulation;
 import entity.config.MinNbHeureReservation;
 import form.VolFilterFormData;
+import src.summer.exception.SummerException;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -57,15 +58,15 @@ public class VolService {
                 .minusHours((long) minNbHeureAnnulation.getVal());
     }
 
-    public void verifierDates(Vol vol) throws Exception {
+    public void verifierDates(Vol vol) throws SummerException {
         // depart < arrivee
         if (!vol.getHeure_depart().isBefore(vol.getHeure_arrivee())) {
-            throw new Exception("heure_depart must be before heure_arrivee");
+            throw new SummerException("heure_depart must be before heure_arrivee");
         }
 
         // depart == arrivee
         if (vol.getHeure_depart() == vol.getHeure_arrivee()) {
-            throw new Exception("heure_depart must be different to heure_arrivee");
+            throw new SummerException("heure_depart must be different to heure_arrivee");
         }
     }
 }

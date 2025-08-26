@@ -1,4 +1,4 @@
-<%@ page import="service.DateFormatterService" %>
+<%@ page import="service.util.DateFormatterService" %>
 <%
     pageContext.setAttribute("activePage", "boConfig");
 

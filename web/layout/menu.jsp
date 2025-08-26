@@ -5,18 +5,18 @@
 
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
-        <a href="<%= request.getContextPath() %>/" class="app-brand-link">
-      <span class="app-brand-logo demo">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     width="32"
-                     height="32"
-                     viewBox="0 0 24 24"
-                     fill="none"
-                     class="feather feather-aircraft"
-                >
-                    <path d="M12 2L3 9l3 6M12 2l9 7-3 6M12 2v20M9 9l6 6"/>
-                </svg>
-      </span>
+        <a href="<%= request.getContextPath() %>/fo_vol_list" class="app-brand-link">
+<%--      <span class="app-brand-logo demo">--%>
+<%--                <svg xmlns="http://www.w3.org/2000/svg"--%>
+<%--                     width="32"--%>
+<%--                     height="32"--%>
+<%--                     viewBox="0 0 24 24"--%>
+<%--                     fill="none"--%>
+<%--                     class="feather feather-aircraft"--%>
+<%--                >--%>
+<%--                    <path d="M12 2L3 9l3 6M12 2l9 7-3 6M12 2v20M9 9l6 6"/>--%>
+<%--                </svg>--%>
+<%--      </span>--%>
             <span class="app-brand-text demo menu-text fw-bolder ms-2">
         Tike Tiko
       </span>
@@ -89,8 +89,8 @@
                 %>
         >
             <a class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-plane-alt"></i>
-                <div data-i18n="Flights">Vols clients</div>
+                <i class="menu-icon tf-icons bx bxs-plane-take-off"></i>
+                <div data-i18n="Flights">Vols</div>
             </a>
             <ul class="menu-sub">
                 <li
@@ -123,8 +123,8 @@
                 %>
         >
             <a class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-plane-alt"></i>
-                <div data-i18n="Planes">Reservations client</div>
+                <i class="menu-icon tf-icons bx bxs-server"></i>
+                <div data-i18n="Planes">Reservations</div>
             </a>
             <ul class="menu-sub">
                 <li

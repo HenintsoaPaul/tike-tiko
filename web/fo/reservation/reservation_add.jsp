@@ -9,7 +9,7 @@
 <%@ page import="dto.PlaceDTO" %>
 <%@ page import="dto.ConfigDTO" %>
 <%@ page import="entity.config.age.TrancheAge" %>
-<%@ page import="service.DateFormatterService" %>
+<%@ page import="service.util.DateFormatterService" %>
 <%
     Utilisateur client = (Utilisateur) request.getAttribute("utilisateur");
     VVol v_vol = (VVol) request.getAttribute("v_vol");

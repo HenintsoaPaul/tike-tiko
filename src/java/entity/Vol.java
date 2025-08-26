@@ -36,8 +36,11 @@ public class Vol {
     public Vol() {
     }
 
-    public Vol(int id, int idAvion, int idVilleDepart, int idVilleDestination, LocalDateTime heureDepart, LocalDateTime heureArrivee,
-               double prixPlaceBusiness, double prixPlaceEco) {
+    public Vol(
+            int id, int idAvion, int idVilleDepart, int idVilleDestination,
+            LocalDateTime heureDepart, LocalDateTime heureArrivee,
+            double prixPlaceBusiness, double prixPlaceEco
+    ) {
         this.id = id;
         this.id_avion = idAvion;
         this.id_ville_depart = idVilleDepart;

@@ -1,7 +1,9 @@
 <%@ page import="views.VVol" %>
 <%@ page import="java.time.LocalDateTime" %>
 <%@ page import="dto.PlaceDTO" %>
-<%@ page import="service.DateFormatterService" %>
+<%@ page import="service.util.DateFormatterService" %>
+<%@ page import="views.VReservation" %>
+<%@ page import="java.util.List" %>
 <%
     VVol v_vol = (VVol) request.getAttribute("v_vol");
 
@@ -9,6 +11,8 @@
 
     LocalDateTime limiteReservation = (LocalDateTime) request.getAttribute("limiteReservation");
     LocalDateTime limiteAnnulation = (LocalDateTime) request.getAttribute("limiteAnnulation");
+
+    List<VReservation> vReservations = (List<VReservation>) request.getAttribute("vReservations");
 
     pageContext.setAttribute("activePage", "boVolDetail");
 
@@ -54,6 +58,7 @@
                 <!-- Content -->
                 <div class="container-xxl flex-grow-1 container-p-y">
                     <div class="row">
+
                         <!-- Data vol -->
                         <div class="container mt-4">
                             <h4 class="text-center">
@@ -113,9 +118,9 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td><%= limiteReservation %>
+                                    <td><%= formatterService.format(limiteReservation) %>
                                     </td>
-                                    <td><%= limiteAnnulation %>
+                                    <td><%= formatterService.format(limiteAnnulation) %>
                                     </td>
                                     <td><%= placeDTO.getValidatedBusiness() %>
                                     </td>
@@ -126,6 +131,46 @@
                                     <td><%= placeDTO.getPendingEco() %>
                                     </td>
                                 </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Data Reservations -->
+                        <div class="container mt-4">
+                            <h5 class="text-center">
+                                Reservations
+                            </h5>
+                            <table class="table table-bordered table-striped mt-3">
+                                <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Fais le</th>
+                                    <th>Utilisateur</th>
+                                    <th>Prix</th>
+                                    <th>Etat</th>
+                                    <th>Id promotion</th>
+                                    <th>Type siege</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <% for (VReservation vReservation : vReservations) { %>
+                                <tr>
+                                    <td><%= vReservation.getId() %>
+                                    </td>
+                                    <td><%= formatterService.format(vReservation.getHeure_reservation()) %>
+                                    </td>
+                                    <td><%= vReservation.getNom_utilisateur() %>
+                                    </td>
+                                    <td><%= vReservation.getPrix_final() %>
+                                    </td>
+                                    <td><%= vReservation.getNom_etat_reservation() %>
+                                    </td>
+                                    <td><%= vReservation.getNom_type_siege() %>
+                                    </td>
+                                    <td><%= vReservation.getId_promotionStr() %>
+                                    </td>
+                                </tr>
+                                <% } %>
                                 </tbody>
                             </table>
                         </div>

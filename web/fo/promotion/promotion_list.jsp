@@ -1,6 +1,6 @@
 <%@ page import="views.VPromotion" %>
 <%@ page import="java.util.List" %>
-<%@ page import="service.DateFormatterService" %>
+<%@ page import="service.util.DateFormatterService" %>
 <%
     List<VPromotion> vPromotions = (List<VPromotion>) request.getAttribute("vPromotions");
 

@@ -2,7 +2,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="entity.Avion" %>
 <%@ page import="entity.Ville" %>
-<%@ page import="service.DateFormatterService" %>
+<%@ page import="service.util.DateFormatterService" %>
 <%
     List<VVol> vvols = (List<VVol>) request.getAttribute("vvols");
 

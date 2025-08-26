@@ -9,6 +9,8 @@ import form.VolFilterFormData;
 import service.*;
 import service.config.MinNbHeureAnnulationService;
 import service.config.MinNbHeureReservationService;
+import service.util.SessionService;
+import service.views.VReservationService;
 import service.views.VVolService;
 import src.summer.annotations.Authorized;
 import src.summer.annotations.Param;
@@ -18,9 +20,13 @@ import src.summer.annotations.controller.UrlMapping;
 import src.summer.annotations.controller.verb.Get;
 import src.summer.annotations.controller.verb.Post;
 import src.summer.beans.ModelView;
+import src.summer.beans.SummerSession;
+import src.summer.exception.SummerException;
+import views.VReservation;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 @Controller
 public class VolController {
@@ -33,8 +39,10 @@ public class VolController {
     private final VilleService villeService = new VilleService();
     private final VolService volService = new VolService();
     private final VVolService vVolService = new VVolService();
+    private final VReservationService vReservationService = new VReservationService();
 
     private final DatabaseService databaseService = new DatabaseService();
+    private SummerSession summerSession;
 
     private void fetchData(Connection conn, ModelView mv) {
         mv.addObject("avions", avionService.select(conn, "select * from avion"));
@@ -109,6 +117,9 @@ public class VolController {
             ModelView mv = new ModelView("bo/vol/vol_add.jsp", null);
             fetchData(conn, mv);
 
+            Object err = SessionService.getErrorFromSession(summerSession);
+            mv.addObject("err", err);
+
             mv.addObject("vvols", this.vVolService.select(conn, "select * from v_vol"));
             return mv;
         } catch (SQLException e) {
@@ -128,8 +139,15 @@ public class VolController {
             conn = databaseService.getConnection();
             conn.setAutoCommit(false);
 
-            volService.verifierDates(vol);
+//            System.out.println("Before verifier dates...");
+            try {
+                volService.verifierDates(vol);
+            } catch (SummerException se) {
+                summerSession.addAttribute("err", se.getMessage());
+                return "redirect:GET:/vol_add";
+            }
 
+//            System.out.println("Before insert vol...");
             // 1/ insert vol
             int idVol = this.volService.insert(conn, vol);
             vol.setId(idVol);
@@ -177,6 +195,10 @@ public class VolController {
 
             MinNbHeureAnnulation minNbHeureAnnulation = minNbHeureAnnulationService.selectCurrent(conn);
             mv.addObject("limiteAnnulation", vol.getHeure_depart().minusHours((long) minNbHeureAnnulation.getVal()));
+
+            String reservationsQuery = "select * from v_reservation where id_vol = " + idVol;
+            List<VReservation> reservations = vReservationService.select(conn, reservationsQuery);
+            mv.addObject("vReservations", reservations);
 
             mv.addObject("v_vol", vVolService.selectById(conn, idVol));
             return mv;

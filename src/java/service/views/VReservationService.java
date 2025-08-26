@@ -23,7 +23,9 @@ public class VReservationService {
                         rs.getString("nom_etat_reservation"),
                         rs.getDouble("prix_final"),
                         rs.getInt("id_utilisateur"),
-                        rs.getString("img_passeport")
+                        rs.getString("nom_utilisateur"),
+                        rs.getString("img_passeport"),
+                        rs.getInt("id_promotion")
                 );
             } catch (SQLException e) {
                 throw new RuntimeException(e);

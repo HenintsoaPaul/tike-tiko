@@ -1,6 +1,6 @@
 <%@ page import="views.VReservation" %>
 <%@ page import="views.VVol" %>
-<%@ page import="service.DateFormatterService" %>
+<%@ page import="service.util.DateFormatterService" %>
 <%
     VReservation vReservation = (VReservation) request.getAttribute("vReservation");
 

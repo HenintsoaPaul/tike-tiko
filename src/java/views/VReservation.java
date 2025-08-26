@@ -12,11 +12,19 @@ public class VReservation {
     String nom_etat_reservation;
     double prix_final;
     int id_utilisateur;
+    String nom_utilisateur;
     String img_passeport;
+    int id_promotion;
 
     // Constr
-    public VReservation(int id, int idVol, LocalDateTime heureReservation, String nomTypeSiege, String nomEtatReservation,
-                        double prixFinal, int idUtilisateur, String imgPasseport) {
+    public VReservation(
+            int id, int idVol, LocalDateTime heureReservation,
+            String nomTypeSiege, String nomEtatReservation,
+            double prixFinal,
+            int idUtilisateur, String nom_utilisateur,
+            String imgPasseport,
+            int id_promotion
+    ) {
         this.id = id;
         this.id_vol = idVol;
         this.heure_reservation = heureReservation;
@@ -24,7 +32,9 @@ public class VReservation {
         this.nom_etat_reservation = nomEtatReservation;
         this.setPrix_final(prixFinal);
         this.id_utilisateur = idUtilisateur;
+        this.setNom_utilisateur(nom_utilisateur);
         this.img_passeport = imgPasseport;
+        this.setId_promotion(id_promotion);
     }
 
     // Getters n Setters
@@ -90,5 +100,25 @@ public class VReservation {
 
     public void setImg_passeport(String img_passeport) {
         this.img_passeport = img_passeport;
+    }
+
+    public String getNom_utilisateur() {
+        return nom_utilisateur;
+    }
+
+    public void setNom_utilisateur(String nom_utilisateur) {
+        this.nom_utilisateur = nom_utilisateur;
+    }
+
+    public int getId_promotion() {
+        return id_promotion;
+    }
+
+    public String getId_promotionStr() {
+        return id_promotion == 0 ? "-" : id_promotion + "";
+    }
+
+    public void setId_promotion(int id_promotion) {
+        this.id_promotion = id_promotion;
     }
 }
