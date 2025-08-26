@@ -10,6 +10,7 @@ import service.*;
 import service.config.MinNbHeureAnnulationService;
 import service.config.MinNbHeureReservationService;
 import service.util.SessionService;
+import service.views.VPromotionService;
 import service.views.VReservationService;
 import service.views.VVolService;
 import src.summer.annotations.Authorized;
@@ -22,6 +23,7 @@ import src.summer.annotations.controller.verb.Post;
 import src.summer.beans.ModelView;
 import src.summer.beans.SummerSession;
 import src.summer.exception.SummerException;
+import views.VPromotion;
 import views.VReservation;
 
 import java.sql.Connection;
@@ -40,6 +42,7 @@ public class VolController {
     private final VolService volService = new VolService();
     private final VVolService vVolService = new VVolService();
     private final VReservationService vReservationService = new VReservationService();
+    private final VPromotionService vPromotionService = new VPromotionService();
 
     private final DatabaseService databaseService = new DatabaseService();
     private SummerSession summerSession;
@@ -199,6 +202,10 @@ public class VolController {
             String reservationsQuery = "select * from v_reservation where id_vol = " + idVol;
             List<VReservation> reservations = vReservationService.select(conn, reservationsQuery);
             mv.addObject("vReservations", reservations);
+
+            String promotionsQuery = "select * from v_promotion where id_vol = " + idVol;
+            List<VPromotion> promotions = vPromotionService.select(conn, promotionsQuery);
+            mv.addObject("vPromotions", promotions);
 
             mv.addObject("v_vol", vVolService.selectById(conn, idVol));
             return mv;

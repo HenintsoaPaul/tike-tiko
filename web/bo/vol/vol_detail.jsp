@@ -4,6 +4,7 @@
 <%@ page import="service.util.DateFormatterService" %>
 <%@ page import="views.VReservation" %>
 <%@ page import="java.util.List" %>
+<%@ page import="views.VPromotion" %>
 <%
     VVol v_vol = (VVol) request.getAttribute("v_vol");
 
@@ -13,6 +14,7 @@
     LocalDateTime limiteAnnulation = (LocalDateTime) request.getAttribute("limiteAnnulation");
 
     List<VReservation> vReservations = (List<VReservation>) request.getAttribute("vReservations");
+    List<VPromotion> vPromotions = (List<VPromotion>) request.getAttribute("vPromotions");
 
     pageContext.setAttribute("activePage", "boVolDetail");
 
@@ -148,8 +150,8 @@
                                     <th>Utilisateur</th>
                                     <th>Prix</th>
                                     <th>Etat</th>
-                                    <th>Id promotion</th>
                                     <th>Type siege</th>
+                                    <th>Id promotion</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -168,6 +170,43 @@
                                     <td><%= vReservation.getNom_type_siege() %>
                                     </td>
                                     <td><%= vReservation.getId_promotionStr() %>
+                                    </td>
+                                </tr>
+                                <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Data Promotions -->
+                        <div class="container mt-4">
+                            <h5 class="text-center">
+                                Promotions
+                            </h5>
+                            <table class="table table-bordered table-striped mt-3">
+                                <thead class="thead-dark">
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Vol</th>
+                                    <th>Type place</th>
+                                    <th>Date butoir</th>
+                                    <th>Prix</th>
+                                    <th>Max place</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <% for (VPromotion vPromotion : vPromotions) { %>
+                                <tr>
+                                    <td><%= vPromotion.getId() %>
+                                    </td>
+                                    <td><%= vPromotion.getId_vol() %>
+                                    </td>
+                                    <td><%= vPromotion.getNom_type_siege() %>
+                                    </td>
+                                    <td><%= formatterService.format(vPromotion.getDate_fin()) %>
+                                    </td>
+                                    <td><%= vPromotion.getPrix_promo() %>
+                                    </td>
+                                    <td><%= vPromotion.getNb_place() %>
                                     </td>
                                 </tr>
                                 <% } %>

@@ -84,13 +84,13 @@
                                     </h1>
                                 </div>
 
-<%--                                &lt;%&ndash;Msg&ndash;%&gt;--%>
-<%--                                <% if (err != null) { %>--%>
-<%--                                <div class="alert alert-danger alert-dismissible fade show" role="alert">--%>
-<%--                                    <strong>Erreur!</strong>--%>
-<%--                                    <span><%= err %></span>--%>
-<%--                                </div>--%>
-<%--                                <% } %>--%>
+                                <%--                                &lt;%&ndash;Msg&ndash;%&gt;--%>
+                                <%--                                <% if (err != null) { %>--%>
+                                <%--                                <div class="alert alert-danger alert-dismissible fade show" role="alert">--%>
+                                <%--                                    <strong>Erreur!</strong>--%>
+                                <%--                                    <span><%= err %></span>--%>
+                                <%--                                </div>--%>
+                                <%--                                <% } %>--%>
 
                                 <div class="card-body">
                                     <form
@@ -263,62 +263,63 @@
                             </table>
                         </div>
 
-                        <!-- Data Reste Places Eco -->
-                        <div class="container mt-4">
-                            <h5 class="text-center">
-                                Places Eco
-                            </h5>
-                            <table class="table table-bordered table-striped mt-3">
-                                <thead>
-                                <tr>
-                                    <th>Total</th>
-                                    <th>Confirmee</th>
-                                    <th>En Attente</th>
-                                    <th>Reste</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td><%= v_vol.getNb_place_eco() %>
-                                    </td>
-                                    <td><%= placeDTO.getValidatedEco() %>
-                                    </td>
-                                    <td><%= placeDTO.getPendingEco() %>
-                                    </td>
-                                    <td><%= v_vol.getNb_place_eco() - (placeDTO.getValidatedEco() + placeDTO.getPendingEco()) %>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <!-- Data Reste Places Business -->
-                        <div class="container mt-4">
-                            <h5 class="text-center">
-                                Places Business
-                            </h5>
-                            <table class="table table-bordered table-striped mt-3">
-                                <thead>
-                                <tr>
-                                    <th>Total</th>
-                                    <th>Confirmee</th>
-                                    <th>En Attente</th>
-                                    <th>Reste</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td><%= v_vol.getNb_place_business() %>
-                                    </td>
-                                    <td><%= placeDTO.getValidatedBusiness() %>
-                                    </td>
-                                    <td><%= placeDTO.getPendingBusiness() %>
-                                    </td>
-                                    <td><%= v_vol.getNb_place_business() - (placeDTO.getValidatedBusiness() + placeDTO.getPendingBusiness()) %>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                        <div class="row container mt-4">
+                            <!-- Data Reste Places Eco -->
+                            <div class="col-6">
+                                <h5 class="text-center">
+                                    Places Eco
+                                </h5>
+                                <table class="table table-bordered table-striped mt-3">
+                                    <thead>
+                                    <tr>
+                                        <th>Total</th>
+                                        <th>Confirmee</th>
+                                        <th>En Attente</th>
+                                        <th>Reste</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td><%= v_vol.getNb_place_eco() %>
+                                        </td>
+                                        <td><%= placeDTO.getValidatedEco() %>
+                                        </td>
+                                        <td><%= placeDTO.getPendingEco() %>
+                                        </td>
+                                        <td><%= v_vol.getNb_place_eco() - (placeDTO.getValidatedEco() + placeDTO.getPendingEco()) %>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- Data Reste Places Business -->
+                            <div class="col-6">
+                                <h5 class="text-center">
+                                    Places Business
+                                </h5>
+                                <table class="table table-bordered table-striped mt-3">
+                                    <thead>
+                                    <tr>
+                                        <th>Total</th>
+                                        <th>Confirmee</th>
+                                        <th>En Attente</th>
+                                        <th>Reste</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td><%= v_vol.getNb_place_business() %>
+                                        </td>
+                                        <td><%= placeDTO.getValidatedBusiness() %>
+                                        </td>
+                                        <td><%= placeDTO.getPendingBusiness() %>
+                                        </td>
+                                        <td><%= v_vol.getNb_place_business() - (placeDTO.getValidatedBusiness() + placeDTO.getPendingBusiness()) %>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
 
                         <!-- Data Limites -->

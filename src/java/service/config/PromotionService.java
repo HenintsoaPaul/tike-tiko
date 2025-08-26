@@ -63,7 +63,7 @@ public class PromotionService {
                 + "     and id_type_siege = " + idTypeSiege
                 + "     and date_fin >= '" + dateReservation + "'"// still enough time
                 + "     and nb_place - " + nbPaid + " > 0" // still enough place
-                + " order by id desc limit 1";
+                + " order by id asc limit 1";
         return this.select(conn, query);
     }
 

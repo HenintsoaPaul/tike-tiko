@@ -48,8 +48,8 @@
                 <!-- Content -->
                 <div class="container-xxl flex-grow-1 container-p-y">
                     <div class="row">
-<%--                        &lt;%&ndash; Filtre &ndash;%&gt;--%>
-<%--                        <%@ include file="/parts/filtre_vol.jsp" %>--%>
+                        <%--                        &lt;%&ndash; Filtre &ndash;%&gt;--%>
+                        <%--                        <%@ include file="/parts/filtre_vol.jsp" %>--%>
 
                         <!-- Data -->
                         <div class="container mt-4">
@@ -59,18 +59,23 @@
                             <table class="table table-bordered table-striped mt-3">
                                 <thead class="thead-dark">
                                 <tr>
+                                    <th>Id</th>
                                     <th>Vol</th>
                                     <th>Type place</th>
                                     <th>Date butoir</th>
                                     <th>Prix</th>
                                     <th>Max place</th>
-                                    <th>Nb places restantes</th>
                                     <th>Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <% for (VPromotion vPromo : vPromotions) { %>
                                 <tr>
+                                    <td>
+                                        <a href="promotion_detail?idPromotion=<%= vPromo.getId() %>">
+                                            <%= vPromo.getId() %>
+                                        </a>
+                                    </td>
                                     <td><%= vPromo.getId_vol() %>
                                     </td>
                                     <td><%= vPromo.getNom_type_siege() %>
@@ -80,9 +85,6 @@
                                     <td><%= vPromo.getPrix_promo() %>
                                     </td>
                                     <td><%= vPromo.getNb_place() %>
-                                    </td>
-<%--                                    <td><%= vPromo.getPrix_place_eco() %>--%>
-                                    <td>TODO
                                     </td>
                                     <td>
                                         <a href="promotion_decaler_reservations_non_payes?idPromotion=<%= vPromo.getId() %>">

@@ -6,6 +6,7 @@ import entity.config.age.ReductionTrancheAge;
 import service.*;
 import service.config.PromotionService;
 import service.views.VPromotionService;
+import service.views.VReservationService;
 import src.summer.annotations.Authorized;
 import src.summer.annotations.Param;
 import src.summer.annotations.Validate;
@@ -14,6 +15,7 @@ import src.summer.annotations.controller.UrlMapping;
 import src.summer.annotations.controller.verb.Get;
 import src.summer.annotations.controller.verb.Post;
 import src.summer.beans.ModelView;
+import views.VReservation;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,12 +26,14 @@ import java.util.stream.Collectors;
 @Controller
 public class PromotionController {
 
-    private final ReductionTrancheAgeService reductionTrancheAgeService = new ReductionTrancheAgeService();
     private final ReservationService reservationService = new ReservationService();
+    private final VReservationService vReservationService = new VReservationService();
+
+    private final ReductionTrancheAgeService reductionTrancheAgeService = new ReductionTrancheAgeService();
     private final VolService volService = new VolService();
     private final TypeSiegeService typeSiegeService = new TypeSiegeService();
-    private final PromotionService promotionService = new PromotionService();
 
+    private final PromotionService promotionService = new PromotionService();
     private final VPromotionService vPromotionService = new VPromotionService();
 
     private final DatabaseService databaseService = new DatabaseService();
@@ -64,38 +68,27 @@ public class PromotionController {
         }
     }
 
-//    @Post
-//    @UrlMapping(url = "promotion_filter")
-//    public ModelView filter(
+    @Get
+    @UrlMapping(url = "promotion_detail")
+    public ModelView promotion_detail(
+            @Param(name = "idPromotion") String idPromotion
+    ) {
+        try (Connection conn = databaseService.getConnection()) {
+            ModelView mv = new ModelView("bo/promotion/promotion_detail.jsp", null);
 
-    /// /            @Validate(errorPage = "promotion_list")
-//            @Param(name = "volFiltre") VolFilterFormData volFilterFormData
-//    ) {
-//        try (Connection conn = databaseService.getConnection()) {
-//            ModelView mv = new ModelView("bo/promotion/promotion_list.jsp", null);
-//            mv.addObject("vvols", this.vVolService.selectWithFilter(conn, volFilterFormData));
-//            fetchData(conn, mv);
-//            return mv;
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-//
-//    @Post
-//    @UrlMapping(url = "fo_promotion_filter")
-//    public ModelView fo_filter(
-//           @Validate(errorPage = "promotion_list")
-//            @Param(name = "volFiltre") VolFilterFormData volFilterFormData
-//    ) {
-//        try (Connection conn = databaseService.getConnection()) {
-//            ModelView mv = new ModelView("fo/promotion/promotion_list.jsp", null);
-//            mv.addObject("vvols", this.vVolService.selectWithFilter(conn, volFilterFormData));
-//            fetchData(conn, mv);
-//            return mv;
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
+            String queryPromo = "select * from v_promotion where id = " + idPromotion;
+            mv.addObject("vPromotion", this.vPromotionService.select(conn, queryPromo).get(0));
+
+            String queryReservations = "select * from v_reservation where id_promotion = " + idPromotion;
+            List<VReservation> reservations = this.vReservationService.select(conn, queryReservations);
+            mv.addObject("vReservations", reservations);
+
+            return mv;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Get
     @UrlMapping(url = "promotion_add")
     @Authorized(roleLevel = 10)
